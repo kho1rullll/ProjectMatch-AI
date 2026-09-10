@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eksplorasi Proyek & Filter Kemiripan AI - ProjectMatch AI</title>
+  <meta name="description" content="Eksplorasi lowongan proyek mitra industri dan riset kampus dengan filter kemiripan cosine similarity dan analisis skill drill-down.">
+
+  <!-- Tailwind CSS v4 Browser CDN -->
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  
+  <!-- Custom Glassmorphism & Animations -->
+  <link rel="stylesheet" href="css/glass.css">
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 selection:bg-[#626CDA] selection:text-white">
+
+  <!-- Dynamic Mesh Gradient Background -->
+  <div class="mesh-bg" aria-hidden="true"></div>
+  <div class="ambient-orb orb-blue" aria-hidden="true"></div>
+  <div class="ambient-orb orb-sand" aria-hidden="true"></div>
+
+  <!-- Header Semantik -->
+  <header class="sticky top-0 z-40 glass-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 group" aria-label="Beranda ProjectMatch AI">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#626CDA] via-[#FAA55A] to-[#FBFF96] flex items-center justify-center text-white font-black text-xl shadow-md shadow-[#626CDA]/25 group-hover:scale-105 transition-transform">
+          P
+        </div>
+        <div>
+          <span class="font-display font-black text-lg sm:text-xl text-slate-900 tracking-tight flex items-center gap-1">
+            ProjectMatch <span class="text-[#626CDA]">AI</span>
+          </span>
+          <span class="text-[10px] uppercase font-bold tracking-widest text-[#FAA55A] block -mt-1">Link & Match System</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1.5" aria-label="Navigasi Utama">
+        <a href="index.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/40 transition-colors">
+          Dashboard Hero
+        </a>
+        <a href="projects.html" class="px-3.5 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-white/70 shadow-xs border border-white/80" aria-current="page">
+          Eksplorasi Proyek
+        </a>
+        <a href="post-project.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/40 transition-colors">
+          Pasang Lowongan Mitra
+        </a>
+      </nav>
+
+      <!-- Right Header Elements -->
+      <div class="flex items-center gap-3">
+        <a href="post-project.html" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-900 bg-[#FAA55A] hover:bg-[#ea9346] shadow-sm transition-all ripple-btn">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span>Buat Lowongan</span>
+        </a>
+
+        <div class="flex items-center gap-2 pl-2 border-l border-slate-200/80">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#626CDA] to-[#FAA55A] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+            RS
+          </div>
+        </div>
+
+        <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-xl glass-card text-slate-700" aria-expanded="false" aria-controls="mobile-nav" aria-label="Buka menu navigasi">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div id="mobile-nav" class="hidden md:hidden px-4 pt-2 pb-4 space-y-1.5 border-t border-white/40 bg-white/90 backdrop-blur-xl">
+      <a href="index.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Dashboard Hero</a>
+      <a href="projects.html" class="block px-3 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-[#626CDA]/10" aria-current="page">Eksplorasi Proyek</a>
+      <a href="post-project.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Pasang Lowongan Mitra</a>
+      <a href="auth.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-[#C95D36] hover:bg-slate-100">Ganti Akun / Keluar</a>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- MAIN CONTENT CONTAINER                    -->
+  <!-- ========================================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    
+    <!-- Title & Deskripsi -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAFFF5] border border-emerald-300 text-emerald-800 text-xs font-bold mb-2">
+          <span>Semantic Match Explorer</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 font-display tracking-tight">
+          Eksplorasi Lowongan Riset & Proyek Industri
+        </h1>
+        <p class="text-sm text-slate-600 mt-1 max-w-2xl">
+          Gunakan filter multi-kategori dan skor cosine similarity untuk meninjau kualifikasi teknismu terhadap kebutuhan mitra.
+        </p>
+      </div>
+
+      <!-- Action Button: Load API Mock Asinkron -->
+      <div class="flex items-center gap-2">
+        <button 
+          type="button" 
+          id="btn-load-api" 
+          class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-[#626CDA] hover:bg-[#5059be] shadow-md shadow-[#626CDA]/25 transition-all flex items-center gap-2 cursor-pointer ripple-btn">
+          <svg id="load-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span id="load-btn-text">Load API Mock</span>
+        </button>
+
+        <!-- Test Error Trigger -->
+        <button 
+          type="button" 
+          id="btn-test-error" 
+          class="px-3 py-2.5 rounded-xl font-semibold text-xs text-[#C95D36] bg-[#FFF2EE] hover:bg-[#ffe5dd] border border-[#C95D36]/30 transition-all cursor-pointer" 
+          title="Uji coba penanganan error state asinkron">
+          Simulasi Error
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Status Banner (WAI-ARIA aria-live) -->
+    <div id="status-live-container" class="hidden rounded-2xl p-4 glass-card border border-[#626CDA]/30 flex items-center gap-3 animate-pulse" aria-live="polite" role="status">
+      <div class="w-5 h-5 border-2 border-[#626CDA] border-t-transparent rounded-full animate-spin shrink-0"></div>
+      <p id="status-live-text" class="text-xs sm:text-sm font-semibold text-[#626CDA]">
+        Menganalisis kemiripan semantik AI & memuat rekomendasi proyek...
+      </p>
+    </div>
+
+    <!-- Error State Alert Container (WAI-ARIA role="alert") -->
+    <div id="error-container" class="hidden rounded-2xl p-5 bg-[#FFF2EE] border border-[#C95D36]/40 flex items-start gap-3" role="alert">
+      <div class="w-8 h-8 rounded-xl bg-white text-[#C95D36] flex items-center justify-center font-bold shrink-0 shadow-xs">
+        !
+      </div>
+      <div class="flex-1">
+        <h3 class="text-sm font-bold text-[#C95D36]">Gagal Memuat Data Proyek</h3>
+        <p id="error-message-text" class="text-xs text-slate-700 mt-0.5"></p>
+        <button type="button" id="btn-retry-fetch" class="mt-2 text-xs font-bold text-white bg-[#C95D36] px-3 py-1.5 rounded-lg hover:bg-[#b54f2a] transition-all">
+          Coba Muat Ulang
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FILTER BAR & SEARCH (GLASS PANEL)          -->
+    <!-- ========================================== -->
+    <section class="glass-card-elevated rounded-2xl p-4 sm:p-5 border border-white/80 space-y-4" aria-label="Bilah Pencarian dan Penyaringan">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+        
+        <!-- Search Input Field -->
+        <div class="md:col-span-6 relative">
+          <label for="search-input" class="sr-only">Cari judul proyek, perusahaan, atau keahlian</label>
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+          <input 
+            type="search" 
+            id="search-input" 
+            placeholder="Cari berdasarkan judul, teknologi (Python, Vue, NLP), atau mitra..." 
+            class="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium placeholder:text-slate-400">
+        </div>
+
+        <!-- Dropdown Filter Kategori -->
+        <div class="md:col-span-3">
+          <label for="category-filter" class="sr-only">Filter Kategori Keahlian</label>
+          <select id="category-filter" class="glass-input w-full px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-white/80">
+            <option value="all">Semua Kategori</option>
+            <option value="AI & Machine Learning">AI & Machine Learning</option>
+            <option value="Frontend & UI/UX">Frontend & UI/UX</option>
+            <option value="Backend & Cloud">Backend & Cloud</option>
+            <option value="Data Engineering">Data Engineering</option>
+          </select>
+        </div>
+
+        <!-- Dropdown Filter Cosine Similarity Match Tier -->
+        <div class="md:col-span-3">
+          <label for="match-tier-filter" class="sr-only">Filter Tingkat Kemiripan</label>
+          <select id="match-tier-filter" class="glass-input w-full px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/80">
+            <option value="all">Semua Skor Kemiripan</option>
+            <option value="high">High Match (≥ 85%)</option>
+            <option value="medium">Medium Match (60% - 84%)</option>
+            <option value="low">Low Match (&lt; 60%)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick Filter Chips & Hasil Counter -->
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200/60 text-xs">
+        <div class="flex items-center gap-2 flex-wrap" id="quick-tag-filters">
+          <span class="text-slate-500 font-semibold">Filter Cepat:</span>
+          <button type="button" class="quick-filter-chip px-2.5 py-1 rounded-lg bg-white/70 hover:bg-white text-slate-700 border border-white/80 transition-colors" data-tag="Python">Python</button>
+          <button type="button" class="quick-filter-chip px-2.5 py-1 rounded-lg bg-white/70 hover:bg-white text-slate-700 border border-white/80 transition-colors" data-tag="FastAPI">FastAPI</button>
+          <button type="button" class="quick-filter-chip px-2.5 py-1 rounded-lg bg-white/70 hover:bg-white text-slate-700 border border-white/80 transition-colors" data-tag="Tailwind">Tailwind</button>
+          <button type="button" class="quick-filter-chip px-2.5 py-1 rounded-lg bg-white/70 hover:bg-white text-slate-700 border border-white/80 transition-colors" data-tag="Remote">Remote</button>
+        </div>
+
+        <p id="result-count-label" class="font-bold text-slate-600">
+          Menampilkan <span id="count-number" class="text-[#626CDA]">0</span> proyek
+        </p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PROJECT CARDS GRID (RESPONSIVE)            -->
+    <!-- ========================================== -->
+    <section aria-labelledby="grid-heading">
+      <h2 id="grid-heading" class="sr-only">Daftar Lowongan Proyek Terfilter</h2>
+
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite">
+        <!-- Kartu proyek disuntikkan secara dinamis oleh JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: SKILL OVERLAY DRILL-DOWN (WAI-ARIA) -->
+  <!-- ========================================== -->
+  <div 
+    id="drillDownModal" 
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden" 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="modal-title" 
+    aria-hidden="true">
+    
+    <!-- Modal Backdrop -->
+    <div class="modal-backdrop absolute inset-0"></div>
+
+    <!-- Modal Content Card -->
+    <div class="modal-content-anim relative w-full max-w-xl glass-card-elevated rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/80 overflow-y-auto max-h-[90vh]">
+      <button 
+        type="button" 
+        data-modal-close 
+        class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 bg-white/50 hover:bg-white/90 transition-all cursor-pointer" 
+        aria-label="Tutup jendela rincian">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Dynamic Content Target -->
+      <div id="drill-down-content">
+        <!-- Disuntikkan via populateDrillDownModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass-nav border-t border-white/60 py-6 mt-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>© 2026 ProjectMatch AI • Platform Link-and-Match Mahasiswa & Proyek Riset Industri</p>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="hover:text-[#626CDA]">Dashboard</a>
+        <a href="projects.html" class="hover:text-[#626CDA]">Eksplorasi</a>
+        <a href="post-project.html" class="hover:text-[#626CDA]">Mitra</a>
+        <a href="auth.html" class="hover:text-[#626CDA]">Autentikasi</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Modular ES6 -->
+  <script type="module">
+    import { fetchProjects, fetchProjectById } from './js/api.js';
+    import { renderProjectCardHtml, openModal, populateDrillDownModal, showToast } from './js/app.js';
+    import { defaultStudentStats } from './js/chart-config.js';
+
+    // State
+    let currentFilters = {
+      search: '',
+      category: 'all',
+      matchTier: 'all',
+      simulateError: false
+    };
+
+    const grid = document.getElementById('projects-grid');
+    const statusBanner = document.getElementById('status-live-container');
+    const errorContainer = document.getElementById('error-container');
+    const errorMsgText = document.getElementById('error-message-text');
+    const countNumber = document.getElementById('count-number');
+    const btnLoadApi = document.getElementById('btn-load-api');
+    const btnTestError = document.getElementById('btn-test-error');
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    const matchTierFilter = document.getElementById('match-tier-filter');
+
+    // Skeleton Generator
+    function renderSkeletons(count = 6) {
+      let skeletonsHtml = '';
+      for (let i = 0; i < count; i++) {
+        skeletonsHtml += `
+          <div class="glass-card p-6 rounded-2xl space-y-3">
+            <div class="flex justify-between items-center">
+              <div class="h-4 w-24 skeleton-box"></div>
+              <div class="h-6 w-20 skeleton-box"></div>
+            </div>
+            <div class="h-6 w-3/4 skeleton-box"></div>
+            <div class="h-4 w-1/2 skeleton-box"></div>
+            <div class="h-16 w-full skeleton-box"></div>
+            <div class="flex gap-2 pt-2">
+              <div class="h-6 w-16 skeleton-box"></div>
+              <div class="h-6 w-16 skeleton-box"></div>
+            </div>
+          </div>
+        `;
+      }
+      grid.innerHTML = skeletonsHtml;
+    }
+
+    // Load Projects Function (Asinkron & Penanganan Status)
+    async function loadData() {
+      // Sembunyikan error sebelumnya
+      errorContainer.classList.add('hidden');
+      statusBanner.classList.remove('hidden');
+      renderSkeletons(6);
+
+      try {
+        const projects = await fetchProjects(currentFilters);
+        statusBanner.classList.add('hidden');
+
+        countNumber.textContent = projects.length;
+
+        if (projects.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full text-center py-12 glass-card rounded-3xl p-8 space-y-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-100 text-[#FAA55A] flex items-center justify-center mx-auto text-xl font-bold">
+                🔍
+              </div>
+              <h3 class="text-base font-bold text-slate-800">Tidak ada proyek yang sesuai</h3>
+              <p class="text-xs text-slate-500 max-w-sm mx-auto">
+                Coba sesuaikan kata kunci pencarian atau ubah filter tingkat skor kemiripan AI.
+              </p>
+              <button type="button" id="btn-reset-filters" class="text-xs font-bold text-[#626CDA] hover:underline pt-2">
+                Reset Semua Filter
+              </button>
+            </div>
+          `;
+
+          const resetBtn = document.getElementById('btn-reset-filters');
+          if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+              searchInput.value = '';
+              categoryFilter.value = 'all';
+              matchTierFilter.value = 'all';
+              currentFilters = { search: '', category: 'all', matchTier: 'all', simulateError: false };
+              loadData();
+            });
+          }
+          return;
+        }
+
+        // Render hasil proyek
+        grid.innerHTML = projects.map(p => renderProjectCardHtml(p)).join('');
+
+        // Attach event listener ke tombol Drill-Down modal
+        grid.querySelectorAll('.view-detail-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.getAttribute('data-project-id');
+            try {
+              const project = await fetchProjectById(id);
+              populateDrillDownModal(project, defaultStudentStats.studentValues);
+              openModal('drillDownModal');
+            } catch (err) {
+              showToast(err.message, 'error');
+            }
+          });
+        });
+
+      } catch (err) {
+        statusBanner.classList.add('hidden');
+        grid.innerHTML = '';
+        errorMsgText.textContent = err.message || 'Terjadi kesalahan sistem inferensi semantik.';
+        errorContainer.classList.remove('hidden');
+        showToast('Gagal memuat dataset: ' + err.message, 'error');
+      }
+    }
+
+    // Event Listeners
+    btnLoadApi.addEventListener('click', () => {
+      currentFilters.simulateError = false;
+      showToast('Memulai sinkronisasi Vector Database kemiripan AI...', 'info', 2000);
+      loadData();
+    });
+
+    btnTestError.addEventListener('click', () => {
+      currentFilters.simulateError = true;
+      loadData();
+    });
+
+    document.getElementById('btn-retry-fetch').addEventListener('click', () => {
+      currentFilters.simulateError = false;
+      loadData();
+    });
+
+    // Debounce search input
+    let searchDebounceTimer;
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => {
+        currentFilters.search = e.target.value;
+        loadData();
+      }, 300);
+    });
+
+    categoryFilter.addEventListener('change', (e) => {
+      currentFilters.category = e.target.value;
+      loadData();
+    });
+
+    matchTierFilter.addEventListener('change', (e) => {
+      currentFilters.matchTier = e.target.value;
+      loadData();
+    });
+
+    // Quick filter tags
+    document.querySelectorAll('.quick-filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const tag = chip.getAttribute('data-tag');
+        searchInput.value = tag;
+        currentFilters.search = tag;
+        loadData();
+      });
+    });
+
+    // Mobile nav toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileMenuBtn && mobileNav) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = !mobileNav.classList.contains('hidden');
+        mobileNav.classList.toggle('hidden', isOpen);
+        mobileMenuBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+      });
+    }
+
+    // Initial Load
+    loadData();
+  </script>
+</body>
+</html>

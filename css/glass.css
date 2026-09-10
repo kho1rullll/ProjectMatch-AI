@@ -1,0 +1,286 @@
+/* ==========================================================================
+   ProjectMatch AI - Glassmorphism Design System & Animation Tokens
+   Color Tokens:
+     - Honeydew:       #EAFFF5 (Canvas background, soft glow, card highlights)
+     - Lime Cream:     #FBFF96 (Qualification badge, secondary stats, Medium Match)
+     - Sandy Brown:    #FAA55A (Warm accents, focus indicators, special badges)
+     - Spicy Paprika:  #C95D36 (Urgency, destructive actions, Low Match < 60%)
+     - Royal Blue:     #626CDA (Primary brand, CTA buttons, active border, chart line)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-honeydew: #EAFFF5;
+  --color-lime-cream: #FBFF96;
+  --color-sandy-brown: #FAA55A;
+  --color-spicy-paprika: #C95D36;
+  --color-royal-blue: #626CDA;
+
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-honeydew);
+  color: #1e293b;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display);
+}
+
+/* ==========================================================================
+   Dynamic Mesh Gradient Canvas Background
+   ========================================================================== */
+.mesh-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #f3fcf7;
+  background-image: 
+    radial-gradient(at 10% 15%, rgba(98, 108, 218, 0.28) 0px, transparent 55%),
+    radial-gradient(at 90% 10%, rgba(250, 165, 90, 0.22) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(234, 255, 245, 0.8) 0px, transparent 65%),
+    radial-gradient(at 15% 85%, rgba(251, 255, 150, 0.35) 0px, transparent 50%),
+    radial-gradient(at 85% 85%, rgba(98, 108, 218, 0.2) 0px, transparent 55%);
+  filter: blur(40px);
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+/* Optional animated ambient light orbs */
+.ambient-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.45;
+  animation: floatOrb 18s ease-in-out infinite alternate;
+}
+
+.orb-blue {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(98,108,218,0.5) 0%, transparent 70%);
+  top: -100px;
+  left: 20%;
+}
+
+.orb-sand {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(250,165,90,0.45) 0%, transparent 70%);
+  bottom: 5%;
+  right: 10%;
+  animation-delay: -7s;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.08); }
+  100% { transform: translate(-30px, 40px) scale(0.95); }
+}
+
+/* ==========================================================================
+   Glassmorphism Containers & Cards
+   ========================================================================== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 
+    0 10px 30px -5px rgba(98, 108, 218, 0.08),
+    0 4px 12px -2px rgba(0, 0, 0, 0.03),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.glass-card-elevated {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    0 20px 40px -10px rgba(98, 108, 218, 0.12),
+    0 8px 16px -4px rgba(0, 0, 0, 0.04),
+    inset 0 2px 2px 0 rgba(255, 255, 255, 0.95);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(98, 108, 218, 0.35);
+  box-shadow: 
+    0 22px 45px -10px rgba(98, 108, 218, 0.16),
+    0 10px 20px -5px rgba(250, 165, 90, 0.1),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 1);
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 20px -2px rgba(98, 108, 218, 0.06);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1.5px solid rgba(98, 108, 218, 0.18);
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+  color: #0f172a;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--color-royal-blue);
+  box-shadow: 0 0 0 4px rgba(98, 108, 218, 0.18);
+  outline: none;
+}
+
+.glass-input.input-error {
+  border-color: var(--color-spicy-paprika);
+  box-shadow: 0 0 0 4px rgba(201, 93, 54, 0.15);
+}
+
+/* ==========================================================================
+   Ripple Click Effect
+   ========================================================================== */
+.ripple-btn {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transform: scale(0);
+  animation: rippleAnimation 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes rippleAnimation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Skeleton Pulse Loader
+   ========================================================================== */
+.skeleton-box {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ==========================================================================
+   Floating Toast Notifications
+   ========================================================================== */
+#toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.toast-item {
+  pointer-events: auto;
+  min-width: 320px;
+  max-width: 420px;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.toast-item.toast-show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast-item.toast-hide {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+/* ==========================================================================
+   Modal Backdrop & Transitions
+   ========================================================================== */
+.modal-backdrop {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: opacity 0.3s ease;
+}
+
+.modal-content-anim {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transform: scale(0.95) translateY(10px);
+  opacity: 0;
+}
+
+.modal-open .modal-content-anim {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Custom Utility Accents
+   ========================================================================== */
+.bg-honeydew { background-color: var(--color-honeydew); }
+.bg-lime-cream { background-color: var(--color-lime-cream); }
+.bg-sandy-brown { background-color: var(--color-sandy-brown); }
+.bg-spicy-paprika { background-color: var(--color-spicy-paprika); }
+.bg-royal-blue { background-color: var(--color-royal-blue); }
+
+.text-royal-blue { color: var(--color-royal-blue); }
+.text-spicy-paprika { color: var(--color-spicy-paprika); }
+.text-sandy-brown { color: var(--color-sandy-brown); }
+
+.border-royal-blue { border-color: var(--color-royal-blue); }
+.border-sandy-brown { border-color: var(--color-sandy-brown); }
+.border-spicy-paprika { border-color: var(--color-spicy-paprika); }
+
+/* Focus styles for keyboard accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-royal-blue);
+  outline-offset: 2px;
+}

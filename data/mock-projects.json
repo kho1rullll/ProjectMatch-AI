@@ -1,0 +1,134 @@
+[
+  {
+    "id": "proj-001",
+    "title": "Pengembangan Engine NLP Berbasis Transformer untuk Riset Medis",
+    "company": "BioInformatika Nusantara & RS Cipto",
+    "category": "AI & Machine Learning",
+    "matchScore": 94,
+    "similarityMetric": 0.942,
+    "workType": "Hybrid (Jakarta Pusat)",
+    "duration": "4 Bulan",
+    "stipend": "Rp 4.500.000 / bln",
+    "description": "Membangun pipeline fine-tuning model LLM lokal untuk ekstraksi entitas klinis (NER) pada rekam medis elektronik berbahasa Indonesia. Mahasiswa akan bekerja langsung dengan tim data scientist dan spesialis klinis.",
+    "skillsRequired": ["Python", "PyTorch", "HuggingFace", "FastAPI", "Docker"],
+    "requirementsBreakdown": {
+      "frontend": 45,
+      "backend": 88,
+      "uiux": 35,
+      "aiml": 98,
+      "architecture": 82
+    },
+    "verified": true,
+    "postedAt": "2 hari yang lalu"
+  },
+  {
+    "id": "proj-002",
+    "title": "Redesain Sistem Dashboard Telemetri IoT & Smart Campus",
+    "company": "Pusat Riset Smart City ITB",
+    "category": "Frontend & UI/UX",
+    "matchScore": 88,
+    "similarityMetric": 0.885,
+    "workType": "Remote",
+    "duration": "3 Bulan",
+    "stipend": "Rp 3.800.000 / bln",
+    "description": "Mengembangkan antarmuka monitoring sensor energi dan kualitas udara berbasis WebSocket real-time dengan visualisasi canvas interaktif serta standar aksesibilitas WCAG 2.1 AA.",
+    "skillsRequired": ["HTML5/CSS3", "JavaScript ES6+", "Tailwind CSS", "Chart.js", "Figma", "WebSocket"],
+    "requirementsBreakdown": {
+      "frontend": 95,
+      "backend": 60,
+      "uiux": 92,
+      "aiml": 40,
+      "architecture": 70
+    },
+    "verified": true,
+    "postedAt": "1 hari yang lalu"
+  },
+  {
+    "id": "proj-003",
+    "title": "Microservices Payment Gateway & High-Throughput Ledger",
+    "company": "Fintech DanaNusantara Inc.",
+    "category": "Backend & Cloud",
+    "matchScore": 76,
+    "similarityMetric": 0.764,
+    "workType": "Hybrid (Bandung)",
+    "duration": "6 Bulan",
+    "stipend": "Rp 5.200.000 / bln",
+    "description": "Optimasi arsitektur perutean transaksi finansial dengan idempotency key, message broker Kafka, serta database transaction locking berskala ribuan QPS.",
+    "skillsRequired": ["Go / Golang", "PostgreSQL", "Kafka", "Redis", "gRPC", "Kubernetes"],
+    "requirementsBreakdown": {
+      "frontend": 30,
+      "backend": 96,
+      "uiux": 20,
+      "aiml": 45,
+      "architecture": 94
+    },
+    "verified": true,
+    "postedAt": "3 hari yang lalu"
+  },
+  {
+    "id": "proj-004",
+    "title": "Computer Vision: Deteksi Anomali Defek Manufaktur Otomotif",
+    "company": "Astra Digital Innovation Lab",
+    "category": "AI & Machine Learning",
+    "matchScore": 82,
+    "similarityMetric": 0.821,
+    "workType": "On-Site (Karawang)",
+    "duration": "5 Bulan",
+    "stipend": "Rp 4.800.000 / bln",
+    "description": "Implementasi algoritma YOLOv8 dan segmentation untuk deteksi goresan mikro pada panel bodi mobil perakitan dengan kamera industri high-speed 60fps.",
+    "skillsRequired": ["Python", "OpenCV", "YOLO", "Edge AI (Nvidia Jetson)", "TensorRT"],
+    "requirementsBreakdown": {
+      "frontend": 25,
+      "backend": 75,
+      "uiux": 30,
+      "aiml": 95,
+      "architecture": 80
+    },
+    "verified": true,
+    "postedAt": "5 hari yang lalu"
+  },
+  {
+    "id": "proj-005",
+    "title": "Aplikasi Web E-Commerce Produk UMKM Ramah Disabilitas",
+    "company": "Yayasan Akses Nusantara",
+    "category": "Frontend & UI/UX",
+    "matchScore": 64,
+    "similarityMetric": 0.643,
+    "workType": "Remote",
+    "duration": "3 Bulan",
+    "stipend": "Rp 3.500.000 / bln",
+    "description": "Pembangunan portal belanja UMKM nasional dengan fokus integrasi screen reader keyboard-only navigation dan contrast ratio tinggi.",
+    "skillsRequired": ["Vue.js / Vanilla JS", "WAI-ARIA", "Semantic HTML", "CSS Grid", "Jest"],
+    "requirementsBreakdown": {
+      "frontend": 85,
+      "backend": 50,
+      "uiux": 88,
+      "aiml": 20,
+      "architecture": 55
+    },
+    "verified": false,
+    "postedAt": "1 minggu yang lalu"
+  },
+  {
+    "id": "proj-006",
+    "title": "Infrastruktur Big Data Pipeline & Sentiment Analysis Twitter",
+    "company": "Media Analytica Solusindo",
+    "category": "Data Engineering",
+    "matchScore": 54,
+    "similarityMetric": 0.542,
+    "workType": "Remote",
+    "duration": "4 Bulan",
+    "stipend": "Rp 3.200.000 / bln",
+    "description": "Pengumpulan data tweet streaming berskala jutaan per hari, proses ETL menggunakan Apache Spark, dan indexing ke Elasticsearch untuk dasbor analitik pemilu.",
+    "skillsRequired": ["Apache Spark", "Python", "Elasticsearch", "Airflow", "SQL"],
+    "requirementsBreakdown": {
+      "frontend": 20,
+      "backend": 70,
+      "uiux": 15,
+      "aiml": 65,
+      "architecture": 88
+    },
+    "verified": false,
+    "postedAt": "1 minggu yang lalu"
+  }
+]

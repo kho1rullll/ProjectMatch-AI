@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buat Lowongan Proyek Industri - ProjectMatch AI</title>
+  <meta name="description" content="Formulir kemitraan industri dan laboratorium riset untuk mempublikasikan proyek link-and-match mahasiswa dengan pemetaan keahlian otomatis.">
+
+  <!-- Tailwind CSS v4 Browser CDN -->
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  
+  <!-- Custom Glassmorphism & Animations -->
+  <link rel="stylesheet" href="css/glass.css">
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 selection:bg-[#626CDA] selection:text-white">
+
+  <!-- Dynamic Mesh Gradient Background -->
+  <div class="mesh-bg" aria-hidden="true"></div>
+  <div class="ambient-orb orb-blue" aria-hidden="true"></div>
+  <div class="ambient-orb orb-sand" aria-hidden="true"></div>
+
+  <!-- Header Semantik -->
+  <header class="sticky top-0 z-40 glass-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 group" aria-label="Beranda ProjectMatch AI">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#626CDA] via-[#FAA55A] to-[#FBFF96] flex items-center justify-center text-white font-black text-xl shadow-md shadow-[#626CDA]/25 group-hover:scale-105 transition-transform">
+          P
+        </div>
+        <div>
+          <span class="font-display font-black text-lg sm:text-xl text-slate-900 tracking-tight flex items-center gap-1">
+            ProjectMatch <span class="text-[#626CDA]">AI</span>
+          </span>
+          <span class="text-[10px] uppercase font-bold tracking-widest text-[#FAA55A] block -mt-1">Link & Match System</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1.5" aria-label="Navigasi Utama">
+        <a href="index.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/40 transition-colors">
+          Dashboard Hero
+        </a>
+        <a href="projects.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/40 transition-colors">
+          Eksplorasi Proyek
+        </a>
+        <a href="post-project.html" class="px-3.5 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-white/70 shadow-xs border border-white/80" aria-current="page">
+          Pasang Lowongan Mitra
+        </a>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 pl-2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FAA55A] to-[#626CDA] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+            MI
+          </div>
+          <div class="hidden sm:block text-left">
+            <span class="block text-xs font-bold text-slate-900 leading-none">Mitra Inovasi ID</span>
+            <span class="inline-flex items-center text-[10px] font-semibold text-[#FAA55A] mt-0.5">
+              Verified Partner
+            </span>
+          </div>
+        </div>
+
+        <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-xl glass-card text-slate-700" aria-expanded="false" aria-controls="mobile-nav" aria-label="Buka menu navigasi">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div id="mobile-nav" class="hidden md:hidden px-4 pt-2 pb-4 space-y-1.5 border-t border-white/40 bg-white/90 backdrop-blur-xl">
+      <a href="index.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Dashboard Hero</a>
+      <a href="projects.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Eksplorasi Proyek</a>
+      <a href="post-project.html" class="block px-3 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-[#626CDA]/10" aria-current="page">Pasang Lowongan Mitra</a>
+      <a href="auth.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-[#C95D36] hover:bg-slate-100">Ganti Akun / Keluar</a>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- MAIN CONTENT: POST PROJECT FORM            -->
+  <!-- ========================================== -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    
+    <!-- Title Banner -->
+    <div>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAFFF5] border border-emerald-300 text-emerald-800 text-xs font-bold mb-2">
+        <span>Portal Mitra Industri & Riset Kampus</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 font-display tracking-tight">
+        Publikasikan Lowongan Proyek & Riset
+      </h1>
+      <p class="text-sm text-slate-600 mt-1">
+        Deskripsikan kebutuhan teknis Anda. Algoritma inferensi semantik kami akan otomatis memetakan vektor kriteria ke mahasiswa dengan kompetensi yang paling cocok.
+      </p>
+    </div>
+
+    <!-- Glassmorphism Form Card -->
+    <div class="glass-card-elevated rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/80 relative">
+      
+      <form id="form-post-project" novalidate class="space-y-6">
+        
+        <!-- Field 1: Judul Proyek -->
+        <div class="space-y-1.5">
+          <label for="proj-title" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+            Judul Proyek / Topik Riset <span class="text-[#C95D36]">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="proj-title" 
+            name="title" 
+            required 
+            aria-required="true"
+            placeholder="Contoh: Implementasi Pipeline LLM Retrieval-Augmented Generation (RAG)" 
+            class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400">
+          <p id="proj-title-error" class="hidden text-xs text-[#C95D36] font-semibold" role="alert"></p>
+        </div>
+
+        <!-- Field 2 & 3: Nama Mitra & Kategori (Grid 2 Kolom) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label for="proj-company" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+              Nama Perusahaan / Lab Riset <span class="text-[#C95D36]">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="proj-company" 
+              name="company" 
+              required 
+              aria-required="true"
+              value="PT Solusi Digital Terapan" 
+              placeholder="Contoh: Lab AI ITB / PT Telkom" 
+              class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400">
+            <p id="proj-company-error" class="hidden text-xs text-[#C95D36] font-semibold" role="alert"></p>
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="proj-category" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+              Kategori Bidang Keahlian <span class="text-[#C95D36]">*</span>
+            </label>
+            <select 
+              id="proj-category" 
+              name="category" 
+              required 
+              aria-required="true"
+              class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium bg-white/80">
+              <option value="AI & Machine Learning">AI & Machine Learning</option>
+              <option value="Frontend & UI/UX">Frontend & UI/UX</option>
+              <option value="Backend & Cloud">Backend & Cloud</option>
+              <option value="Data Engineering">Data Engineering</option>
+              <option value="Cyber Security">Cyber Security</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Field 4, 5, 6: Bentuk Kerja, Durasi, Uang Saku (Grid 3 Kolom) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="space-y-1.5">
+            <label for="proj-worktype" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+              Bentuk Kerja
+            </label>
+            <select id="proj-worktype" name="workType" class="glass-input w-full px-3 py-3 rounded-xl text-xs sm:text-sm font-medium bg-white/80">
+              <option value="Hybrid (Jakarta/Bandung)">Hybrid</option>
+              <option value="Remote Penuh">Remote Penuh</option>
+              <option value="On-Site Laboratorium">On-Site Laboratorium</option>
+            </select>
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="proj-duration" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+              Durasi Pelaksanaan
+            </label>
+            <input 
+              type="text" 
+              id="proj-duration" 
+              name="duration" 
+              placeholder="Contoh: 3-6 Bulan" 
+              value="4 Bulan"
+              class="glass-input w-full px-3 py-3 rounded-xl text-xs sm:text-sm font-medium placeholder:text-slate-400">
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="proj-stipend" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+              Uang Saku / Benefit
+            </label>
+            <input 
+              type="text" 
+              id="proj-stipend" 
+              name="stipend" 
+              placeholder="Contoh: Rp 4.000.000 / bln" 
+              value="Rp 4.200.000 / bln"
+              class="glass-input w-full px-3 py-3 rounded-xl text-xs sm:text-sm font-medium placeholder:text-slate-400">
+          </div>
+        </div>
+
+        <!-- Field 7: Tautan Video Briefing Proyek -->
+        <div class="space-y-1.5">
+          <label for="proj-videourl" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+            Tautan Video Briefing / Dokumen TOR (Opsional)
+          </label>
+          <div class="relative">
+            <input 
+              type="url" 
+              id="proj-videourl" 
+              name="videoUrl" 
+              placeholder="https://youtube.com/watch?v=... atau https://loom.com/..." 
+              class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400">
+          </div>
+          <p class="text-[11px] text-slate-500">Video penjelasan singkat mengenai tantangan teknis proyek dapat meningkatkan antusiasme mahasiswa berbakat.</p>
+        </div>
+
+        <!-- Field 8: Deskripsi Lengkap Kebutuhan -->
+        <div class="space-y-1.5">
+          <label for="proj-description" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+            Deskripsi Kebutuhan & Deliverables <span class="text-[#C95D36]">*</span>
+          </label>
+          <textarea 
+            id="proj-description" 
+            name="description" 
+            rows="4" 
+            required 
+            aria-required="true"
+            placeholder="Jelaskan ruang lingkup proyek, target hasil akhir (deliverables), serta kriteria mahasiswa yang dicari..." 
+            class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400"></textarea>
+          <p id="proj-desc-error" class="hidden text-xs text-[#C95D36] font-semibold" role="alert"></p>
+        </div>
+
+        <!-- Field 9: Interactive Skill Tags Builder -->
+        <div class="space-y-2 pt-2 border-t border-slate-200/80">
+          <div class="flex items-baseline justify-between">
+            <label for="skill-input" class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+              Kriteria Keahlian Teknis (Skill Tags) <span class="text-[#C95D36]">*</span>
+            </label>
+            <span class="text-[11px] text-slate-500 font-medium">Tekan <kbd class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-mono text-[10px]">Enter</kbd> atau <kbd class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-mono text-[10px]">,</kbd> untuk menambahkan</span>
+          </div>
+
+          <!-- Tags Display Container -->
+          <div id="tags-container" class="flex flex-wrap gap-2 min-h-10 p-2.5 rounded-xl bg-white/40 border border-white/80" aria-label="Daftar keahlian terpilih">
+            <!-- Dynamic pills inserted by initSkillTagBuilder() -->
+          </div>
+
+          <!-- Tag Input Box -->
+          <input 
+            type="text" 
+            id="skill-input" 
+            placeholder="Ketik keahlian (contoh: PyTorch, Docker, React, Tailwind) lalu tekan Enter..." 
+            class="glass-input w-full px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium placeholder:text-slate-400">
+          
+          <input type="hidden" id="skills-hidden" name="skillsHidden" value="[]">
+          <p id="proj-skills-error" class="hidden text-xs text-[#C95D36] font-semibold" role="alert"></p>
+        </div>
+
+        <!-- Submit & Reset Action Buttons -->
+        <div class="pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-end gap-3">
+          <a href="projects.html" class="w-full sm:w-auto px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/50 text-center transition-all">
+            Batal
+          </a>
+          <button 
+            type="submit" 
+            id="btn-submit-post" 
+            class="w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-slate-900 bg-[#FAA55A] hover:bg-[#eb9447] shadow-lg shadow-[#FAA55A]/30 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 ripple-btn">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Terbitkan Lowongan Proyek</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass-nav border-t border-white/60 py-6 mt-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>© 2026 ProjectMatch AI • Platform Link-and-Match Mahasiswa & Proyek Riset Industri</p>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="hover:text-[#626CDA]">Dashboard</a>
+        <a href="projects.html" class="hover:text-[#626CDA]">Eksplorasi</a>
+        <a href="post-project.html" class="hover:text-[#626CDA]">Mitra</a>
+        <a href="auth.html" class="hover:text-[#626CDA]">Autentikasi</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Modular ES6 -->
+  <script type="module">
+    import { initSkillTagBuilder, showToast } from './js/app.js';
+    import { createProject } from './js/api.js';
+
+    // Inisialisasi Skill Tag Builder dengan skill awal
+    const tagBuilder = initSkillTagBuilder({
+      inputSelector: '#skill-input',
+      containerSelector: '#tags-container',
+      hiddenInputSelector: '#skills-hidden',
+      initialSkills: ['Python', 'Docker', 'FastAPI', 'PyTorch']
+    });
+
+    const form = document.getElementById('form-post-project');
+    const titleInput = document.getElementById('proj-title');
+    const titleError = document.getElementById('proj-title-error');
+    const companyInput = document.getElementById('proj-company');
+    const companyError = document.getElementById('proj-company-error');
+    const descInput = document.getElementById('proj-description');
+    const descError = document.getElementById('proj-desc-error');
+    const skillsError = document.getElementById('proj-skills-error');
+
+    function setError(inputEl, errorEl, message) {
+      if (message) {
+        if (inputEl) {
+          inputEl.classList.add('input-error');
+          inputEl.setAttribute('aria-invalid', 'true');
+        }
+        errorEl.textContent = message;
+        errorEl.classList.remove('hidden');
+      } else {
+        if (inputEl) {
+          inputEl.classList.remove('input-error');
+          inputEl.removeAttribute('aria-invalid');
+        }
+        errorEl.textContent = '';
+        errorEl.classList.add('hidden');
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let isValid = true;
+
+      // Validate Title
+      if (!titleInput.value.trim()) {
+        setError(titleInput, titleError, 'Judul proyek wajib diisi.');
+        isValid = false;
+      } else if (titleInput.value.trim().length < 8) {
+        setError(titleInput, titleError, 'Judul proyek minimal 8 karakter.');
+        isValid = false;
+      } else {
+        setError(titleInput, titleError, '');
+      }
+
+      // Validate Company
+      if (!companyInput.value.trim()) {
+        setError(companyInput, companyError, 'Nama perusahaan atau institusi wajib diisi.');
+        isValid = false;
+      } else {
+        setError(companyInput, companyError, '');
+      }
+
+      // Validate Description
+      if (!descInput.value.trim()) {
+        setError(descInput, descError, 'Deskripsi kebutuhan wajib diisi.');
+        isValid = false;
+      } else if (descInput.value.trim().length < 20) {
+        setError(descInput, descError, 'Deskripsi minimal 20 karakter agar AI dapat menganalisis kemiripan.');
+        isValid = false;
+      } else {
+        setError(descInput, descError, '');
+      }
+
+      // Validate Skills
+      const currentTags = tagBuilder ? tagBuilder.getTags() : [];
+      if (currentTags.length === 0) {
+        setError(null, skillsError, 'Minimal masukkan 1 keahlian teknis.');
+        isValid = false;
+      } else {
+        setError(null, skillsError, '');
+      }
+
+      if (isValid) {
+        const formData = {
+          title: titleInput.value.trim(),
+          company: companyInput.value.trim(),
+          category: document.getElementById('proj-category').value,
+          workType: document.getElementById('proj-worktype').value,
+          duration: document.getElementById('proj-duration').value.trim() || '3-6 Bulan',
+          stipend: document.getElementById('proj-stipend').value.trim() || 'Tersedia Uang Saku',
+          videoUrl: document.getElementById('proj-videourl').value.trim(),
+          description: descInput.value.trim(),
+          skillsRequired: currentTags
+        };
+
+        const submitBtn = document.getElementById('btn-submit-post');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <div class="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
+          <span>Menganalisis Vektor Semantik...</span>
+        `;
+
+        try {
+          const created = await createProject(formData);
+          showToast(`Lowongan "${created.title}" berhasil diterbitkan dan diindeks oleh AI!`, 'success', 3500);
+
+          setTimeout(() => {
+            window.location.href = 'projects.html';
+          }, 1500);
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>Terbitkan Lowongan Proyek</span>`;
+          showToast('Gagal mempublikasikan: ' + err.message, 'error');
+        }
+      }
+    });
+
+    // Mobile nav toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileMenuBtn && mobileNav) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = !mobileNav.classList.contains('hidden');
+        mobileNav.classList.toggle('hidden', isOpen);
+        mobileMenuBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+      });
+    }
+  </script>
+</body>
+</html>

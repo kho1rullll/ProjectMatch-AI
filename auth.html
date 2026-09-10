@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autentikasi Terpadu - ProjectMatch AI</title>
+  <meta name="description" content="Portal Masuk dan Registrasi Pengguna Sistem Link-and-Match Mahasiswa dan Proyek Industri Berbasis AI.">
+
+  <!-- Tailwind CSS v4 Browser CDN -->
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  
+  <!-- Custom Glassmorphism & Animations -->
+  <link rel="stylesheet" href="css/glass.css">
+</head>
+<body class="flex flex-col min-h-screen justify-between items-center p-4 sm:p-6 selection:bg-[#626CDA] selection:text-white">
+
+  <!-- Ambient Dynamic Mesh Gradient Canvas Background -->
+  <div class="mesh-bg" aria-hidden="true"></div>
+  <div class="ambient-orb orb-blue" aria-hidden="true"></div>
+  <div class="ambient-orb orb-sand" aria-hidden="true"></div>
+
+  <!-- Header Mini / Branding Logo -->
+  <header class="w-full max-w-5xl py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2.5 text-decoration-none group" aria-label="Kembali ke Dashboard ProjectMatch AI">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#626CDA] to-[#FAA55A] flex items-center justify-center text-white font-black text-xl shadow-md shadow-[#626CDA]/30 group-hover:scale-105 transition-transform">
+        P
+      </div>
+      <div>
+        <span class="font-display font-black text-xl text-slate-900 tracking-tight flex items-center gap-1">
+          ProjectMatch <span class="text-[#626CDA]">AI</span>
+        </span>
+        <span class="text-[10px] uppercase font-bold tracking-widest text-[#FAA55A] block -mt-1">Link & Match System</span>
+      </div>
+    </a>
+
+    <a href="index.html" class="glass-card px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#626CDA] hover:bg-white/80 transition-all flex items-center gap-1.5 border border-white/80">
+      <span>Jelajahi Sebagai Tamu</span>
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </header>
+
+  <!-- Main Container: Glassmorphism Authentication Card -->
+  <main class="w-full max-w-md my-6">
+    <div class="glass-card-elevated rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/80 relative overflow-hidden backdrop-blur-2xl">
+      
+      <!-- Top Glow Accent -->
+      <div class="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#FBFF96]/50 to-[#626CDA]/30 rounded-full blur-2xl pointer-events-none" aria-hidden="true"></div>
+
+      <!-- Judul & Subtitle -->
+      <div class="text-center mb-6">
+        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-display">
+          Akses Portal AI
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+          Penyelarasan profil kompetensi & proyek riset industri
+        </p>
+      </div>
+
+      <!-- Tab Switcher (Masuk vs Daftar) dengan Aksesibilitas WAI-ARIA -->
+      <div class="grid grid-cols-2 p-1 rounded-2xl bg-slate-200/50 backdrop-blur-md mb-6 border border-white/60" role="tablist" aria-label="Tipe Autentikasi">
+        <button 
+          id="tab-login" 
+          role="tab" 
+          aria-selected="true" 
+          aria-controls="panel-login" 
+          tabindex="0"
+          type="button" 
+          class="py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all duration-300 text-slate-900 bg-white shadow-sm ripple-btn">
+          Masuk Akun
+        </button>
+        <button 
+          id="tab-register" 
+          role="tab" 
+          aria-selected="false" 
+          aria-controls="panel-register" 
+          tabindex="-1"
+          type="button" 
+          class="py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all duration-300 text-slate-600 hover:text-slate-900 ripple-btn">
+          Daftar Akun Baru
+        </button>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB PANEL 1: LOGIN                        -->
+      <!-- ========================================== -->
+      <div id="panel-login" role="tabpanel" aria-labelledby="tab-login" class="transition-opacity duration-300">
+        <form id="form-login" novalidate class="space-y-4">
+          
+          <!-- Role Selector -->
+          <fieldset class="space-y-2">
+            <legend class="text-xs font-bold text-slate-700 uppercase tracking-wider">Pilih Peran Pengguna</legend>
+            <div class="grid grid-cols-3 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="loginRole" value="mahasiswa" checked class="peer sr-only">
+                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
+                  <span class="block text-xs font-bold">Mahasiswa</span>
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="loginRole" value="mitra" class="peer sr-only">
+                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
+                  <span class="block text-xs font-bold">Mitra Industri</span>
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="loginRole" value="admin" class="peer sr-only">
+                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
+                  <span class="block text-xs font-bold">Admin</span>
+                </div>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- Input Email -->
+          <div class="space-y-1">
+            <label for="login-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Alamat Surel / Email <span class="text-[#C95D36]">*</span>
+            </label>
+            <div class="relative">
+              <input 
+                type="email" 
+                id="login-email" 
+                name="email" 
+                required 
+                aria-required="true"
+                autocomplete="email"
+                placeholder="nama@institusi.ac.id" 
+                class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400">
+            </div>
+            <p id="login-email-error" class="hidden text-xs text-[#C95D36] font-semibold mt-1" role="alert"></p>
+          </div>
+
+          <!-- Input Password -->
+          <div class="space-y-1">
+            <div class="flex justify-between items-center">
+              <label for="login-password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Kata Sandi <span class="text-[#C95D36]">*</span>
+              </label>
+              <a href="#" class="text-xs font-semibold text-[#626CDA] hover:underline" tabindex="0">Lupa sandi?</a>
+            </div>
+            <div class="relative">
+              <input 
+                type="password" 
+                id="login-password" 
+                name="password" 
+                required 
+                aria-required="true"
+                autocomplete="current-password"
+                placeholder="Minimal 6 karakter" 
+                class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400">
+            </div>
+            <p id="login-password-error" class="hidden text-xs text-[#C95D36] font-semibold mt-1" role="alert"></p>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            id="btn-submit-login" 
+            class="w-full py-3.5 px-6 rounded-xl font-bold text-white bg-[#626CDA] hover:bg-[#5059be] shadow-lg shadow-[#626CDA]/30 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 ripple-btn mt-2">
+            <span>Masuk ke Dashboard</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB PANEL 2: REGISTER                    -->
+      <!-- ========================================== -->
+      <div id="panel-register" role="tabpanel" aria-labelledby="tab-register" class="hidden transition-opacity duration-300">
+        <form id="form-register" novalidate class="space-y-4">
+          
+          <!-- Role Selector -->
+          <fieldset class="space-y-2">
+            <legend class="text-xs font-bold text-slate-700 uppercase tracking-wider">Mendaftar Sebagai</legend>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="registerRole" value="mahasiswa" checked class="peer sr-only">
+                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA]">
+                  <span class="block text-xs font-bold">Mahasiswa Talenta</span>
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="registerRole" value="mitra" class="peer sr-only">
+                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA]">
+                  <span class="block text-xs font-bold">Mitra Industri / Lab</span>
+                </div>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- Input Nama Lengkap -->
+          <div class="space-y-1">
+            <label for="reg-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Nama Lengkap / Instansi <span class="text-[#C95D36]">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="reg-name" 
+              name="name" 
+              required 
+              aria-required="true"
+              placeholder="Contoh: Raden Satria / PT Inovasi" 
+              class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400">
+            <p id="reg-name-error" class="hidden text-xs text-[#C95D36] font-semibold mt-1" role="alert"></p>
+          </div>
+
+          <!-- Input Email -->
+          <div class="space-y-1">
+            <label for="reg-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Surel / Email Resmi <span class="text-[#C95D36]">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="reg-email" 
+              name="email" 
+              required 
+              aria-required="true"
+              placeholder="nama@univ.ac.id atau nama@pt.com" 
+              class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400">
+            <p id="reg-email-error" class="hidden text-xs text-[#C95D36] font-semibold mt-1" role="alert"></p>
+          </div>
+
+          <!-- Input Password -->
+          <div class="space-y-1">
+            <label for="reg-password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Buat Kata Sandi <span class="text-[#C95D36]">*</span>
+            </label>
+            <input 
+              type="password" 
+              id="reg-password" 
+              name="password" 
+              required 
+              aria-required="true"
+              placeholder="Minimal 8 karakter (kombinasi huruf & angka)" 
+              class="glass-input w-full px-4 py-3 rounded-xl text-sm font-medium placeholder:text-slate-400">
+            <p id="reg-password-error" class="hidden text-xs text-[#C95D36] font-semibold mt-1" role="alert"></p>
+          </div>
+
+          <!-- Persetujuan Ketentuan -->
+          <div class="flex items-start gap-2 pt-1">
+            <input 
+              type="checkbox" 
+              id="reg-terms" 
+              required 
+              aria-required="true"
+              class="mt-1 rounded border-slate-300 text-[#626CDA] focus:ring-[#626CDA] cursor-pointer">
+            <label for="reg-terms" class="text-xs text-slate-600 leading-snug cursor-pointer">
+              Saya menyetujui pemrosesan data portofolio oleh algoritma pencocokan semantik AI.
+            </label>
+          </div>
+          <p id="reg-terms-error" class="hidden text-xs text-[#C95D36] font-semibold" role="alert"></p>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            id="btn-submit-register" 
+            class="w-full py-3.5 px-6 rounded-xl font-bold text-slate-900 bg-[#FAA55A] hover:bg-[#eb9447] shadow-lg shadow-[#FAA55A]/30 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 ripple-btn mt-2">
+            <span>Daftar Sekarang</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Demo Shortcut Credentials -->
+      <div class="mt-6 pt-5 border-t border-slate-200/80 text-center">
+        <p class="text-[11px] text-slate-500 font-medium mb-2">Akun Uji Coba Cepat (Akademis):</p>
+        <div class="flex justify-center gap-2">
+          <button type="button" id="btn-quick-student" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-[#EAFFF5] text-emerald-800 border border-emerald-300 hover:bg-emerald-100 transition-colors">
+            Mahasiswa (Satria)
+          </button>
+          <button type="button" id="btn-quick-industry" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-[#FBFF96]/70 text-[#6b5800] border border-[#FAA55A]/40 hover:bg-[#FBFF96] transition-colors">
+            Mitra (BioInformatika)
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Info -->
+  <footer class="text-center text-xs text-slate-500 py-4">
+    <p>© 2026 ProjectMatch AI • Sistem Front-End Akademis Berbasis Standar WAI-ARIA & Glassmorphism</p>
+  </footer>
+
+  <!-- Script Modular ES6 -->
+  <script type="module">
+    import { showToast } from './js/app.js';
+
+    // Elements
+    const tabLogin = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+    const panelLogin = document.getElementById('panel-login');
+    const panelRegister = document.getElementById('panel-register');
+
+    const formLogin = document.getElementById('form-login');
+    const formRegister = document.getElementById('form-register');
+
+    // Tab Switching Logic with ARIA
+    function switchTab(activeTab) {
+      if (activeTab === 'login') {
+        tabLogin.setAttribute('aria-selected', 'true');
+        tabLogin.setAttribute('tabindex', '0');
+        tabLogin.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+        tabLogin.classList.remove('text-slate-600');
+
+        tabRegister.setAttribute('aria-selected', 'false');
+        tabRegister.setAttribute('tabindex', '-1');
+        tabRegister.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+        tabRegister.classList.add('text-slate-600');
+
+        panelLogin.classList.remove('hidden');
+        panelRegister.classList.add('hidden');
+      } else {
+        tabRegister.setAttribute('aria-selected', 'true');
+        tabRegister.setAttribute('tabindex', '0');
+        tabRegister.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+        tabRegister.classList.remove('text-slate-600');
+
+        tabLogin.setAttribute('aria-selected', 'false');
+        tabLogin.setAttribute('tabindex', '-1');
+        tabLogin.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+        tabLogin.classList.add('text-slate-600');
+
+        panelRegister.classList.remove('hidden');
+        panelLogin.classList.add('hidden');
+      }
+    }
+
+    tabLogin.addEventListener('click', () => switchTab('login'));
+    tabRegister.addEventListener('click', () => switchTab('register'));
+
+    // Keyboard Arrow navigation for tabs
+    tabLogin.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        tabRegister.focus();
+        switchTab('register');
+      }
+    });
+    tabRegister.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        tabLogin.focus();
+        switchTab('login');
+      }
+    });
+
+    // Helper: Validasi & Tampilan Error
+    function setError(inputEl, errorEl, message) {
+      if (message) {
+        inputEl.classList.add('input-error');
+        inputEl.setAttribute('aria-invalid', 'true');
+        errorEl.textContent = message;
+        errorEl.classList.remove('hidden');
+      } else {
+        inputEl.classList.remove('input-error');
+        inputEl.removeAttribute('aria-invalid');
+        errorEl.textContent = '';
+        errorEl.classList.add('hidden');
+      }
+    }
+
+    // Quick login credentials helpers
+    document.getElementById('btn-quick-student').addEventListener('click', () => {
+      switchTab('login');
+      document.querySelector('input[name="loginRole"][value="mahasiswa"]').checked = true;
+      document.getElementById('login-email').value = 'satria.informatika@kampus.ac.id';
+      document.getElementById('login-password').value = 'password123';
+      showToast('Kredensial mahasiswa berhasil diisikan.', 'info', 2000);
+    });
+
+    document.getElementById('btn-quick-industry').addEventListener('click', () => {
+      switchTab('login');
+      document.querySelector('input[name="loginRole"][value="mitra"]').checked = true;
+      document.getElementById('login-email').value = 'hr@bioinformatika.id';
+      document.getElementById('login-password').value = 'mitra2026';
+      showToast('Kredensial mitra industri berhasil diisikan.', 'info', 2000);
+    });
+
+    // Login Form Validation
+    formLogin.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let isValid = true;
+
+      const email = document.getElementById('login-email');
+      const emailError = document.getElementById('login-email-error');
+      const password = document.getElementById('login-password');
+      const passwordError = document.getElementById('login-password-error');
+      const role = document.querySelector('input[name="loginRole"]:checked').value;
+
+      // Validate Email
+      if (!email.value.trim()) {
+        setError(email, emailError, 'Email wajib diisi.');
+        isValid = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        setError(email, emailError, 'Format alamat email tidak valid.');
+        isValid = false;
+      } else {
+        setError(email, emailError, '');
+      }
+
+      // Validate Password
+      if (!password.value) {
+        setError(password, passwordError, 'Kata sandi wajib diisi.');
+        isValid = false;
+      } else if (password.value.length < 6) {
+        setError(password, passwordError, 'Kata sandi minimal 6 karakter.');
+        isValid = false;
+      } else {
+        setError(password, passwordError, '');
+      }
+
+      if (isValid) {
+        showToast(`Autentikasi berhasil! Mengalihkan sebagai ${role.toUpperCase()}...`, 'success', 2000);
+        setTimeout(() => {
+          if (role === 'mitra') {
+            window.location.href = 'post-project.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        }, 1200);
+      }
+    });
+
+    // Register Form Validation
+    formRegister.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let isValid = true;
+
+      const name = document.getElementById('reg-name');
+      const nameError = document.getElementById('reg-name-error');
+      const email = document.getElementById('reg-email');
+      const emailError = document.getElementById('reg-email-error');
+      const password = document.getElementById('reg-password');
+      const passwordError = document.getElementById('reg-password-error');
+      const terms = document.getElementById('reg-terms');
+      const termsError = document.getElementById('reg-terms-error');
+      const role = document.querySelector('input[name="registerRole"]:checked').value;
+
+      if (!name.value.trim()) {
+        setError(name, nameError, 'Nama lengkap / institusi wajib diisi.');
+        isValid = false;
+      } else {
+        setError(name, nameError, '');
+      }
+
+      if (!email.value.trim()) {
+        setError(email, emailError, 'Email resmi wajib diisi.');
+        isValid = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        setError(email, emailError, 'Format email tidak valid.');
+        isValid = false;
+      } else {
+        setError(email, emailError, '');
+      }
+
+      if (!password.value || password.value.length < 8) {
+        setError(password, passwordError, 'Kata sandi minimal 8 karakter.');
+        isValid = false;
+      } else {
+        setError(password, passwordError, '');
+      }
+
+      if (!terms.checked) {
+        termsError.textContent = 'Anda wajib menyetujui pemrosesan data portofolio.';
+        termsError.classList.remove('hidden');
+        isValid = false;
+      } else {
+        termsError.textContent = '';
+        termsError.classList.add('hidden');
+      }
+
+      if (isValid) {
+        showToast(`Pendaftaran akun ${role.toUpperCase()} berhasil! Silakan masuk.`, 'success', 2500);
+        setTimeout(() => {
+          switchTab('login');
+          document.getElementById('login-email').value = email.value;
+          document.getElementById('login-password').value = password.value;
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>
