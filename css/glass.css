@@ -8,7 +8,7 @@
      - Royal Blue:     #626CDA (Primary brand, CTA buttons, active border, chart line)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
   --color-honeydew: #EAFFF5;
@@ -23,7 +23,7 @@
 
 body {
   font-family: var(--font-body);
-  background-color: var(--color-honeydew);
+  background: linear-gradient(135deg, #EAFFF5 0%, #f4fbf7 50%, #eff6ff 100%);
   color: #1e293b;
   min-height: 100vh;
   position: relative;
@@ -35,126 +35,205 @@ h1, h2, h3, h4, h5, h6, .font-display {
 }
 
 /* ==========================================================================
-   Dynamic Mesh Gradient Canvas Background
+   DYNAMIC MESH BACKGROUND & MULTI-ORB AMBIENT GLOW
+   (Kunci Refraksi Kaca: Elemen warna-warni kontras di belakang frosted glass)
    ========================================================================== */
 .mesh-bg {
   position: fixed;
   inset: 0;
-  z-index: -1;
-  background-color: #f3fcf7;
+  z-index: -2;
+  background-color: #EAFFF5;
   background-image: 
-    radial-gradient(at 10% 15%, rgba(98, 108, 218, 0.28) 0px, transparent 55%),
-    radial-gradient(at 90% 10%, rgba(250, 165, 90, 0.22) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(234, 255, 245, 0.8) 0px, transparent 65%),
-    radial-gradient(at 15% 85%, rgba(251, 255, 150, 0.35) 0px, transparent 50%),
-    radial-gradient(at 85% 85%, rgba(98, 108, 218, 0.2) 0px, transparent 55%);
-  filter: blur(40px);
-  transform: scale(1.05);
+    radial-gradient(at 0% 0%, rgba(98, 108, 218, 0.28) 0px, transparent 55%),
+    radial-gradient(at 100% 0%, rgba(250, 165, 90, 0.25) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(234, 255, 245, 0.9) 0px, transparent 65%),
+    radial-gradient(at 0% 100%, rgba(251, 255, 150, 0.38) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(201, 93, 54, 0.22) 0px, transparent 55%);
+  filter: blur(50px);
+  transform: scale(1.1);
   pointer-events: none;
 }
 
-/* Optional animated ambient light orbs */
+/* Glowing Ambient Floating Blobs (4 Orbs Palette) */
+.ambient-blobs-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .ambient-orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(80px);
+  filter: blur(75px);
   pointer-events: none;
-  opacity: 0.45;
-  animation: floatOrb 18s ease-in-out infinite alternate;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  will-change: transform;
 }
 
-.orb-blue {
+/* Orb 1: Royal Blue Glow (Atas Kiri / Tengah) */
+.orb-royal-blue {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(98, 108, 218, 0.65) 0%, rgba(98, 108, 218, 0.15) 60%, transparent 80%);
+  top: -120px;
+  left: 10%;
+  animation: floatBlue 22s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+/* Orb 2: Sandy Brown Glow (Kanan Atas / Tengah) */
+.orb-sandy-brown {
   width: 480px;
   height: 480px;
-  background: radial-gradient(circle, rgba(98,108,218,0.5) 0%, transparent 70%);
-  top: -100px;
-  left: 20%;
+  background: radial-gradient(circle, rgba(250, 165, 90, 0.6) 0%, rgba(250, 165, 90, 0.18) 60%, transparent 80%);
+  top: 15%;
+  right: -80px;
+  animation: floatSand 26s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  animation-delay: -5s;
 }
 
-.orb-sand {
+/* Orb 3: Lime Cream Glow (Bawah Kiri) */
+.orb-lime-cream {
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, rgba(251, 255, 150, 0.75) 0%, rgba(251, 255, 150, 0.2) 60%, transparent 80%);
+  bottom: 5%;
+  left: -60px;
+  animation: floatLime 24s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  animation-delay: -10s;
+}
+
+/* Orb 4: Spicy Paprika Glow (Bawah Kanan) */
+.orb-spicy-paprika {
   width: 420px;
   height: 420px;
-  background: radial-gradient(circle, rgba(250,165,90,0.45) 0%, transparent 70%);
-  bottom: 5%;
-  right: 10%;
-  animation-delay: -7s;
+  background: radial-gradient(circle, rgba(201, 93, 54, 0.45) 0%, rgba(201, 93, 54, 0.12) 60%, transparent 80%);
+  bottom: -100px;
+  right: 15%;
+  animation: floatPaprika 28s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  animation-delay: -14s;
 }
 
-@keyframes floatOrb {
+@keyframes floatBlue {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(60px, 40px) scale(1.12) rotate(45deg); }
+  100% { transform: translate(-40px, 80px) scale(0.92) rotate(90deg); }
+}
+
+@keyframes floatSand {
   0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(40px, -30px) scale(1.08); }
-  100% { transform: translate(-30px, 40px) scale(0.95); }
+  50% { transform: translate(-70px, 60px) scale(1.15); }
+  100% { transform: translate(-30px, -40px) scale(0.9); }
+}
+
+@keyframes floatLime {
+  0% { transform: translate(0, 0) scale(0.95); }
+  50% { transform: translate(80px, -50px) scale(1.18); }
+  100% { transform: translate(40px, 30px) scale(1); }
+}
+
+@keyframes floatPaprika {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-50px, -60px) scale(1.1); }
+  100% { transform: translate(30px, -30px) scale(0.95); }
 }
 
 /* ==========================================================================
-   Glassmorphism Containers & Cards
+   ELEVATED FROSTED GLASS & NEUMORPHIC SPECULAR EDGE
+   (Sesuai Referensi Gambar: Refraksi tinggi, specular highlight & double shadow)
    ========================================================================== */
 .glass-card {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow: 
-    0 10px 30px -5px rgba(98, 108, 218, 0.08),
-    0 4px 12px -2px rgba(0, 0, 0, 0.03),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+    0 20px 40px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(98, 108, 218, 0.04),
+    inset 0 1px 1px rgba(255, 255, 255, 0.85),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .glass-card-elevated {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
   box-shadow: 
-    0 20px 40px -10px rgba(98, 108, 218, 0.12),
-    0 8px 16px -4px rgba(0, 0, 0, 0.04),
-    inset 0 2px 2px 0 rgba(255, 255, 255, 0.95);
+    0 25px 50px -12px rgba(98, 108, 218, 0.12),
+    0 10px 25px -5px rgba(0, 0, 0, 0.05),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .glass-card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-hover:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   background: rgba(255, 255, 255, 0.78);
-  border-color: rgba(98, 108, 218, 0.35);
+  border-color: rgba(98, 108, 218, 0.4);
   box-shadow: 
-    0 22px 45px -10px rgba(98, 108, 218, 0.16),
-    0 10px 20px -5px rgba(250, 165, 90, 0.1),
-    inset 0 1px 2px 0 rgba(255, 255, 255, 1);
+    0 28px 55px -10px rgba(98, 108, 218, 0.18),
+    0 12px 24px -6px rgba(250, 165, 90, 0.12),
+    inset 0 1.5px 2px rgba(255, 255, 255, 1);
+}
+
+/* Tinted Spotlight Cards untuk variasi palet */
+.glass-tint-lime {
+  background: linear-gradient(135deg, rgba(251, 255, 150, 0.28) 0%, rgba(255, 255, 255, 0.65) 100%);
+  border-color: rgba(251, 255, 150, 0.8);
+}
+
+.glass-tint-sand {
+  background: linear-gradient(135deg, rgba(250, 165, 90, 0.2) 0%, rgba(255, 255, 255, 0.65) 100%);
+  border-color: rgba(250, 165, 90, 0.6);
+}
+
+.glass-tint-blue {
+  background: linear-gradient(135deg, rgba(98, 108, 218, 0.18) 0%, rgba(255, 255, 255, 0.65) 100%);
+  border-color: rgba(98, 108, 218, 0.4);
+}
+
+.glass-tint-paprika {
+  background: linear-gradient(135deg, rgba(201, 93, 54, 0.15) 0%, rgba(255, 255, 255, 0.65) 100%);
+  border-color: rgba(201, 93, 54, 0.35);
 }
 
 .glass-nav {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0 4px 20px -2px rgba(98, 108, 218, 0.06);
 }
 
 .glass-input {
-  background: rgba(255, 255, 255, 0.65);
-  border: 1.5px solid rgba(98, 108, 218, 0.18);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(98, 108, 218, 0.22);
+  backdrop-filter: blur(12px);
   transition: all 0.25s ease;
   color: #0f172a;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .glass-input:focus {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border-color: var(--color-royal-blue);
-  box-shadow: 0 0 0 4px rgba(98, 108, 218, 0.18);
+  box-shadow: 0 0 0 4px rgba(98, 108, 218, 0.22);
   outline: none;
 }
 
 .glass-input.input-error {
   border-color: var(--color-spicy-paprika);
-  box-shadow: 0 0 0 4px rgba(201, 93, 54, 0.15);
+  box-shadow: 0 0 0 4px rgba(201, 93, 54, 0.18);
 }
 
 /* ==========================================================================
-   Ripple Click Effect
+   BUTTONS & BADGES (FROSTED PILL & LIQUID GLASS HIGHLIGHT)
    ========================================================================== */
 .ripple-btn {
   position: relative;
@@ -165,7 +244,7 @@ h1, h2, h3, h4, h5, h6, .font-display {
 .ripple-effect {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.6);
   transform: scale(0);
   animation: rippleAnimation 0.6s linear;
   pointer-events: none;
@@ -178,15 +257,13 @@ h1, h2, h3, h4, h5, h6, .font-display {
   }
 }
 
-/* ==========================================================================
-   Skeleton Pulse Loader
-   ========================================================================== */
+/* Shimmer Skeleton */
 .skeleton-box {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0.75) 50%,
-    rgba(255, 255, 255, 0.4) 100%
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.35) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
@@ -198,9 +275,7 @@ h1, h2, h3, h4, h5, h6, .font-display {
   100% { background-position: -200% 0; }
 }
 
-/* ==========================================================================
-   Floating Toast Notifications
-   ========================================================================== */
+/* Toast Notifications */
 #toast-container {
   position: fixed;
   top: 1.5rem;
@@ -217,12 +292,12 @@ h1, h2, h3, h4, h5, h6, .font-display {
   min-width: 320px;
   max-width: 420px;
   padding: 1rem 1.25rem;
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.14), 0 6px 16px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
@@ -241,19 +316,17 @@ h1, h2, h3, h4, h5, h6, .font-display {
   opacity: 0;
 }
 
-/* ==========================================================================
-   Modal Backdrop & Transitions
-   ========================================================================== */
+/* Modal */
 .modal-backdrop {
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   transition: opacity 0.3s ease;
 }
 
 .modal-content-anim {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-  transform: scale(0.95) translateY(10px);
+  transform: scale(0.95) translateY(12px);
   opacity: 0;
 }
 
@@ -262,25 +335,8 @@ h1, h2, h3, h4, h5, h6, .font-display {
   opacity: 1;
 }
 
-/* ==========================================================================
-   Custom Utility Accents
-   ========================================================================== */
-.bg-honeydew { background-color: var(--color-honeydew); }
-.bg-lime-cream { background-color: var(--color-lime-cream); }
-.bg-sandy-brown { background-color: var(--color-sandy-brown); }
-.bg-spicy-paprika { background-color: var(--color-spicy-paprika); }
-.bg-royal-blue { background-color: var(--color-royal-blue); }
-
-.text-royal-blue { color: var(--color-royal-blue); }
-.text-spicy-paprika { color: var(--color-spicy-paprika); }
-.text-sandy-brown { color: var(--color-sandy-brown); }
-
-.border-royal-blue { border-color: var(--color-royal-blue); }
-.border-sandy-brown { border-color: var(--color-sandy-brown); }
-.border-spicy-paprika { border-color: var(--color-spicy-paprika); }
-
-/* Focus styles for keyboard accessibility */
+/* Accessibility Focus */
 :focus-visible {
-  outline: 2px solid var(--color-royal-blue);
+  outline: 2.5px solid var(--color-royal-blue);
   outline-offset: 2px;
 }

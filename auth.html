@@ -14,14 +14,18 @@
 </head>
 <body class="flex flex-col min-h-screen justify-between items-center p-4 sm:p-6 selection:bg-[#626CDA] selection:text-white">
 
-  <!-- Ambient Dynamic Mesh Gradient Canvas Background -->
+  <!-- Dynamic Mesh Background & 4-Orb Glowing Ambient Blobs -->
   <div class="mesh-bg" aria-hidden="true"></div>
-  <div class="ambient-orb orb-blue" aria-hidden="true"></div>
-  <div class="ambient-orb orb-sand" aria-hidden="true"></div>
+  <div class="ambient-blobs-layer" aria-hidden="true">
+    <div class="ambient-orb orb-royal-blue"></div>
+    <div class="ambient-orb orb-sandy-brown"></div>
+    <div class="ambient-orb orb-lime-cream"></div>
+    <div class="ambient-orb orb-spicy-paprika"></div>
+  </div>
 
-  <!-- Header Mini / Branding Logo -->
+  <!-- Header Mini / Branding Logo (Kembali ke Landing Page index.html) -->
   <header class="w-full max-w-5xl py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2.5 text-decoration-none group" aria-label="Kembali ke Dashboard ProjectMatch AI">
+    <a href="index.html" class="flex items-center gap-3 group" aria-label="Kembali ke Beranda ProjectMatch AI">
       <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#626CDA] to-[#FAA55A] flex items-center justify-center text-white font-black text-xl shadow-md shadow-[#626CDA]/30 group-hover:scale-105 transition-transform">
         P
       </div>
@@ -33,18 +37,18 @@
       </div>
     </a>
 
-    <a href="index.html" class="glass-card px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#626CDA] hover:bg-white/80 transition-all flex items-center gap-1.5 border border-white/80">
-      <span>Jelajahi Sebagai Tamu</span>
+    <a href="index.html" class="glass-card px-4 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-[#626CDA] hover:bg-white/90 transition-all flex items-center gap-1.5 border border-white">
+      <span>Kembali ke Beranda</span>
       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
     </a>
   </header>
 
   <!-- Main Container: Glassmorphism Authentication Card -->
   <main class="w-full max-w-md my-6">
-    <div class="glass-card-elevated rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/80 relative overflow-hidden backdrop-blur-2xl">
+    <div class="glass-card-elevated rounded-3xl p-6 sm:p-8 shadow-2xl border border-white relative overflow-hidden backdrop-blur-2xl">
       
       <!-- Top Glow Accent -->
-      <div class="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-[#FBFF96]/50 to-[#626CDA]/30 rounded-full blur-2xl pointer-events-none" aria-hidden="true"></div>
+      <div class="absolute -top-12 -right-12 w-36 h-36 bg-gradient-to-br from-[#FBFF96]/60 to-[#626CDA]/40 rounded-full blur-2xl pointer-events-none" aria-hidden="true"></div>
 
       <!-- Judul & Subtitle -->
       <div class="text-center mb-6">
@@ -57,7 +61,7 @@
       </div>
 
       <!-- Tab Switcher (Masuk vs Daftar) dengan Aksesibilitas WAI-ARIA -->
-      <div class="grid grid-cols-2 p-1 rounded-2xl bg-slate-200/50 backdrop-blur-md mb-6 border border-white/60" role="tablist" aria-label="Tipe Autentikasi">
+      <div class="grid grid-cols-2 p-1.5 rounded-2xl bg-slate-200/60 backdrop-blur-md mb-6 border border-white" role="tablist" aria-label="Tipe Autentikasi">
         <button 
           id="tab-login" 
           role="tab" 
@@ -92,19 +96,19 @@
             <div class="grid grid-cols-3 gap-2">
               <label class="cursor-pointer">
                 <input type="radio" name="loginRole" value="mahasiswa" checked class="peer sr-only">
-                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
+                <div class="p-2.5 rounded-xl border border-white/80 bg-white/50 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
                   <span class="block text-xs font-bold">Mahasiswa</span>
                 </div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="loginRole" value="mitra" class="peer sr-only">
-                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
+                <div class="p-2.5 rounded-xl border border-white/80 bg-white/50 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
                   <span class="block text-xs font-bold">Mitra Industri</span>
                 </div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="loginRole" value="admin" class="peer sr-only">
-                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
+                <div class="p-2.5 rounded-xl border border-white/80 bg-white/50 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA] peer-checked:shadow-sm">
                   <span class="block text-xs font-bold">Admin</span>
                 </div>
               </label>
@@ -175,13 +179,13 @@
             <div class="grid grid-cols-2 gap-2">
               <label class="cursor-pointer">
                 <input type="radio" name="registerRole" value="mahasiswa" checked class="peer sr-only">
-                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA]">
+                <div class="p-2.5 rounded-xl border border-white/80 bg-white/50 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA]">
                   <span class="block text-xs font-bold">Mahasiswa Talenta</span>
                 </div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="registerRole" value="mitra" class="peer sr-only">
-                <div class="p-2.5 rounded-xl border border-white/70 bg-white/40 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA]">
+                <div class="p-2.5 rounded-xl border border-white/80 bg-white/50 text-center transition-all peer-checked:bg-[#626CDA] peer-checked:text-white peer-checked:border-[#626CDA]">
                   <span class="block text-xs font-bold">Mitra Industri / Lab</span>
                 </div>
               </label>
@@ -265,10 +269,10 @@
       <div class="mt-6 pt-5 border-t border-slate-200/80 text-center">
         <p class="text-[11px] text-slate-500 font-medium mb-2">Akun Uji Coba Cepat (Akademis):</p>
         <div class="flex justify-center gap-2">
-          <button type="button" id="btn-quick-student" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-[#EAFFF5] text-emerald-800 border border-emerald-300 hover:bg-emerald-100 transition-colors">
+          <button type="button" id="btn-quick-student" class="text-[11px] font-bold px-3 py-1.5 rounded-xl bg-[#EAFFF5] text-emerald-800 border border-emerald-300 hover:bg-emerald-100 transition-colors shadow-2xs">
             Mahasiswa (Satria)
           </button>
-          <button type="button" id="btn-quick-industry" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-[#FBFF96]/70 text-[#6b5800] border border-[#FAA55A]/40 hover:bg-[#FBFF96] transition-colors">
+          <button type="button" id="btn-quick-industry" class="text-[11px] font-bold px-3 py-1.5 rounded-xl bg-[#FBFF96]/70 text-[#6b5800] border border-[#FAA55A]/40 hover:bg-[#FBFF96] transition-colors shadow-2xs">
             Mitra (BioInformatika)
           </button>
         </div>
@@ -374,7 +378,7 @@
       showToast('Kredensial mitra industri berhasil diisikan.', 'info', 2000);
     });
 
-    // Login Form Validation
+    // Login Form Validation & Flow to dashboard.html
     formLogin.addEventListener('submit', (e) => {
       e.preventDefault();
       let isValid = true;
@@ -408,14 +412,15 @@
       }
 
       if (isValid) {
-        showToast(`Autentikasi berhasil! Mengalihkan sebagai ${role.toUpperCase()}...`, 'success', 2000);
+        showToast(`Autentikasi berhasil! Mengalihkan ke Dashboard ${role.toUpperCase()}...`, 'success', 2000);
         setTimeout(() => {
           if (role === 'mitra') {
             window.location.href = 'post-project.html';
           } else {
-            window.location.href = 'index.html';
+            // REDIRECT KE DASHBOARD.HTML
+            window.location.href = 'dashboard.html';
           }
-        }, 1200);
+        }, 1100);
       }
     });
 
@@ -473,7 +478,7 @@
           switchTab('login');
           document.getElementById('login-email').value = email.value;
           document.getElementById('login-password').value = password.value;
-        }, 1500);
+        }, 1200);
       }
     });
   </script>

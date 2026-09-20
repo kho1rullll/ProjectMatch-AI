@@ -14,22 +14,26 @@
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 selection:bg-[#626CDA] selection:text-white">
 
-  <!-- Dynamic Mesh Gradient Background -->
+  <!-- Dynamic Mesh Background & 4-Orb Glowing Ambient Blobs -->
   <div class="mesh-bg" aria-hidden="true"></div>
-  <div class="ambient-orb orb-blue" aria-hidden="true"></div>
-  <div class="ambient-orb orb-sand" aria-hidden="true"></div>
+  <div class="ambient-blobs-layer" aria-hidden="true">
+    <div class="ambient-orb orb-royal-blue"></div>
+    <div class="ambient-orb orb-sandy-brown"></div>
+    <div class="ambient-orb orb-lime-cream"></div>
+    <div class="ambient-orb orb-spicy-paprika"></div>
+  </div>
 
   <!-- Header Semantik -->
   <header class="sticky top-0 z-40 glass-nav">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
-      <!-- Brand Logo -->
-      <a href="index.html" class="flex items-center gap-2.5 group" aria-label="Beranda ProjectMatch AI">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#626CDA] via-[#FAA55A] to-[#FBFF96] flex items-center justify-center text-white font-black text-xl shadow-md shadow-[#626CDA]/25 group-hover:scale-105 transition-transform">
+      <!-- Brand Logo (Kembali ke Landing Page index.html) -->
+      <a href="index.html" class="flex items-center gap-3 group" aria-label="Beranda ProjectMatch AI">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#626CDA] via-[#FAA55A] to-[#FBFF96] flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-[#626CDA]/30 group-hover:scale-105 transition-transform">
           P
         </div>
         <div>
-          <span class="font-display font-black text-lg sm:text-xl text-slate-900 tracking-tight flex items-center gap-1">
+          <span class="font-display font-black text-xl text-slate-900 tracking-tight flex items-center gap-1">
             ProjectMatch <span class="text-[#626CDA]">AI</span>
           </span>
           <span class="text-[10px] uppercase font-bold tracking-widest text-[#FAA55A] block -mt-1">Link & Match System</span>
@@ -37,43 +41,46 @@
       </a>
 
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-1.5" aria-label="Navigasi Utama">
-        <a href="index.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/40 transition-colors">
+      <nav class="hidden md:flex items-center gap-2" aria-label="Navigasi Utama">
+        <a href="dashboard.html" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#626CDA] hover:bg-white/60 transition-colors">
           Dashboard Hero
         </a>
-        <a href="projects.html" class="px-3.5 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-white/70 shadow-xs border border-white/80" aria-current="page">
+        <a href="projects.html" class="px-4 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-white/80 shadow-sm border border-white" aria-current="page">
           Eksplorasi Proyek
         </a>
-        <a href="post-project.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/40 transition-colors">
+        <a href="post-project.html" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#626CDA] hover:bg-white/60 transition-colors">
           Pasang Lowongan Mitra
         </a>
       </nav>
 
       <!-- Right Header Elements -->
-      <div class="flex items-center gap-3">
-        <a href="post-project.html" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-900 bg-[#FAA55A] hover:bg-[#ea9346] shadow-sm transition-all ripple-btn">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <a href="post-project.html" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-slate-900 bg-[#FAA55A] hover:bg-[#ea9346] shadow-sm transition-all ripple-btn">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
           <span>Buat Lowongan</span>
         </a>
 
-        <div class="flex items-center gap-2 pl-2 border-l border-slate-200/80">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#626CDA] to-[#FAA55A] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+        <div class="flex items-center gap-2 pl-2 border-l border-slate-300/70">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#626CDA] to-[#FAA55A] text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-white">
             RS
           </div>
+          <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#C95D36] bg-[#FFF2EE] hover:bg-[#ffe2d9] border border-[#C95D36]/30 transition-all ml-1 shadow-2xs" title="Logout ke Landing Page">
+            <span class="hidden sm:inline">Logout</span>
+          </a>
         </div>
 
-        <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-xl glass-card text-slate-700" aria-expanded="false" aria-controls="mobile-nav" aria-label="Buka menu navigasi">
+        <button type="button" id="mobile-menu-btn" class="md:hidden p-2.5 rounded-2xl glass-card text-slate-700" aria-expanded="false" aria-controls="mobile-nav" aria-label="Buka menu navigasi">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
 
     <!-- Mobile Nav -->
-    <div id="mobile-nav" class="hidden md:hidden px-4 pt-2 pb-4 space-y-1.5 border-t border-white/40 bg-white/90 backdrop-blur-xl">
-      <a href="index.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Dashboard Hero</a>
-      <a href="projects.html" class="block px-3 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-[#626CDA]/10" aria-current="page">Eksplorasi Proyek</a>
+    <div id="mobile-nav" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 border-t border-white/60 bg-white/90 backdrop-blur-2xl">
+      <a href="dashboard.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Dashboard Hero</a>
+      <a href="projects.html" class="block px-3 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-[#626CDA]/15" aria-current="page">Eksplorasi Proyek</a>
       <a href="post-project.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Pasang Lowongan Mitra</a>
-      <a href="auth.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-[#C95D36] hover:bg-slate-100">Ganti Akun / Keluar</a>
+      <a href="index.html" class="block px-3 py-2 rounded-xl text-xs font-bold text-[#C95D36] hover:bg-red-50">Logout ke Landing Page</a>
     </div>
   </header>
 
@@ -85,7 +92,7 @@
     <!-- Title & Deskripsi -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAFFF5] border border-emerald-300 text-emerald-800 text-xs font-bold mb-2">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAFFF5] border border-emerald-400 text-emerald-800 text-xs font-bold mb-2">
           <span>Semantic Match Explorer</span>
         </div>
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 font-display tracking-tight">
@@ -118,7 +125,7 @@
     </div>
 
     <!-- Live Status Banner (WAI-ARIA aria-live) -->
-    <div id="status-live-container" class="hidden rounded-2xl p-4 glass-card border border-[#626CDA]/30 flex items-center gap-3 animate-pulse" aria-live="polite" role="status">
+    <div id="status-live-container" class="hidden rounded-2xl p-4 glass-card border border-[#626CDA]/40 flex items-center gap-3 animate-pulse" aria-live="polite" role="status">
       <div class="w-5 h-5 border-2 border-[#626CDA] border-t-transparent rounded-full animate-spin shrink-0"></div>
       <p id="status-live-text" class="text-xs sm:text-sm font-semibold text-[#626CDA]">
         Menganalisis kemiripan semantik AI & memuat rekomendasi proyek...
@@ -142,7 +149,7 @@
     <!-- ========================================== -->
     <!-- FILTER BAR & SEARCH (GLASS PANEL)          -->
     <!-- ========================================== -->
-    <section class="glass-card-elevated rounded-2xl p-4 sm:p-5 border border-white/80 space-y-4" aria-label="Bilah Pencarian dan Penyaringan">
+    <section class="glass-card-elevated rounded-3xl p-5 sm:p-6 border border-white space-y-4" aria-label="Bilah Pencarian dan Penyaringan">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
         
         <!-- Search Input Field -->
@@ -155,13 +162,13 @@
             type="search" 
             id="search-input" 
             placeholder="Cari berdasarkan judul, teknologi (Python, Vue, NLP), atau mitra..." 
-            class="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium placeholder:text-slate-400">
+            class="glass-input w-full pl-10 pr-4 py-3 rounded-xl text-xs sm:text-sm font-medium placeholder:text-slate-400">
         </div>
 
         <!-- Dropdown Filter Kategori -->
         <div class="md:col-span-3">
           <label for="category-filter" class="sr-only">Filter Kategori Keahlian</label>
-          <select id="category-filter" class="glass-input w-full px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-white/80">
+          <select id="category-filter" class="glass-input w-full px-3.5 py-3 rounded-xl text-xs sm:text-sm font-medium bg-white/85">
             <option value="all">Semua Kategori</option>
             <option value="AI & Machine Learning">AI & Machine Learning</option>
             <option value="Frontend & UI/UX">Frontend & UI/UX</option>
@@ -173,7 +180,7 @@
         <!-- Dropdown Filter Cosine Similarity Match Tier -->
         <div class="md:col-span-3">
           <label for="match-tier-filter" class="sr-only">Filter Tingkat Kemiripan</label>
-          <select id="match-tier-filter" class="glass-input w-full px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/80">
+          <select id="match-tier-filter" class="glass-input w-full px-3.5 py-3 rounded-xl text-xs sm:text-sm font-semibold bg-white/85">
             <option value="all">Semua Skor Kemiripan</option>
             <option value="high">High Match (≥ 85%)</option>
             <option value="medium">Medium Match (60% - 84%)</option>
@@ -183,13 +190,13 @@
       </div>
 
       <!-- Quick Filter Chips & Hasil Counter -->
-      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200/60 text-xs">
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-200/70 text-xs">
         <div class="flex items-center gap-2 flex-wrap" id="quick-tag-filters">
           <span class="text-slate-500 font-semibold">Filter Cepat:</span>
-          <button type="button" class="quick-filter-chip px-2.5 py-1 rounded-lg bg-white/70 hover:bg-white text-slate-700 border border-white/80 transition-colors" data-tag="Python">Python</button>
-          <button type="button" class="quick-filter-chip px-2.5 py-1 rounded-lg bg-white/70 hover:bg-white text-slate-700 border border-white/80 transition-colors" data-tag="FastAPI">FastAPI</button>
-          <button type="button" class="quick-filter-chip px-2.5 py-1 rounded-lg bg-white/70 hover:bg-white text-slate-700 border border-white/80 transition-colors" data-tag="Tailwind">Tailwind</button>
-          <button type="button" class="quick-filter-chip px-2.5 py-1 rounded-lg bg-white/70 hover:bg-white text-slate-700 border border-white/80 transition-colors" data-tag="Remote">Remote</button>
+          <button type="button" class="quick-filter-chip px-3 py-1 rounded-xl bg-white/80 hover:bg-white text-slate-700 border border-white transition-colors" data-tag="Python">Python</button>
+          <button type="button" class="quick-filter-chip px-3 py-1 rounded-xl bg-white/80 hover:bg-white text-slate-700 border border-white transition-colors" data-tag="FastAPI">FastAPI</button>
+          <button type="button" class="quick-filter-chip px-3 py-1 rounded-xl bg-white/80 hover:bg-white text-slate-700 border border-white transition-colors" data-tag="Tailwind">Tailwind</button>
+          <button type="button" class="quick-filter-chip px-3 py-1 rounded-xl bg-white/80 hover:bg-white text-slate-700 border border-white transition-colors" data-tag="Remote">Remote</button>
         </div>
 
         <p id="result-count-label" class="font-bold text-slate-600">
@@ -226,11 +233,11 @@
     <div class="modal-backdrop absolute inset-0"></div>
 
     <!-- Modal Content Card -->
-    <div class="modal-content-anim relative w-full max-w-xl glass-card-elevated rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/80 overflow-y-auto max-h-[90vh]">
+    <div class="modal-content-anim relative w-full max-w-xl glass-card-elevated rounded-3xl p-6 sm:p-8 shadow-2xl border border-white overflow-y-auto max-h-[90vh]">
       <button 
         type="button" 
         data-modal-close 
-        class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 bg-white/50 hover:bg-white/90 transition-all cursor-pointer" 
+        class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 bg-white/70 hover:bg-white transition-all cursor-pointer" 
         aria-label="Tutup jendela rincian">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
@@ -243,12 +250,13 @@
   </div>
 
   <!-- Footer -->
-  <footer class="glass-nav border-t border-white/60 py-6 mt-12 text-center text-xs text-slate-500">
+  <footer class="glass-nav border-t border-white/70 py-6 mt-12 text-center text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <p>© 2026 ProjectMatch AI • Platform Link-and-Match Mahasiswa & Proyek Riset Industri</p>
       <div class="flex items-center gap-4">
-        <a href="index.html" class="hover:text-[#626CDA]">Dashboard</a>
-        <a href="projects.html" class="hover:text-[#626CDA]">Eksplorasi</a>
+        <a href="index.html" class="hover:text-[#626CDA]">Landing Page</a>
+        <a href="dashboard.html" class="hover:text-[#626CDA]">Dashboard</a>
+        <a href="projects.html" class="font-bold text-[#626CDA]">Eksplorasi</a>
         <a href="post-project.html" class="hover:text-[#626CDA]">Mitra</a>
         <a href="auth.html" class="hover:text-[#626CDA]">Autentikasi</a>
       </div>
@@ -285,7 +293,7 @@
       let skeletonsHtml = '';
       for (let i = 0; i < count; i++) {
         skeletonsHtml += `
-          <div class="glass-card p-6 rounded-2xl space-y-3">
+          <div class="glass-card p-6 rounded-3xl space-y-3">
             <div class="flex justify-between items-center">
               <div class="h-4 w-24 skeleton-box"></div>
               <div class="h-6 w-20 skeleton-box"></div>

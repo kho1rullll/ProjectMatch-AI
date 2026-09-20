@@ -3,429 +3,460 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Mahasiswa & Hero RPG Stats - ProjectMatch AI</title>
-  <meta name="description" content="Dashboard profil mahasiswa, visualisasi Hero RPG radar chart 5 dimensi kompetensi, dan rekomendasi kecocokan proyek industri berbasis AI.">
+  <title>ProjectMatch AI - Platform Link-and-Match Mahasiswa & Proyek Riset Industri</title>
+  <meta name="description" content="Platform link-and-match cerdas berbasis AI yang menghubungkan mahasiswa talenta dengan proyek riset dan industri melalui pemodelan Hero RPG Stats dan Cosine Similarity.">
 
   <!-- Tailwind CSS v4 Browser CDN -->
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   
-  <!-- Chart.js CDN for Spider/Radar Chart -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <!-- Custom Glassmorphism & Animations -->
   <link rel="stylesheet" href="css/glass.css">
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 selection:bg-[#626CDA] selection:text-white">
 
-  <!-- Dynamic Mesh Gradient Background -->
+  <!-- Dynamic Mesh Background & 4-Orb Glowing Ambient Blobs (Kunci Refraksi Kaca) -->
   <div class="mesh-bg" aria-hidden="true"></div>
-  <div class="ambient-orb orb-blue" aria-hidden="true"></div>
-  <div class="ambient-orb orb-sand" aria-hidden="true"></div>
+  <div class="ambient-blobs-layer" aria-hidden="true">
+    <div class="ambient-orb orb-royal-blue"></div>
+    <div class="ambient-orb orb-sandy-brown"></div>
+    <div class="ambient-orb orb-lime-cream"></div>
+    <div class="ambient-orb orb-spicy-paprika"></div>
+  </div>
 
   <!-- Accessible Skip Link -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#626CDA] focus:text-white focus:rounded-xl">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#626CDA] focus:text-white focus:rounded-xl shadow-lg">
     Langsung ke konten utama
   </a>
 
   <!-- ========================================== -->
-  <!-- NAVBAR HEADER SEMANTIK                     -->
+  <!-- NAVBAR HEADER PUBLIK                       -->
   <!-- ========================================== -->
   <header class="sticky top-0 z-40 glass-nav">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
       <!-- Brand Logo -->
-      <div class="flex items-center gap-3">
-        <a href="index.html" class="flex items-center gap-2.5 group" aria-label="Beranda ProjectMatch AI">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#626CDA] via-[#FAA55A] to-[#FBFF96] flex items-center justify-center text-white font-black text-xl shadow-md shadow-[#626CDA]/25 group-hover:scale-105 transition-transform">
-            P
-          </div>
-          <div>
-            <span class="font-display font-black text-lg sm:text-xl text-slate-900 tracking-tight flex items-center gap-1">
-              ProjectMatch <span class="text-[#626CDA]">AI</span>
-            </span>
-            <span class="text-[10px] uppercase font-bold tracking-widest text-[#FAA55A] block -mt-1">Link & Match System</span>
-          </div>
-        </a>
-      </div>
+      <a href="index.html" class="flex items-center gap-3 group" aria-label="Beranda ProjectMatch AI">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#626CDA] via-[#FAA55A] to-[#FBFF96] flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-[#626CDA]/30 group-hover:scale-105 transition-transform">
+          P
+        </div>
+        <div>
+          <span class="font-display font-black text-xl text-slate-900 tracking-tight flex items-center gap-1">
+            ProjectMatch <span class="text-[#626CDA]">AI</span>
+          </span>
+          <span class="text-[10px] uppercase font-bold tracking-widest text-[#FAA55A] block -mt-1">Link & Match System</span>
+        </div>
+      </a>
 
-      <!-- Desktop Navigation Menu -->
-      <nav class="hidden md:flex items-center gap-1.5" aria-label="Navigasi Utama">
-        <a href="index.html" class="px-3.5 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-white/70 shadow-xs border border-white/80" aria-current="page">
-          Dashboard Hero
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-2" aria-label="Navigasi Utama">
+        <a href="#features" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#626CDA] hover:bg-white/60 transition-colors">
+          Fitur Unggulan
         </a>
-        <a href="projects.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/40 transition-colors">
+        <a href="#how-it-works" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#626CDA] hover:bg-white/60 transition-colors">
+          Cara Kerja AI
+        </a>
+        <a href="#stats" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#626CDA] hover:bg-white/60 transition-colors">
+          Dampak & Metrik
+        </a>
+        <a href="projects.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#626CDA] hover:bg-white/60 transition-colors">
           Eksplorasi Proyek
-        </a>
-        <a href="post-project.html" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/40 transition-colors">
-          Pasang Lowongan Mitra
         </a>
       </nav>
 
-      <!-- Right Header Actions (Notifikasi & Profil Avatar) -->
+      <!-- Right Header Actions (Auth CTA) -->
       <div class="flex items-center gap-3">
-        
-        <!-- Notifikasi Badge Counter -->
-        <button type="button" id="btn-notifications" class="relative p-2.5 rounded-xl glass-card text-slate-600 hover:text-[#626CDA] hover:bg-white/80 transition-all cursor-pointer" aria-label="Notifikasi, ada 3 pesan baru">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-          <span class="absolute -top-1 -right-1 w-5 h-5 bg-[#C95D36] text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-sm" aria-hidden="true">
-            3
-          </span>
-        </button>
+        <a href="auth.html" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-800 bg-white/75 hover:bg-white border border-white/90 shadow-sm transition-all">
+          Masuk Akun
+        </a>
+        <a href="auth.html" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-[#626CDA] hover:bg-[#5059be] shadow-md shadow-[#626CDA]/30 transition-all ripple-btn">
+          <span>Mulai Sekarang</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
 
-        <!-- User Profile Pill -->
-        <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200/80">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#626CDA] to-[#FAA55A] text-white flex items-center justify-center font-bold text-sm shadow-sm ring-2 ring-white">
-            RS
-          </div>
-          <div class="hidden sm:block text-left">
-            <span class="block text-xs font-bold text-slate-900 leading-none">Raden Satria</span>
-            <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-[#626CDA] bg-[#626CDA]/10 px-1.5 py-0.5 rounded-md mt-1">
-              Mahasiswa Aktif
-            </span>
-          </div>
-          <a href="auth.html" class="text-xs font-semibold text-slate-400 hover:text-[#C95D36] p-1 ml-1" title="Keluar / Ganti Akun" aria-label="Keluar">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-          </a>
-        </div>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-xl glass-card text-slate-700" aria-expanded="false" aria-controls="mobile-nav" aria-label="Buka menu navigasi">
+        <!-- Mobile Nav Toggle -->
+        <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-xl glass-card text-slate-700" aria-expanded="false" aria-controls="mobile-nav" aria-label="Buka navigasi">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
 
     <!-- Mobile Navigation Dropdown -->
-    <div id="mobile-nav" class="hidden md:hidden px-4 pt-2 pb-4 space-y-1.5 border-t border-white/40 bg-white/90 backdrop-blur-xl">
-      <a href="index.html" class="block px-3 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-[#626CDA]/10" aria-current="page">Dashboard Hero</a>
+    <div id="mobile-nav" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 border-t border-white/60 bg-white/90 backdrop-blur-2xl">
+      <a href="#features" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Fitur Unggulan</a>
+      <a href="#how-it-works" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Cara Kerja AI</a>
       <a href="projects.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Eksplorasi Proyek</a>
-      <a href="post-project.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">Pasang Lowongan Mitra</a>
-      <a href="auth.html" class="block px-3 py-2 rounded-xl text-xs font-semibold text-[#C95D36] hover:bg-slate-100">Ganti Akun / Keluar</a>
+      <a href="auth.html" class="block px-3 py-2 rounded-xl text-xs font-bold text-[#626CDA] bg-[#626CDA]/10">Masuk / Daftar Akun</a>
     </div>
   </header>
 
   <!-- ========================================== -->
-  <!-- MAIN DASHBOARD CONTENT                     -->
+  <!-- MAIN LANDING PAGE CONTENT                  -->
   <!-- ========================================== -->
-  <main id="main-content" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <main id="main-content" class="flex-1 space-y-20 sm:space-y-28 pb-16">
     
-    <!-- Hero Banner Greeting -->
-    <section class="glass-card-elevated rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-      <div class="relative z-10 max-w-2xl">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAFFF5] border border-emerald-300 text-emerald-800 text-xs font-bold mb-3 shadow-xs">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-          <span>Sistem Inferensi Kemiripan AI Aktif</span>
+    <!-- ========================================== -->
+    <!-- 1. HERO SECTION                            -->
+    <!-- ========================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Column: Copywriting & CTA -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          
+          <!-- Badge Teaser -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EAFFF5] border border-emerald-400 text-emerald-800 text-xs font-bold shadow-xs">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span>Platform Link-and-Match Generasi AI Akademis</span>
+          </div>
+
+          <!-- Headline -->
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 font-display tracking-tight leading-[1.15]">
+            Jembatani Potensi Mahasiswa dengan <span class="text-[#626CDA] underline decoration-[#FAA55A] decoration-wavy decoration-2">Proyek Riset & Industri</span>
+          </h1>
+
+          <!-- Description -->
+          <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            Hubungkan kompetensi teknis mahasiswa secara presisi dengan kebutuhan riil industri dan laboratorium riset menggunakan inferensi semantik <strong class="text-slate-900">Cosine Similarity</strong> dan pemodelan visual <strong class="text-slate-900">Hero RPG Stats 5 Dimensi</strong>.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
+            <a href="auth.html" class="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-sm sm:text-base text-white bg-[#626CDA] hover:bg-[#5059be] shadow-xl shadow-[#626CDA]/35 transition-all ripple-btn flex items-center justify-center gap-2.5">
+              <span>Mulai Sekarang / Masuk</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+
+            <a href="projects.html" class="w-full sm:w-auto px-7 py-4 rounded-2xl font-bold text-sm sm:text-base text-slate-800 glass-card hover:bg-white/90 border border-white transition-all flex items-center justify-center gap-2">
+              <svg class="w-5 h-5 text-[#FAA55A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <span>Eksplorasi Proyek Aktif</span>
+            </a>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="pt-6 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-500 font-medium">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span>Standar Aksesibilitas WCAG 2.1 AA</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#626CDA]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span>Algoritma Cosine Vector Similarity</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#FAA55A]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span>Sertifikasi & Kemitraan Kampus</span>
+            </div>
+          </div>
         </div>
-        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 font-display tracking-tight leading-tight">
-          Halo, Raden Satria! Siap Taklukkan Proyek Riset Impianmu?
-        </h1>
-        <p class="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed">
-          Algoritma cosine similarity telah mencocokkan portofolio dan riwayat repository-mu dengan <strong class="text-slate-900">14 proyek industri aktif</strong>. Status kompetensimu saat ini berada di tier <span class="text-[#626CDA] font-bold">Fullstack AI Champion</span>.
+
+        <!-- Right Column: Elevated Glass Mockup Card Preview -->
+        <div class="lg:col-span-5 relative">
+          
+          <!-- Outer Glow Behind Card -->
+          <div class="absolute -inset-4 bg-gradient-to-tr from-[#626CDA]/30 via-[#FBFF96]/40 to-[#FAA55A]/30 rounded-3xl blur-2xl opacity-75 pointer-events-none" aria-hidden="true"></div>
+
+          <!-- Frosted Glass Showcase Card -->
+          <div class="relative glass-card-elevated rounded-3xl p-6 sm:p-7 border border-white space-y-5 shadow-2xl">
+            
+            <!-- Card Header Simulation -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#626CDA] to-[#FAA55A] text-white flex items-center justify-center font-black text-base shadow-md">
+                  AI
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 leading-snug">Simulasi Hasil Pencocokan</h3>
+                  <p class="text-xs text-slate-500">NLP Transformer Engine v2.4</p>
+                </div>
+              </div>
+
+              <!-- Match Badge CVA simulation -->
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-[#EAFFF5] text-[#1e583c] border border-[#626CDA]/40 shadow-xs">
+                <span class="w-2 h-2 rounded-full bg-[#626CDA] animate-ping"></span>
+                <span>94% High Match</span>
+              </span>
+            </div>
+
+            <!-- Project Title Preview -->
+            <div class="p-4 rounded-2xl bg-white/75 border border-white space-y-2">
+              <span class="text-[10px] uppercase font-bold tracking-wider text-[#626CDA]">AI & Machine Learning</span>
+              <h4 class="text-base font-extrabold text-slate-900 leading-tight">
+                Engine NLP Transformer untuk Analisis Rekam Medis
+              </h4>
+              <p class="text-xs text-slate-600 line-clamp-2">
+                Penyelarasan model LLM lokal untuk ekstraksi entitas klinis (NER) bersama BioInformatika Nusantara.
+              </p>
+            </div>
+
+            <!-- 5-Dimension Competency Gauge Preview -->
+            <div class="space-y-2.5 pt-1">
+              <div class="flex justify-between items-center text-xs font-bold text-slate-700">
+                <span>Kesesuaian 5 Dimensi RPG</span>
+                <span class="text-[#626CDA]">Surplus Kualifikasi</span>
+              </div>
+              
+              <!-- Progress Bars -->
+              <div class="space-y-2 text-[11px]">
+                <div>
+                  <div class="flex justify-between mb-0.5 text-slate-600 font-semibold">
+                    <span>AI & Machine Learning</span>
+                    <span class="text-emerald-700 font-bold">98 / 100 PTS</span>
+                  </div>
+                  <div class="h-2 w-full bg-slate-200/80 rounded-full overflow-hidden">
+                    <div class="h-full bg-[#626CDA] rounded-full" style="width: 98%;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between mb-0.5 text-slate-600 font-semibold">
+                    <span>Backend Architecture</span>
+                    <span class="text-emerald-700 font-bold">88 / 100 PTS</span>
+                  </div>
+                  <div class="h-2 w-full bg-slate-200/80 rounded-full overflow-hidden">
+                    <div class="h-full bg-[#FAA55A] rounded-full" style="width: 88%;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between mb-0.5 text-slate-600 font-semibold">
+                    <span>UI/UX Design</span>
+                    <span class="text-slate-700 font-bold">85 / 100 PTS</span>
+                  </div>
+                  <div class="h-2 w-full bg-slate-200/80 rounded-full overflow-hidden">
+                    <div class="h-full bg-[#FBFF96] rounded-full" style="width: 85%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skills Pill -->
+            <div class="flex flex-wrap gap-1.5 pt-2">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white text-slate-700 border border-slate-200">PyTorch</span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white text-slate-700 border border-slate-200">FastAPI</span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white text-slate-700 border border-slate-200">HuggingFace</span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white text-slate-700 border border-slate-200">Docker</span>
+            </div>
+
+            <!-- Card Bottom Action -->
+            <div class="pt-3 border-t border-slate-200/70 flex items-center justify-between">
+              <span class="text-xs text-slate-500 font-medium">Uang Saku: Rp 4.500.000 / bln</span>
+              <a href="auth.html" class="text-xs font-bold text-[#626CDA] hover:underline flex items-center gap-1">
+                <span>Coba Cocokkan Profil</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 2. FITUR UNGGULAN & 4 PILAR TEKNOLOGI       -->
+    <!-- ========================================== -->
+    <section id="features" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#626CDA]">Keunggulan Arsitektur Sistem</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 font-display tracking-tight">
+          Dirancang untuk Kebutuhan Riil Kampus Merdeka & Industri
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600">
+          Kombinasi sains data modern, visualisasi RPG game, dan arsitektur aksesibel menghadirkan pengalaman link-and-match yang transparan dan objektif.
         </p>
       </div>
 
-      <div class="relative z-10 flex flex-wrap sm:flex-nowrap gap-3 shrink-0">
-        <a href="projects.html" class="px-5 py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-[#626CDA] hover:bg-[#5059be] shadow-md shadow-[#626CDA]/30 transition-all ripple-btn inline-flex items-center gap-2">
-          <span>Jelajahi Proyek AI Match</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </a>
-      </div>
+      <!-- 4 Tinted Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Pillar 1: RPG Stats (Lime Tint) -->
+        <div class="glass-card glass-tint-lime rounded-3xl p-6 sm:p-7 space-y-4 border transition-transform hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-2xl bg-[#FBFF96] text-[#715c00] flex items-center justify-center text-xl font-bold shadow-sm">
+            📊
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 leading-snug">Hero RPG Stats 5 Dimensi</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Menilai skill mahasiswa dalam 5 pilar (Frontend, Backend, UI/UX, AI/ML, System Architecture) bergaya status hero game interaktif.
+          </p>
+        </div>
 
-      <!-- Background Glow Element -->
-      <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-gradient-to-tl from-[#626CDA]/25 via-[#FBFF96]/30 to-transparent rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+        <!-- Pillar 2: Cosine Similarity (Blue Tint) -->
+        <div class="glass-card glass-tint-blue rounded-3xl p-6 sm:p-7 space-y-4 border transition-transform hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-2xl bg-[#626CDA] text-white flex items-center justify-center text-xl font-bold shadow-md shadow-[#626CDA]/30">
+            ⚡
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 leading-snug">Inferensi Vektor AI Semantik</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Mencocokkan kata kunci silabus, CV, dan repository secara kontekstual menggunakan algoritma Cosine Similarity bebas bias manual.
+          </p>
+        </div>
+
+        <!-- Pillar 3: Verified Mitra (Sand Tint) -->
+        <div class="glass-card glass-tint-sand rounded-3xl p-6 sm:p-7 space-y-4 border transition-transform hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-2xl bg-[#FAA55A] text-slate-900 flex items-center justify-center text-xl font-bold shadow-md shadow-[#FAA55A]/30">
+            🏢
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 leading-snug">Mitra Industri Terverifikasi</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Menghubungkan langsung ke laboratorium riset perguruan tinggi, startup teknologi, dan perusahaan rintisan terverifikasi resmi.
+          </p>
+        </div>
+
+        <!-- Pillar 4: Drill-Down Gap (Paprika Tint) -->
+        <div class="glass-card glass-tint-paprika rounded-3xl p-6 sm:p-7 space-y-4 border transition-transform hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-2xl bg-[#C95D36] text-white flex items-center justify-center text-xl font-bold shadow-md shadow-[#C95D36]/30">
+            🎯
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 leading-snug">Skill Overlay Drill-Down</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Transparansi analisis defisit kualifikasi secara mendalam sehingga mahasiswa mengetahui materi kompetensi yang perlu diasah.
+          </p>
+        </div>
+
+      </div>
     </section>
 
-    <!-- Two-Column Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      
-      <!-- ========================================== -->
-      <!-- KOLOM KIRI (5 COLS): PROFIL & HERO RPG STAT-->
-      <!-- ========================================== -->
-      <section class="lg:col-span-5 space-y-6" aria-labelledby="section-profile-stats">
-        <h2 id="section-profile-stats" class="sr-only">Profil Mahasiswa & Status RPG Kompetensi</h2>
+    <!-- ========================================== -->
+    <!-- 3. CARA KERJA SISTEM (STEP-BY-STEP)        -->
+    <!-- ========================================== -->
+    <section id="how-it-works" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#FAA55A]">Alur Pengguna Sederhana</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 font-display tracking-tight">
+          3 Langkah Mudah Meraih Proyek Impian
+        </h2>
+      </div>
 
-        <!-- Kartu Identitas Mahasiswa -->
-        <div class="glass-card rounded-3xl p-6 relative overflow-hidden border border-white/70">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex items-center gap-3.5">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#626CDA] to-[#FAA55A] text-white flex items-center justify-center font-black text-xl shadow-md shadow-[#626CDA]/30 ring-2 ring-white">
-                RS
-              </div>
-              <div>
-                <h3 class="text-base font-bold text-slate-900 leading-snug">Raden Satria W.</h3>
-                <p class="text-xs font-medium text-slate-500">NIM: 231511099 • Semester VI</p>
-                <p class="text-xs font-semibold text-[#626CDA]">Teknik Informatika / Software Eng.</p>
-              </div>
-            </div>
-
-            <!-- Status Portofolio CV Badge -->
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#EAFFF5] text-emerald-800 border border-emerald-300 shadow-xs" title="Portofolio telah diverifikasi oleh NLP parser">
-              <svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-              <span>CV Verified</span>
-            </span>
-          </div>
-
-          <!-- Metadata Links & Badges -->
-          <div class="mt-5 pt-4 border-t border-slate-200/60 grid grid-cols-2 gap-3 text-xs">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 p-2 rounded-xl bg-white/60 hover:bg-white text-slate-700 transition-colors border border-white/80">
-              <svg class="w-4 h-4 text-slate-800" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-              <span class="truncate font-semibold">github.com/satria</span>
-            </a>
-
-            <div class="flex items-center gap-2 p-2 rounded-xl bg-[#FBFF96]/40 text-slate-800 border border-[#FAA55A]/30">
-              <svg class="w-4 h-4 text-[#FAA55A]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-              <span class="font-bold">IPK: 3.84 / 4.00</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Visualisasi Hero RPG Stats Radar Chart -->
-        <div class="glass-card-elevated rounded-3xl p-6 border border-white/80 space-y-4">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-base font-bold text-slate-900 font-display flex items-center gap-1.5">
-                <span>Hero RPG Competency Stats</span>
-                <span class="text-xs px-2 py-0.5 rounded-md bg-[#626CDA]/10 text-[#626CDA] font-bold">5 Dimensi</span>
-              </h3>
-              <p class="text-xs text-slate-500">Keseimbangan skill teknis mahasiswa vs kebutuhan riil</p>
-            </div>
-
-            <!-- Toggle Benchmark Button -->
-            <button type="button" id="btn-toggle-benchmark" class="text-xs font-semibold px-2.5 py-1.5 rounded-xl glass-card text-slate-700 hover:text-[#626CDA] border border-white/80 transition-all cursor-pointer" aria-pressed="true">
-              Toggle Benchmark
-            </button>
-          </div>
-
-          <!-- Radar Chart Canvas Container -->
-          <div class="relative w-full h-72 sm:h-80 flex items-center justify-center pt-2">
-            <canvas id="heroRadarChart" aria-label="Visualisasi radar chart statistik 5 dimensi kompetensi: Frontend 92, Backend 78, UI/UX 85, AI/ML 90, System Architecture 72." role="img"></canvas>
-          </div>
-
-          <!-- RPG Preset Switcher (Interaktif) -->
-          <div class="pt-3 border-t border-slate-200/60">
-            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Simulasi Penjurusan RPG Hero:</p>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-              <button type="button" data-preset="fullstack_hero" class="preset-btn text-[11px] font-bold py-1.5 px-2 rounded-lg bg-[#626CDA] text-white shadow-xs">
-                Fullstack
-              </button>
-              <button type="button" data-preset="ai_specialist" class="preset-btn text-[11px] font-bold py-1.5 px-2 rounded-lg bg-white/70 text-slate-700 hover:bg-white">
-                AI / Data
-              </button>
-              <button type="button" data-preset="uiux_wizard" class="preset-btn text-[11px] font-bold py-1.5 px-2 rounded-lg bg-white/70 text-slate-700 hover:bg-white">
-                UI/UX Pro
-              </button>
-              <button type="button" data-preset="cloud_architect" class="preset-btn text-[11px] font-bold py-1.5 px-2 rounded-lg bg-white/70 text-slate-700 hover:bg-white">
-                Cloud Arch
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ========================================== -->
-      <!-- KOLOM KANAN (7 COLS): TOP MATCHED PROJECTS -->
-      <!-- ========================================== -->
-      <section class="lg:col-span-7 space-y-6" aria-labelledby="section-top-projects">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
         
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 id="section-top-projects" class="text-xl sm:text-2xl font-black text-slate-900 font-display tracking-tight flex items-center gap-2">
-              <span>Rekomendasi Proyek Teratas</span>
-              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-[#EAFFF5] text-emerald-800 border border-emerald-300">
-                Cosine Similarity
-              </span>
-            </h2>
-            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Dipilih oleh neural network berdasarkan kesesuaian vektor kompetensimu
-            </p>
+        <!-- Step 1 -->
+        <div class="glass-card rounded-3xl p-8 text-center space-y-4 relative border border-white">
+          <div class="w-14 h-14 rounded-2xl bg-white border border-slate-200 text-[#626CDA] flex items-center justify-center font-black text-xl mx-auto shadow-md">
+            1
           </div>
-
-          <a href="projects.html" class="text-xs font-bold text-[#626CDA] hover:underline flex items-center gap-1 shrink-0">
-            <span>Lihat Semua</span>
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
+          <h3 class="text-lg font-bold text-slate-900">Buat Profil & Portofolio</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Daftarkan akun sebagai Mahasiswa atau Mitra Industri. Tautkan repositori GitHub dan kriteria spesialisasi keahlian teknismu.
+          </p>
         </div>
 
-        <!-- Project Cards Container (Di-render secara asinkron via api.js & cva.js) -->
-        <div id="top-projects-container" class="space-y-4" aria-live="polite">
-          
-          <!-- Skeleton Loading States -->
-          <div class="glass-card p-6 rounded-2xl space-y-3">
-            <div class="flex justify-between items-center">
-              <div class="h-4 w-24 skeleton-box"></div>
-              <div class="h-6 w-20 skeleton-box"></div>
-            </div>
-            <div class="h-6 w-3/4 skeleton-box"></div>
-            <div class="h-4 w-1/2 skeleton-box"></div>
-            <div class="h-16 w-full skeleton-box"></div>
+        <!-- Step 2 -->
+        <div class="glass-card rounded-3xl p-8 text-center space-y-4 relative border border-white">
+          <div class="w-14 h-14 rounded-2xl bg-[#626CDA] text-white flex items-center justify-center font-black text-xl mx-auto shadow-lg shadow-[#626CDA]/30">
+            2
           </div>
-          <div class="glass-card p-6 rounded-2xl space-y-3">
-            <div class="flex justify-between items-center">
-              <div class="h-4 w-24 skeleton-box"></div>
-              <div class="h-6 w-20 skeleton-box"></div>
-            </div>
-            <div class="h-6 w-3/4 skeleton-box"></div>
-            <div class="h-4 w-1/2 skeleton-box"></div>
-            <div class="h-16 w-full skeleton-box"></div>
-          </div>
-
+          <h3 class="text-lg font-bold text-slate-900">AI Menghitung Kecocokan</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Engine neural semantik otomatis menghitung skor Cosine Similarity (High, Medium, Low) dan memetakan ke 5 dimensi radar chart.
+          </p>
         </div>
 
-        <!-- Banner Promosi untuk Mitra Industri -->
-        <div class="glass-card rounded-2xl p-5 border border-[#FAA55A]/40 bg-gradient-to-r from-white/70 via-[#FBFF96]/20 to-[#FAA55A]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <h3 class="text-sm font-bold text-slate-900">Perusahaan atau Laboratorium Riset Anda Membutuhkan Talenta?</h3>
-            <p class="text-xs text-slate-600 mt-0.5">Pasang kebutuhan proyek mahasiswa dengan kriteria spesifik dan temukan kandidat terbaik otomatis.</p>
+        <!-- Step 3 -->
+        <div class="glass-card rounded-3xl p-8 text-center space-y-4 relative border border-white">
+          <div class="w-14 h-14 rounded-2xl bg-[#FAA55A] text-slate-900 flex items-center justify-center font-black text-xl mx-auto shadow-lg shadow-[#FAA55A]/30">
+            3
           </div>
-          <a href="post-project.html" class="shrink-0 px-4 py-2 rounded-xl text-xs font-bold text-slate-900 bg-[#FAA55A] hover:bg-[#ea9346] shadow-sm transition-all ripple-btn">
-            Pasang Lowongan
-          </a>
+          <h3 class="text-lg font-bold text-slate-900">Lamar Proyek & Kolaborasi</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Lamar lowongan dengan 1-klik, ikuti proses wawancara mitra, dan mulai pengerjaan proyek riset dengan konversi nilai SKS kampus.
+          </p>
         </div>
 
-      </section>
-    </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4. STATS & METRIK PLATFORM                 -->
+    <!-- ========================================== -->
+    <section id="stats" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass-card-elevated rounded-3xl p-8 sm:p-12 border border-white grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <span class="block text-3xl sm:text-5xl font-black text-[#626CDA] font-display">94.2%</span>
+          <span class="block text-xs sm:text-sm font-bold text-slate-700 mt-1">Akurasi Kemiripan AI</span>
+          <span class="block text-[11px] text-slate-500">Berdasarkan Cosine Metric</span>
+        </div>
+        <div>
+          <span class="block text-3xl sm:text-5xl font-black text-[#FAA55A] font-display">120+</span>
+          <span class="block text-xs sm:text-sm font-bold text-slate-700 mt-1">Mitra Industri & Lab</span>
+          <span class="block text-[11px] text-slate-500">Terdaftar & Aktif</span>
+        </div>
+        <div>
+          <span class="block text-3xl sm:text-5xl font-black text-emerald-700 font-display">450+</span>
+          <span class="block text-xs sm:text-sm font-bold text-slate-700 mt-1">Proyek Terbit</span>
+          <span class="block text-[11px] text-slate-500">Riset & Magang Industri</span>
+        </div>
+        <div>
+          <span class="block text-3xl sm:text-5xl font-black text-[#C95D36] font-display">5 Dimensi</span>
+          <span class="block text-xs sm:text-sm font-bold text-slate-700 mt-1">RPG Competency Stats</span>
+          <span class="block text-[11px] text-slate-500">Terstandar Standar Industri</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 5. CALL TO ACTION BANNER                   -->
+    <!-- ========================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass-card-elevated rounded-3xl p-8 sm:p-14 text-center relative overflow-hidden border border-white">
+        <div class="max-w-3xl mx-auto space-y-6 relative z-10">
+          <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 font-display tracking-tight leading-tight">
+            Siap Temukan Proyek Riset yang Tepat untuk Keterampilanmu?
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+            Bergabunglah dengan ratusan talenta mahasiswa lainnya dan buktikan keahlianmu pada proyek nyata bermutu tinggi.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <a href="auth.html" class="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-sm sm:text-base text-white bg-[#626CDA] hover:bg-[#5059be] shadow-xl shadow-[#626CDA]/35 transition-all ripple-btn">
+              Daftar / Masuk Akun Sekarang
+            </a>
+            <a href="projects.html" class="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-sm sm:text-base text-slate-800 bg-white/80 hover:bg-white border border-white transition-all">
+              Jelajahi Lowongan
+            </a>
+          </div>
+        </div>
+
+        <!-- Ambient Glow Decorator -->
+        <div class="absolute -top-24 -left-24 w-80 h-80 bg-[#FBFF96]/40 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+        <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-[#626CDA]/30 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ========================================== -->
-  <!-- MODAL: SKILL OVERLAY DRILL-DOWN (WAI-ARIA) -->
+  <!-- FOOTER                                     -->
   <!-- ========================================== -->
-  <div 
-    id="drillDownModal" 
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden" 
-    role="dialog" 
-    aria-modal="true" 
-    aria-labelledby="modal-title" 
-    aria-hidden="true">
-    
-    <!-- Modal Backdrop Blur -->
-    <div class="modal-backdrop absolute inset-0"></div>
+  <footer class="glass-nav border-t border-white/70 py-10 text-xs text-slate-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#626CDA] to-[#FAA55A] flex items-center justify-center text-white font-black text-lg shadow-sm">
+            P
+          </div>
+          <div>
+            <span class="font-display font-black text-base text-slate-900">ProjectMatch AI</span>
+            <span class="block text-[11px] text-slate-500">Platform Link-and-Match Mahasiswa & Proyek Riset Industri</span>
+          </div>
+        </div>
 
-    <!-- Modal Content Card -->
-    <div class="modal-content-anim relative w-full max-w-xl glass-card-elevated rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/80 overflow-y-auto max-h-[90vh]">
-      <button 
-        type="button" 
-        data-modal-close 
-        class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 bg-white/50 hover:bg-white/90 transition-all cursor-pointer" 
-        aria-label="Tutup jendela rincian">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-
-      <!-- Dynamic Content Injection Target -->
-      <div id="drill-down-content">
-        <!-- Konten disuntikkan oleh populateDrillDownModal() di app.js -->
+        <nav class="flex flex-wrap items-center justify-center gap-6 font-semibold" aria-label="Footer Navigasi">
+          <a href="index.html" class="hover:text-[#626CDA]">Beranda</a>
+          <a href="auth.html" class="hover:text-[#626CDA]">Masuk / Daftar</a>
+          <a href="dashboard.html" class="hover:text-[#626CDA]">Dashboard Mahasiswa</a>
+          <a href="projects.html" class="hover:text-[#626CDA]">Eksplorasi Proyek</a>
+          <a href="post-project.html" class="hover:text-[#626CDA]">Pasang Lowongan Mitra</a>
+        </nav>
       </div>
-    </div>
-  </div>
 
-  <!-- Footer -->
-  <footer class="glass-nav border-t border-white/60 py-6 mt-12 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <p>© 2026 ProjectMatch AI • Platform Link-and-Match Mahasiswa & Proyek Riset Industri</p>
-      <div class="flex items-center gap-4">
-        <a href="index.html" class="hover:text-[#626CDA]">Dashboard</a>
-        <a href="projects.html" class="hover:text-[#626CDA]">Eksplorasi</a>
-        <a href="post-project.html" class="hover:text-[#626CDA]">Mitra</a>
-        <a href="auth.html" class="hover:text-[#626CDA]">Autentikasi</a>
+      <div class="pt-6 border-t border-slate-200/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-400 text-[11px]">
+        <p>© 2026 ProjectMatch AI • Front-End Akademis Berbasis Standar WAI-ARIA, Tailwind CSS v4 & Glassmorphism</p>
+        <p>Dirancang untuk Ekosistem MBKM & Riset Kolaborasi Kampus-Industri</p>
       </div>
     </div>
   </footer>
 
-  <!-- Script Modular ES6 -->
+  <!-- Script Modular -->
   <script type="module">
-    import { initHeroRadarChart, updateHeroStats, toggleBenchmarkDataset, rolePresets, defaultStudentStats } from './js/chart-config.js';
-    import { getFeaturedProjects, fetchProjectById } from './js/api.js';
-    import { renderProjectCardHtml, openModal, populateDrillDownModal, showToast } from './js/app.js';
-
-    let currentStudentStats = [...defaultStudentStats.studentValues];
-
-    // Inisialisasi Chart.js Radar Chart
-    const canvas = document.getElementById('heroRadarChart');
-    if (canvas) {
-      initHeroRadarChart(canvas);
-    }
-
-    // Toggle Benchmark button
-    const toggleBenchmarkBtn = document.getElementById('btn-toggle-benchmark');
-    if (toggleBenchmarkBtn) {
-      toggleBenchmarkBtn.addEventListener('click', () => {
-        const isVisible = toggleBenchmarkDataset();
-        toggleBenchmarkBtn.setAttribute('aria-pressed', isVisible ? 'true' : 'false');
-        toggleBenchmarkBtn.classList.toggle('text-[#626CDA]', isVisible);
-        showToast(isVisible ? 'Benchmark industri ditampilkan.' : 'Benchmark industri disembunyikan.', 'info', 1500);
-      });
-    }
-
-    // Preset Role RPG Buttons
-    const presetButtons = document.querySelectorAll('.preset-btn');
-    presetButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const presetKey = btn.getAttribute('data-preset');
-        const preset = rolePresets[presetKey];
-        if (preset) {
-          currentStudentStats = [...preset.values];
-          updateHeroStats(preset.values, preset.name);
-
-          // Update active styles
-          presetButtons.forEach(b => {
-            b.classList.remove('bg-[#626CDA]', 'text-white', 'shadow-xs');
-            b.classList.add('bg-white/70', 'text-slate-700');
-          });
-          btn.classList.add('bg-[#626CDA]', 'text-white', 'shadow-xs');
-          btn.classList.remove('bg-white/70', 'text-slate-700');
-
-          showToast(`Mode RPG diubah ke: ${preset.name}`, 'info', 2000);
-        }
-      });
-    });
-
-    // Render Proyek Rekomendasi Teratas
-    async function loadFeaturedProjects() {
-      const container = document.getElementById('top-projects-container');
-      try {
-        const projects = await getFeaturedProjects(3);
-        if (projects.length === 0) {
-          container.innerHTML = `
-            <div class="p-8 text-center glass-card rounded-2xl">
-              <p class="text-sm font-semibold text-slate-600">Belum ada proyek terdaftar.</p>
-            </div>
-          `;
-          return;
-        }
-
-        container.innerHTML = projects.map(p => renderProjectCardHtml(p)).join('');
-
-        // Attach listener ke tombol view-detail-btn untuk drill-down modal
-        container.querySelectorAll('.view-detail-btn').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            const projectId = btn.getAttribute('data-project-id');
-            try {
-              const project = await fetchProjectById(projectId);
-              populateDrillDownModal(project, currentStudentStats);
-              openModal('drillDownModal');
-            } catch (err) {
-              showToast(err.message, 'error');
-            }
-          });
-        });
-
-      } catch (err) {
-        container.innerHTML = `
-          <div class="p-6 rounded-2xl bg-red-50 text-center border border-red-200">
-            <p class="text-sm font-bold text-[#C95D36]">Gagal memuat rekomendasi proyek.</p>
-            <p class="text-xs text-slate-500 mt-1">${err.message}</p>
-          </div>
-        `;
-      }
-    }
-
-    loadFeaturedProjects();
-
-    // Notifikasi icon click feedback
-    document.getElementById('btn-notifications').addEventListener('click', () => {
-      showToast('Anda memiliki 3 kecocokan proyek baru dengan skor di atas 85%!', 'info');
-    });
-
     // Mobile nav toggle
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileNav = document.getElementById('mobile-nav');
