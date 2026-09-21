@@ -86,15 +86,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const savedRole = localStorage.getItem('projectmatch_role') as UserRole;
 
       if (isAuthenticated && savedRole && PRESET_ACCOUNTS[savedRole]) {
-        setUser(PRESET_ACCOUNTS[savedRole]);
+        const account = PRESET_ACCOUNTS[savedRole];
         setSessionCookie(savedRole);
+        queueMicrotask(() => {
+          setUser(account);
+        });
       } else {
         // FRESH VISITOR: Default tidak terlogin sama sekali
-        setUser(null);
         localStorage.removeItem('projectmatch_authenticated');
         localStorage.removeItem('projectmatch_role');
         localStorage.removeItem('projectmatch_user');
         clearSessionCookie();
+        queueMicrotask(() => {
+          setUser(null);
+        });
       }
     }
   }, []);

@@ -14,6 +14,27 @@ interface EvidenceDetail {
   projectsCompleted: string[];
 }
 
+export interface BenchmarkData {
+  aiml: number;
+  frontend: number;
+  uiux: number;
+  backend: number;
+  architecture: number;
+  name: string;
+  company: string;
+  [key: string]: number | string;
+}
+
+export interface MeshUserData {
+  title: string;
+  type: 'Mahasiswa' | 'Industri';
+  dimensionKey: string;
+  score: number;
+  isStudent: boolean;
+  isSub?: boolean;
+  ratio?: number;
+}
+
 export default function HeroRpg3DChart() {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -93,7 +114,7 @@ export default function HeroRpg3DChart() {
   };
 
   // Current project benchmark values
-  const currentBenchmark = useMemo(() => {
+  const currentBenchmark: BenchmarkData = useMemo(() => {
     if (selectedProjectId === 'benchmark') {
       return {
         aiml: 85,
@@ -149,9 +170,11 @@ export default function HeroRpg3DChart() {
     let mag1 = 0;
     let mag2 = 0;
     for (let i = 0; i < 5; i++) {
-      dot += v1[i] * v2[i];
-      mag1 += v1[i] * v1[i];
-      mag2 += v2[i] * v2[i];
+      const a = v1[i] ?? 0;
+      const b = v2[i] ?? 0;
+      dot += a * b;
+      mag1 += a * a;
+      mag2 += b * b;
     }
     if (mag1 === 0 || mag2 === 0) return '0.0';
     const sim = dot / (Math.sqrt(mag1) * Math.sqrt(mag2));
@@ -162,7 +185,7 @@ export default function HeroRpg3DChart() {
   const sceneRef = useRef<THREE.Scene | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const meshesRef = useRef<{ mesh: THREE.Mesh; targetHeight: number; initialY: number; data: any }[]>([]);
+  const meshesRef = useRef<{ mesh: THREE.Mesh; targetHeight: number; initialY: number; data: MeshUserData }[]>([]);
 
   useEffect(() => {
     if (viewMode !== '3d') return;
@@ -267,11 +290,11 @@ export default function HeroRpg3DChart() {
         mesh: studentMesh,
         targetHeight: sVal,
         initialY: dim.cx,
-        data: studentMesh.userData,
+        data: studentMesh.userData as MeshUserData,
       });
 
       // Main Industry Column (Orange)
-      const iVal = (currentBenchmark as any)[dim.key] / 10;
+      const iVal = Number(currentBenchmark[dim.key] ?? 75) / 10;
       const industryMesh = new THREE.Mesh(boxGeo, industryMat.clone());
       industryMesh.scale.set(1, iVal, 1);
       industryMesh.position.set(dim.cx + 1.1, iVal / 2, dim.cz);
@@ -281,7 +304,7 @@ export default function HeroRpg3DChart() {
         title: dim.name,
         type: 'Industri',
         dimensionKey: dim.key,
-        score: (currentBenchmark as any)[dim.key],
+        score: Number(currentBenchmark[dim.key] ?? 75),
         isStudent: false,
       };
       scene.add(industryMesh);
@@ -289,7 +312,7 @@ export default function HeroRpg3DChart() {
         mesh: industryMesh,
         targetHeight: iVal,
         initialY: dim.cx,
-        data: industryMesh.userData,
+        data: industryMesh.userData as MeshUserData,
       });
 
       // Sub-pillars cluster
@@ -302,7 +325,7 @@ export default function HeroRpg3DChart() {
       subOffsets.forEach((sub) => {
         const baseScore = sub.isStud
           ? studentStats[dim.key]
-          : (currentBenchmark as any)[dim.key];
+          : Number(currentBenchmark[dim.key] ?? 75);
         const subVal = (baseScore * sub.ratio) / 10;
         const subMesh = new THREE.Mesh(
           subBoxGeo,
@@ -326,7 +349,7 @@ export default function HeroRpg3DChart() {
           mesh: subMesh,
           targetHeight: subVal,
           initialY: dim.cx,
-          data: subMesh.userData,
+          data: subMesh.userData as MeshUserData,
         });
       });
     });
@@ -363,15 +386,15 @@ export default function HeroRpg3DChart() {
       const interactiveMeshes = meshesRef.current.map((m) => m.mesh);
       const intersects = raycaster.intersectObjects(interactiveMeshes);
 
-      if (intersects.length > 0) {
+      if (intersects.length > 0 && intersects[0]) {
         const hit = intersects[0].object as THREE.Mesh;
-        const udata = hit.userData;
+        const udata = hit.userData as MeshUserData;
         if (udata && udata.title) {
           setHoveredInfo({
             title: udata.title,
             type: udata.type,
             score: udata.score,
-            benchmark: (currentBenchmark as any)[udata.dimensionKey] || 80,
+            benchmark: Number(currentBenchmark[udata.dimensionKey] ?? 80),
             x: e.clientX - rect.left,
             y: e.clientY - rect.top,
           });
@@ -389,11 +412,12 @@ export default function HeroRpg3DChart() {
       raycaster.setFromCamera(mouse, camera);
       const interactiveMeshes = meshesRef.current.map((m) => m.mesh);
       const intersects = raycaster.intersectObjects(interactiveMeshes);
-      if (intersects.length > 0) {
+      if (intersects.length > 0 && intersects[0]) {
         const hit = intersects[0].object as THREE.Mesh;
-        const udata = hit.userData;
-        if (udata && udata.dimensionKey && portfolioEvidences[udata.dimensionKey]) {
-          setActiveDrilldown(portfolioEvidences[udata.dimensionKey]);
+        const udata = hit.userData as MeshUserData;
+        if (udata && udata.dimensionKey) {
+          const ev = portfolioEvidences[udata.dimensionKey as keyof typeof portfolioEvidences];
+          if (ev) setActiveDrilldown(ev);
         }
       }
     };
@@ -467,7 +491,7 @@ export default function HeroRpg3DChart() {
       if (udata.isStudent) {
         score = studentStats[udata.dimensionKey as keyof typeof studentStats];
       } else {
-        score = (currentBenchmark as any)[udata.dimensionKey] || 75;
+        score = Number(currentBenchmark[udata.dimensionKey] ?? 75);
       }
 
       if (udata.isSub) {
@@ -500,17 +524,17 @@ export default function HeroRpg3DChart() {
     };
   };
 
-  const makePoints = (data: typeof studentStats) => {
+  const makePoints = (data: Record<string, number | string>) => {
     return dimensions
       .map((d) => {
-        const { x, y } = getCoordinates(d.angle + 90, data[d.key]);
+        const { x, y } = getCoordinates(d.angle + 90, Number(data[d.key] ?? 50));
         return `${x},${y}`;
       })
       .join(' ');
   };
 
   const student2DPolygon = makePoints(studentStats);
-  const benchmark2DPolygon = makePoints(currentBenchmark as any);
+  const benchmark2DPolygon = makePoints(currentBenchmark);
 
   return (
     <div className="glass-card rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-xl relative overflow-hidden space-y-6">
@@ -692,7 +716,7 @@ export default function HeroRpg3DChart() {
                     <g
                       key={idx}
                       className="cursor-pointer"
-                      onClick={() => setActiveDrilldown(portfolioEvidences[d.key])}
+                      onClick={() => setActiveDrilldown(portfolioEvidences[d.key] ?? null)}
                     >
                       <circle
                         cx={x}
@@ -756,7 +780,7 @@ export default function HeroRpg3DChart() {
             {Object.entries(portfolioEvidences).map(([key, item]) => {
               const k = key as keyof typeof studentStats;
               const studScore = studentStats[k];
-              const benchScore = (currentBenchmark as any)[k] || 75;
+              const benchScore = Number(currentBenchmark[k] ?? 75);
               const isSurplus = studScore >= benchScore;
 
               return (

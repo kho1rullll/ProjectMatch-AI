@@ -32,9 +32,10 @@ export async function GET() {
       applications,
       kiosks,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
     return NextResponse.json(
-      { success: false, error: error.message || 'Internal Server Error' },
+      { success: false, error: message },
       { status: 500 }
     );
   }
@@ -63,9 +64,10 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: false, error: 'Aksi tidak dikenal' }, { status: 400 });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Gagal memproses aksi admin';
     return NextResponse.json(
-      { success: false, error: error.message || 'Gagal memproses aksi admin' },
+      { success: false, error: message },
       { status: 500 }
     );
   }

@@ -4,7 +4,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllProjects, getProjectById } from '@/lib/db';
+import { getProjectById } from '@/lib/db';
 import { ALL_PROJECTS } from '@/lib/data';
 
 interface Props {

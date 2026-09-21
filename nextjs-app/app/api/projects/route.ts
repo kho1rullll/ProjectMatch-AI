@@ -11,9 +11,10 @@ export async function GET() {
       count: projects.length,
       data: projects,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
     return NextResponse.json(
-      { success: false, error: error.message || 'Internal Server Error' },
+      { success: false, error: message },
       { status: 500 }
     );
   }
@@ -74,9 +75,10 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Gagal menyimpan proyek ke database';
     return NextResponse.json(
-      { success: false, error: error.message || 'Gagal menyimpan proyek ke database' },
+      { success: false, error: message },
       { status: 500 }
     );
   }

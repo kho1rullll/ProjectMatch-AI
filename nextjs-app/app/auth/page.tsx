@@ -85,7 +85,7 @@ export default function AuthPage() {
           router.push('/dashboard');
         }
       }, 400);
-    } catch (err: any) {
+    } catch {
       // Fallback local login if API is unreachable
       login(role, email);
       if (role === 'ADMIN') router.push('/admin');

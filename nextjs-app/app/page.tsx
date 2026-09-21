@@ -1,190 +1,114 @@
-'use client';
-
 import React from 'react';
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import FeatureZigZag from '@/components/FeatureZigZag';
+import { Particles } from '@/components/ui/particles';
+import HeroOrbitalSystem from '@/components/landing/HeroOrbitalSystem';
+import FloatingProductCards from '@/components/landing/FloatingProductCards';
+import ProjectMatchHeroStack from '@/components/landing/ProjectMatchHeroStack';
+import EcosystemStrip from '@/components/landing/EcosystemStrip';
+import HeroMetricsBar from '@/components/landing/HeroMetricsBar';
+import HeroFeaturesGrid from '@/components/landing/HeroFeaturesGrid';
+
+export const metadata: Metadata = {
+  title: 'ProjectMatch AI — Hubungkan Potensi Mahasiswa dengan Proyek Industri',
+  description:
+    'Platform rekomendasi cerdas berbasis Cosine Similarity, visualisasi kompetensi interaktif Hero RPG, serta terminal Smart Campus Kiosk (RFID).',
+};
 
 export default function RootHomePage() {
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+    <div className="w-full space-y-16 sm:space-y-20 pb-20">
       
       {/* ========================================================================= */}
-      {/* HERO SECTION                                                              */}
+      {/* HERO SECTION: DEFLEXAI REFERENCE ARCHITECTURE CANVAS                     */}
       {/* ========================================================================= */}
-      <section className="relative text-center max-w-4xl mx-auto space-y-6 pt-6 sm:pt-12">
-        {/* Glow ambient orbs */}
-        <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-400/15 rounded-full blur-3xl pointer-events-none -z-10" />
-
-        {/* Status Tag Pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50/90 border border-blue-200 text-blue-700 text-xs font-bold shadow-xs">
-          <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-          <span>Sistem Link &amp; Match Riset &amp; Industri Vokasi Generasi Baru</span>
-        </div>
-
-        {/* Main Title */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 font-display tracking-tight leading-[1.15]">
-          Hubungkan Potensi Mahasiswa dengan Proyek Industri Lewat{' '}
-          <span className="gradient-text-blue">AI Semantic Engine</span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="text-sm sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Platform rekomendasi cerdas berbasis <strong>Cosine Similarity</strong>, visualisasi kompetensi interaktif <strong>Hero RPG</strong>, serta terminal <strong>Smart Campus Kiosk (RFID)</strong>.
-        </p>
-
-
-        {/* Live Metrics Bar */}
-        <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto text-left">
-          <div className="p-4 rounded-2xl glass-card border border-blue-100">
-            <span className="block text-2xl font-black text-slate-900">1.240+</span>
-            <span className="text-[11px] text-slate-500 font-medium">Mahasiswa Terdaftar</span>
-          </div>
-          <div className="p-4 rounded-2xl glass-card border border-blue-100">
-            <span className="block text-2xl font-black text-blue-600">890+</span>
-            <span className="text-[11px] text-slate-500 font-medium">Proyek Cocok Selesai</span>
-          </div>
-          <div className="p-4 rounded-2xl glass-card border border-blue-100">
-            <span className="block text-2xl font-black text-emerald-600">94.2%</span>
-            <span className="text-[11px] text-slate-500 font-medium">Akurasi AI Cosine Match</span>
-          </div>
-          <div className="p-4 rounded-2xl glass-card border border-blue-100">
-            <span className="block text-2xl font-black text-indigo-600">3 Unit</span>
-            <span className="text-[11px] text-slate-500 font-medium">Smart Kiosk RFID IoT</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* LIST FITUR UNGGULAN SISTEM (SKPL §1 & §4)                                 */}
-      {/* ========================================================================= */}
-      <section className="space-y-8">
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3.5 py-1 rounded-full border border-blue-100">
-            ✨ Solusi &amp; Teknologi Utama
-          </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 font-display tracking-tight">
-            Fitur Unggulan ProjectMatch AI
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-600">
-            Ekosistem terintegrasi yang menggabungkan inferensi kecerdasan buatan, gamifikasi talenta, dan terminal fisik kampus modern.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="px-3 sm:px-6 lg:px-8 pt-1 sm:pt-2">
+        <div className="hero-canvas max-w-6xl mx-auto relative overflow-hidden p-6 sm:p-10 lg:p-12 min-h-[860px] lg:min-h-[920px] flex flex-col justify-between">
           
-          {/* Fitur 1: Hero RPG Gamifikasi */}
-          <div className="glass-card rounded-3xl p-6 sm:p-7 border border-blue-100 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all flex flex-col justify-between space-y-5">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-blue-500/20">
-                🎮
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-black text-slate-900">Hero RPG &amp; 5D Radar</h3>
-                  <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                    Gamifikasi Talenta
-                  </span>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Visualisasi portofolio dan riwayat repositori mahasiswa dalam bentuk matriks kompetensi 5 dimensi interaktif (AI/ML, Frontend, Backend, UI/UX, dan Arsitektur).
-                </p>
-              </div>
-
-              <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-700">
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Visualisasi 3D WebGL &amp; Spider Chart</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Kalkulasi Hero Tier &amp; Status Level</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Overlay kecocokan terhadap kualifikasi proyek</span>
-                </div>
-              </div>
-            </div>
+          {/* Layer 0: Subtle Particle System */}
+          <div className="absolute inset-0 pointer-events-none z-0">
+            <Particles
+              className="w-full h-full"
+              quantity={40}
+              staticity={30}
+              ease={60}
+              size={0.7}
+              color="#3b82f6"
+            />
           </div>
 
-          {/* Fitur 2: AI Semantic Matching */}
-          <div className="glass-card rounded-3xl p-6 sm:p-7 border border-indigo-100 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all flex flex-col justify-between space-y-5">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-indigo-500/20">
-                🤖
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-black text-slate-900">AI Semantic Matching</h3>
-                  <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
-                    Cosine Similarity
-                  </span>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Pencocokan kualifikasi proyek mitra dengan profil talenta berbasis ekstraksi vektor LLM berdimensi tinggi untuk menghasilkan skor relevansi matematis 0–100%.
-                </p>
-              </div>
+          {/* Layer 1: Orbital Geometry Graphic System */}
+          <HeroOrbitalSystem />
 
-              <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-700">
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Ekstraksi entitas teknis &amp; NER otomatis</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Tingkat akurasi inferensi mencapai 94.2%</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Rekomendasi penutupan skill gap talenta</span>
-                </div>
-              </div>
+          {/* Layer 2: Floating Product Cards */}
+          <FloatingProductCards />
+
+          {/* Layer 3: Central Hero Typography & CTAs */}
+          <div className="relative z-10 max-w-2xl mx-auto text-center space-y-5 pt-8 sm:pt-12">
+            
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/90 border border-blue-200 text-blue-700 text-xs font-bold tracking-tight shadow-xs backdrop-blur-xs">
+              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+              <span>Sistem Pencocokan Otomatis AI &amp; Smart Campus Kiosk v1.0</span>
             </div>
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] font-display">
+              Hubungkan Potensi Mahasiswa dengan{' '}
+              <span className="gradient-text-blue">Proyek Industri</span> Nyata.
+            </h1>
+
+            <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed font-normal">
+              Platform inferensi cerdas berbasis <strong className="text-slate-800 font-semibold">Cosine Similarity</strong>, visualisasi kompetensi interaktif <strong className="text-slate-800 font-semibold">Hero RPG</strong>, serta integrasi fisik terminal kampus <strong className="text-slate-800 font-semibold">Smart Kiosk RFID</strong>.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <Link
+                href="/projects"
+                className="w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 transition-all flex items-center justify-center gap-2 group cursor-pointer"
+              >
+                <span>Eksplorasi Proyek AI</span>
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+              </Link>
+
+              <Link
+                href="/auth"
+                className="w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200/90 shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Masuk dengan KTM / Akun</span>
+              </Link>
+            </div>
+
           </div>
 
-          {/* Fitur 3: Smart Campus Kiosk IoT */}
-          <div className="glass-card rounded-3xl p-6 sm:p-7 border border-cyan-100 shadow-sm hover:shadow-xl hover:border-cyan-300 transition-all flex flex-col justify-between space-y-5">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-cyan-700 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-cyan-500/20">
-                📡
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-black text-slate-900">Smart Campus Kiosk</h3>
-                  <span className="text-[10px] font-bold text-cyan-800 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200">
-                    ESP32 + RC522 IoT
-                  </span>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Integrasi perangkat keras terminal interaktif di lingkungan kampus berbasis RFID KTM untuk otentikasi identitas cepat dan verifikasi status akademik mahasiswa.
-                </p>
-              </div>
+          {/* Layer 4: Interactive Stack Mockup */}
+          <div className="relative z-10 my-6 sm:my-8 max-w-xl mx-auto w-full">
+            <ProjectMatchHeroStack />
+          </div>
 
-              <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-700">
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-cyan-100 text-cyan-800 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Waktu respon pembacaan kartu &lt; 1 detik</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-cyan-100 text-cyan-800 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Validasi identitas &amp; keaslian KTM terpusat</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-cyan-100 text-cyan-800 font-bold flex items-center justify-center text-[10px] shrink-0">✓</span>
-                  <span>Pemantauan heartbeat perangkat real-time</span>
-                </div>
-              </div>
-            </div>
+          {/* Layer 5: Ecosystem & Trust Row at Bottom of Canvas */}
+          <div className="relative z-10">
+            <EcosystemStrip />
           </div>
 
         </div>
       </section>
 
+      {/* ========================================================================= */}
+      {/* LIVE METRICS BAR (EXTRACTED SERVER COMPONENT)                             */}
+      {/* ========================================================================= */}
+      <HeroMetricsBar />
 
       {/* ========================================================================= */}
-      {/* FEATURE ZIG-ZAG COMPONENT (COSINE, RPG GAMIFICATION, 4-STEPS, DARK BANNER)*/}
+      {/* LIST FITUR UNGGULAN SISTEM (EXTRACTED SERVER COMPONENT)                   */}
       {/* ========================================================================= */}
-      <FeatureZigZag />
+      <HeroFeaturesGrid />
+
+      {/* ========================================================================= */}
+      {/* FEATURE ZIG-ZAG COMPONENT (PRESERVED)                                     */}
+      {/* ========================================================================= */}
+      <section id="workflow" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
+        <FeatureZigZag />
+      </section>
 
     </div>
   );

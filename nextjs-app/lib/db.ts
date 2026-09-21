@@ -83,8 +83,6 @@ interface DatabaseSchema {
   kiosks: KioskTerminalRecord[];
 }
 
-const dbFilePath = path.join(process.cwd(), 'projectmatch-db.json');
-
 // Default Seed Data matching SKPL
 const defaultData: DatabaseSchema = {
   users: [
@@ -458,7 +456,24 @@ export function getProjectById(id: string): ProjectRecord | null {
   return db.projects.find((p) => p.id === id) || null;
 }
 
-export function createProject(data: any): ProjectRecord {
+export interface CreateProjectData {
+  title: string;
+  company: string;
+  category?: string;
+  workType?: string;
+  duration?: string;
+  stipend?: string;
+  skillsRequired?: string;
+  description: string;
+  reqAiml?: number;
+  reqFrontend?: number;
+  reqUiux?: number;
+  reqBackend?: number;
+  reqArchitecture?: number;
+  [key: string]: unknown;
+}
+
+export function createProject(data: CreateProjectData): ProjectRecord {
   const db = readDatabase();
   const id = `proj-${Date.now().toString(36)}`;
   const skillsArray = data.skillsRequired

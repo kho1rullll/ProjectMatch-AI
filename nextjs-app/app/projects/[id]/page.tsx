@@ -1,8 +1,12 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ALL_PROJECTS } from '@/lib/data';
 import { getProjectById, getAllProjects } from '@/lib/db';
+import ProjectDetailHeader from '@/components/project-detail/ProjectDetailHeader';
+import ProjectDetailRequirements from '@/components/project-detail/ProjectDetailRequirements';
+import ProjectAiBreakdown from '@/components/project-detail/ProjectAiBreakdown';
 
 interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
@@ -22,6 +26,20 @@ export async function generateStaticParams() {
   } catch {
     return seedList;
   }
+}
+
+export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const project = getProjectById(id) || ALL_PROJECTS.find((p) => p.id === id);
+  if (!project) {
+    return {
+      title: 'Proyek Tidak Ditemukan | ProjectMatch AI',
+    };
+  }
+  return {
+    title: `${project.title} | ProjectMatch AI`,
+    description: project.description.slice(0, 160),
+  };
 }
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
@@ -58,83 +76,25 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
       {/* Main Detail Card */}
       <div className="glass-card rounded-3xl p-6 sm:p-10 border border-blue-100 shadow-xl space-y-8">
         
-        {/* Header */}
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-xs font-bold text-blue-700 bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-100">
-              {project.category}
-            </span>
-            <div className="px-4 py-1.5 rounded-full text-xs font-black badge-match-high">
-              🎯 {project.matchScore}% Kecocokan AI
-            </div>
-          </div>
+        {/* Header (Extracted Server Component) */}
+        <ProjectDetailHeader
+          category={project.category}
+          matchScore={project.matchScore}
+          title={project.title}
+          company={project.company}
+          workType={project.workType}
+          duration={project.duration}
+          stipend={project.stipend}
+        />
 
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 font-display">
-            {project.title}
-          </h1>
+        {/* Overview & Skill Requirements (Extracted Server Component) */}
+        <ProjectDetailRequirements
+          description={project.description}
+          skills={skills}
+        />
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600 pt-1">
-            <span className="font-bold text-slate-900">🏢 {project.company}</span>
-            <span>📍 {project.workType}</span>
-            <span>⏱️ Durasi: {project.duration}</span>
-            <span className="font-bold text-blue-600">💰 {project.stipend}</span>
-          </div>
-        </div>
-
-        {/* Overview */}
-        <div className="space-y-3 border-t border-slate-100 pt-6">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Deskripsi Pekerjaan & Ruang Lingkup
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            {project.description}
-          </p>
-        </div>
-
-        {/* Skill Requirements */}
-        <div className="space-y-3 border-t border-slate-100 pt-6">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Tech Stack & Kualifikasi yang Dibutuhkan
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {skills.map((skill, idx) => (
-              <span
-                key={idx}
-                className="text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* AI Breakdown Matrix */}
-        <div className="space-y-4 border-t border-slate-100 pt-6 bg-slate-50/70 p-5 rounded-2xl border border-slate-100">
-          <h3 className="text-xs font-bold text-slate-800 flex items-center gap-2">
-            <span>📊 Analisis Kualifikasi Berdasarkan Vektor Portofoliomu</span>
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div>
-              <div className="flex justify-between text-slate-600 mb-1">
-                <span>AI / Machine Learning</span>
-                <span className="font-bold text-slate-900">{breakdown.aiml}%</span>
-              </div>
-              <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-600 rounded-full" style={{ width: `${breakdown.aiml}%` }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-slate-600 mb-1">
-                <span>Backend & Architecture</span>
-                <span className="font-bold text-slate-900">{breakdown.backend}%</span>
-              </div>
-              <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                <div className="h-full bg-indigo-600 rounded-full" style={{ width: `${breakdown.backend}%` }} />
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* AI Breakdown Matrix (Extracted Server Component) */}
+        <ProjectAiBreakdown breakdown={breakdown} />
 
         {/* Action Button */}
         <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">

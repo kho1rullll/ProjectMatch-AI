@@ -3,6 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { ProjectItem } from '@/lib/data';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 interface MatchProjectCardProps {
   project: ProjectItem;
@@ -13,21 +16,25 @@ export default function MatchProjectCard({ project, onSelect }: MatchProjectCard
   const isHighMatch = project.matchScore >= 85;
 
   return (
-    <div className="glass-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between border border-blue-100 shadow-sm relative group">
+    <Card
+      variant="interactive"
+      padding="md"
+      className="glass-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between border border-blue-100 shadow-sm relative group"
+    >
       <div>
         {/* Top Header: Category & Match Badge */}
         <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+          <Badge variant="default" size="sm" className="bg-slate-100 text-slate-600 font-bold">
             {project.category}
-          </span>
-          <div
-            className={`px-3 py-1 rounded-full text-xs font-black flex items-center gap-1.5 ${
-              isHighMatch ? 'badge-match-high' : 'badge-match-medium'
-            }`}
+          </Badge>
+          <Badge
+            variant={isHighMatch ? 'high' : 'medium'}
+            size="sm"
+            className="flex items-center gap-1.5 font-black px-3 py-1"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>{project.matchScore}% Match</span>
-          </div>
+          </Badge>
         </div>
 
         {/* Title & Company */}
@@ -75,13 +82,15 @@ export default function MatchProjectCard({ project, onSelect }: MatchProjectCard
 
         <div className="flex items-center gap-2">
           {onSelect ? (
-            <button
+            <Button
               type="button"
+              variant="secondary"
+              size="sm"
               onClick={() => onSelect(project)}
-              className="px-3.5 py-2 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors cursor-pointer"
+              className="font-bold text-blue-600 bg-blue-50 hover:bg-blue-100"
             >
               Lihat Detail
-            </button>
+            </Button>
           ) : (
             <Link
               href={`/projects/${project.id}`}
@@ -92,6 +101,6 @@ export default function MatchProjectCard({ project, onSelect }: MatchProjectCard
           )}
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

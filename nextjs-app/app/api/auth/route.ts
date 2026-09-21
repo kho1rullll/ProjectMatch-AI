@@ -63,9 +63,10 @@ export async function POST(request: Request) {
         role: user.role,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Gagal memproses autentikasi';
     return NextResponse.json(
-      { success: false, error: error.message || 'Gagal memproses autentikasi' },
+      { success: false, error: message },
       { status: 500 }
     );
   }

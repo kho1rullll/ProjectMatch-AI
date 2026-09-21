@@ -47,3 +47,36 @@ export const CreateProjectSchema = z.object({
 
 export type Project = z.infer<typeof ProjectSchema>;
 export type CreateProjectInput = z.infer<typeof CreateProjectSchema>;
+
+// Module 3–4: Branded Types for SRS Domain Identifiers
+export type Brand<T, B extends string> = T & { readonly __brand: B };
+export type ProjectId = Brand<string, "ProjectId">;
+export type StudentId = Brand<string, "StudentId">;
+export type UserId = Brand<string, "UserId">;
+
+// Helper to safely cast or validate branded IDs
+export function toProjectId(id: string): ProjectId {
+  return id as ProjectId;
+}
+
+export function toStudentId(id: string): StudentId {
+  return id as StudentId;
+}
+
+export function toUserId(id: string): UserId {
+  return id as UserId;
+}
+
+// Module 3–4: Discriminated Union for Asynchronous Application States
+export type AsyncState<T> =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; errorMessage: string };
+
+// Module 3–4: TypeScript Built-in Utility Types demonstrating domain reuse
+export type ProjectSummary = Pick<Project, "id" | "title" | "company" | "matchScore" | "category">;
+export type ProjectDraft = Omit<Project, "id" | "matchScore" | "postedAt">;
+export type ProjectFilterOptions = Partial<Pick<Project, "category" | "workType" | "verified">>;
+export type CompleteProject = Required<Project>;
+
