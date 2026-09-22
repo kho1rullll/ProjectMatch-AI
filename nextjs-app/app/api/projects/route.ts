@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAllProjects, createProject } from '@/lib/db';
+import { CreateProjectSchema } from '@/types/project';
 
 // GET: Ambil daftar seluruh lowongan proyek dari SQLite Database
 export async function GET() {
@@ -20,51 +21,42 @@ export async function GET() {
   }
 }
 
-// POST: Pasang lowongan proyek baru ke SQLite Database
+// POST: Pasang lowongan proyek baru ke SQLite Database dengan validasi Zod
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const {
-      title,
-      company,
-      category,
-      workType,
-      duration,
-      stipend,
-      skillsRequired,
-      description,
-      reqAiml,
-      reqFrontend,
-      reqUiux,
-      reqBackend,
-      reqArchitecture,
-    } = body;
+    const parseResult = CreateProjectSchema.safeParse(body);
 
-    if (!title || !company || !description) {
+    if (!parseResult.success) {
       return NextResponse.json(
-        { success: false, error: 'Judul, nama mitra, dan deskripsi wajib diisi.' },
+        {
+          success: false,
+          error: 'Validasi input pembuatan proyek gagal',
+          issues: parseResult.error.errors.map((e) => ({
+            path: e.path.join('.'),
+            message: e.message,
+          })),
+        },
         { status: 400 }
       );
     }
 
-    const skillsString = Array.isArray(skillsRequired)
-      ? skillsRequired.join(', ')
-      : skillsRequired || 'General Tech';
+    const validData = parseResult.data;
 
     const newProject = createProject({
-      title,
-      company,
-      category: category || 'AI & Machine Learning',
-      workType: workType || 'Hybrid',
-      duration: duration || '3 Bulan',
-      stipend: stipend || 'Rp 4.000.000 / bln',
-      skillsRequired: skillsString,
-      description,
-      reqAiml: Number(reqAiml) || 85,
-      reqFrontend: Number(reqFrontend) || 70,
-      reqUiux: Number(reqUiux) || 65,
-      reqBackend: Number(reqBackend) || 80,
-      reqArchitecture: Number(reqArchitecture) || 75,
+      title: validData.title,
+      company: validData.company,
+      category: validData.category,
+      workType: validData.workType,
+      duration: validData.duration,
+      stipend: validData.stipend,
+      skillsRequired: validData.skillsRequired,
+      description: validData.description,
+      reqAiml: validData.reqAiml,
+      reqFrontend: validData.reqFrontend,
+      reqUiux: validData.reqUiux,
+      reqBackend: validData.reqBackend,
+      reqArchitecture: validData.reqArchitecture,
     });
 
     return NextResponse.json(

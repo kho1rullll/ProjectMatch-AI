@@ -36,7 +36,10 @@ export const CreateProjectSchema = z.object({
   workType: z.string().default("Hybrid"),
   duration: z.string().default("3 Bulan"),
   stipend: z.string().default("Rp 4.000.000 / bln"),
-  skillsRequired: z.string().min(2, "Minimal cantumkan 1 keahlian teknis"),
+  skillsRequired: z.union([z.array(z.string()), z.string()]).transform((val) => {
+    if (Array.isArray(val)) return val.join(', ');
+    return val;
+  }).refine((val) => val.trim().length >= 2, { message: "Minimal cantumkan 1 keahlian teknis" }),
   description: z.string().min(15, "Deskripsi proyek minimal 15 karakter"),
   reqAiml: z.number().optional().default(85),
   reqFrontend: z.number().optional().default(70),

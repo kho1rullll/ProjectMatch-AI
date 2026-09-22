@@ -7,6 +7,7 @@ import {
   verifyStudent,
   updateKioskStatus,
 } from '@/lib/db';
+import { AdminActionSchema } from '@/types/admin';
 
 export async function GET() {
   try {
@@ -43,22 +44,39 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { action, studentId, verified, kioskId, kioskStatus } = await request.json();
+    const rawBody = await request.json();
+    const parseResult = AdminActionSchema.safeParse(rawBody);
 
-    if (action === 'verify_student') {
-      const updated = verifyStudent(studentId, verified);
+    if (!parseResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Aksi admin tidak valid atau parameter tidak lengkap',
+          issues: parseResult.error.errors.map((e) => ({
+            path: e.path.join('.'),
+            message: e.message,
+          })),
+        },
+        { status: 400 }
+      );
+    }
+
+    const data = parseResult.data;
+
+    if (data.action === 'verify_student') {
+      const updated = verifyStudent(data.studentId, data.verified);
       return NextResponse.json({
         success: true,
-        message: `Status akademik mahasiswa berhasil ${verified ? 'Diverifikasi' : 'Dibatalkan'}!`,
+        message: `Status akademik mahasiswa berhasil ${data.verified ? 'Diverifikasi' : 'Dibatalkan'}!`,
         student: updated,
       });
     }
 
-    if (action === 'update_kiosk') {
-      const updated = updateKioskStatus(kioskId, kioskStatus);
+    if (data.action === 'update_kiosk') {
+      const updated = updateKioskStatus(data.kioskId, data.kioskStatus);
       return NextResponse.json({
         success: true,
-        message: `Status terminal kiosk ${kioskId} diperbarui menjadi ${kioskStatus}!`,
+        message: `Status terminal kiosk ${data.kioskId} diperbarui menjadi ${data.kioskStatus}!`,
         kiosk: updated,
       });
     }

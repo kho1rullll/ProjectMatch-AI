@@ -59,6 +59,42 @@
       "role": "ADMIN",
       "university": "Universitas Sebelas Maret (UNS)",
       "createdAt": "2026-09-15T16:16:01.621Z"
+    },
+    {
+      "id": "usr-mub5o1ln",
+      "name": "Testing Student",
+      "email": "student-1789989728026@uns.ac.id",
+      "password": "$2b$10$mD4lnrIHtMYgM1KG9b/ire195S9pD9HverlJVvFJdo/LOgFO3rYw.",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-21T11:22:08.183Z"
+    },
+    {
+      "id": "usr-mub5oi9m",
+      "name": "Testing Student",
+      "email": "student-1789989749625@uns.ac.id",
+      "password": "$2b$10$wSW.thk2Niql//v5zhLEweIxopwvhu6saws34M2bQQLmV8Kp4Th42",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-21T11:22:29.781Z"
+    },
+    {
+      "id": "usr-mub5t6wm",
+      "name": "Testing Student",
+      "email": "student-1789989968181@uns.ac.id",
+      "password": "$2b$10$v37O8p6Sdca/KOzhs8NFJuH/8OARv2FrNtNajBHwyGFgcqirs9WNC",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-21T11:26:08.304Z"
+    },
+    {
+      "id": "usr-mub604we",
+      "name": "Testing Student",
+      "email": "student-1789990292172@uns.ac.id",
+      "password": "$2b$10$XS7FZiGojFFcodxpPl1wmuYE9AS3dculn1/wzNeW9PxX9a3dLFXXC",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-21T11:31:32.401Z"
     }
   ],
   "competencyVectors": [
@@ -71,9 +107,149 @@
       "backend": 90,
       "architecture": 84,
       "updatedAt": "2026-09-15T16:16:01.621Z"
+    },
+    {
+      "id": "vec-usr-mub5o1ln",
+      "userId": "usr-mub5o1ln",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-21T11:22:08.183Z"
+    },
+    {
+      "id": "vec-usr-mub5oi9m",
+      "userId": "usr-mub5oi9m",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-21T11:22:29.781Z"
+    },
+    {
+      "id": "vec-usr-mub5t6wm",
+      "userId": "usr-mub5t6wm",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-21T11:26:08.304Z"
+    },
+    {
+      "id": "vec-usr-mub604we",
+      "userId": "usr-mub604we",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-21T11:31:32.401Z"
     }
   ],
   "projects": [
+    {
+      "id": "proj-mub6053d",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mub5t706",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mub5oie5",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mub5o1q5",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
     {
       "id": "proj-mu573tgr",
       "title": "Implementasi AI Multi-Agent Autonomous Testing",
@@ -309,7 +485,7 @@
       "ipAddress": "192.168.1.101",
       "firmware": "v2.4.1-ESP32-RC522",
       "status": "ONLINE",
-      "lastHeartbeat": "2 detik yang lalu",
+      "lastHeartbeat": "Baru saja",
       "totalTapsToday": 142
     },
     {

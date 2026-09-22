@@ -138,6 +138,9 @@ export default function NavClientControls() {
                 }}
                 className="relative p-2.5 rounded-xl glass-card text-slate-600 hover:text-blue-600 hover:bg-white transition-all cursor-pointer"
                 aria-label="Notifikasi"
+                aria-expanded={notificationOpen}
+                aria-haspopup="true"
+                aria-controls="notification-dropdown"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -148,7 +151,12 @@ export default function NavClientControls() {
               </button>
 
               {notificationOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-blue-100 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div
+                  id="notification-dropdown"
+                  role="region"
+                  aria-label="Panel Notifikasi"
+                  className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-blue-100 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+                >
                   <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-3">
                     <h4 className="text-xs font-bold text-slate-900">Notifikasi Terkini</h4>
                     <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">3 Baru</span>
@@ -176,6 +184,10 @@ export default function NavClientControls() {
                   setNotificationOpen(false);
                 }}
                 className="flex items-center gap-2.5 pl-2 border-l border-slate-200 hover:opacity-90 transition-all text-left cursor-pointer"
+                aria-label="Menu akun pengguna"
+                aria-expanded={profileDropdownOpen}
+                aria-haspopup="true"
+                aria-controls="profile-dropdown"
               >
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white flex items-center justify-center font-black text-xs shadow-sm ring-2 ring-white">
                   {getInitials(user.name)}
@@ -194,7 +206,12 @@ export default function NavClientControls() {
               </button>
 
               {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-blue-100 p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200 space-y-2">
+                <div
+                  id="profile-dropdown"
+                  role="menu"
+                  aria-label="Pengaturan Akun Pengguna"
+                  className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-blue-100 p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200 space-y-2"
+                >
                   <div className="p-2 border-b border-slate-100">
                     <p className="text-xs font-black text-slate-900">{user.name}</p>
                     <p className="text-[11px] text-slate-500 truncate">{user.email}</p>

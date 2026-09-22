@@ -479,6 +479,7 @@ export default function HeroRpg3DChart() {
       window.removeEventListener('resize', handleResize);
       renderer.dispose();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRotate, viewMode]);
 
   // Update target heights in Three.js scene

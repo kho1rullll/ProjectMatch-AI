@@ -1,6 +1,7 @@
 // lib/db.ts - Persistent Embedded Local Database for ProjectMatch AI
 import fs from 'fs';
 import path from 'path';
+import { hashPassword } from './auth-crypto';
 
 export interface UserRecord {
   id: string;
@@ -525,7 +526,7 @@ export function createUser(data: {
     id,
     name: data.name,
     email: data.email,
-    password: data.password || 'password123',
+    password: hashPassword(data.password || 'password123'),
     role: data.role,
     companyName: data.companyName,
     academicVerified: data.role === 'MAHASISWA' ? true : undefined,
