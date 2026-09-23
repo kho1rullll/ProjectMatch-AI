@@ -1,0 +1,512 @@
+{
+  "users": [
+    {
+      "id": "usr-student-001",
+      "name": "Raden Satria",
+      "nim": "V3925028",
+      "email": "satria@student.itb.ac.id",
+      "password": "password123",
+      "role": "MAHASISWA",
+      "university": "D3 Teknik Informatika PSDKU Madiun, UNS",
+      "semester": "Semester 6",
+      "gpa": "3.88 / 4.00",
+      "rfidUid": "0x8F3A29B1",
+      "academicVerified": false,
+      "createdAt": "2026-09-15T16:16:01.619Z"
+    },
+    {
+      "id": "usr-student-002",
+      "name": "Abdullah Abil Abi Yoso",
+      "nim": "V3925001",
+      "email": "abil@student.uns.ac.id",
+      "password": "password123",
+      "role": "MAHASISWA",
+      "university": "D3 Teknik Informatika PSDKU Madiun, UNS",
+      "semester": "Semester 6",
+      "gpa": "3.92 / 4.00",
+      "rfidUid": "0x4E7B12C9",
+      "academicVerified": false,
+      "createdAt": "2026-09-15T16:16:01.620Z"
+    },
+    {
+      "id": "usr-student-003",
+      "name": "Nabila Putri Azzahra",
+      "nim": "V3925044",
+      "email": "nabila@student.uns.ac.id",
+      "password": "password123",
+      "role": "MAHASISWA",
+      "university": "D3 Teknik Informatika PSDKU Madiun, UNS",
+      "semester": "Semester 4",
+      "gpa": "3.75 / 4.00",
+      "rfidUid": "0x99A1BC33",
+      "academicVerified": false,
+      "createdAt": "2026-09-15T16:16:01.620Z"
+    },
+    {
+      "id": "usr-partner-001",
+      "name": "Dr. Hendra Gunawan",
+      "email": "hr@bioinformatika.co.id",
+      "password": "password123",
+      "role": "MITRA",
+      "companyName": "BioInformatika Nusantara & RS Cipto",
+      "createdAt": "2026-09-15T16:16:01.621Z"
+    },
+    {
+      "id": "usr-admin-001",
+      "name": "Biro Kerjasama & Kemahasiswaan",
+      "email": "admin@projectmatch.ac.id",
+      "password": "password123",
+      "role": "ADMIN",
+      "university": "Universitas Sebelas Maret (UNS)",
+      "createdAt": "2026-09-15T16:16:01.621Z"
+    },
+    {
+      "id": "usr-mub5o1ln",
+      "name": "Testing Student",
+      "email": "student-1789989728026@uns.ac.id",
+      "password": "$2b$10$mD4lnrIHtMYgM1KG9b/ire195S9pD9HverlJVvFJdo/LOgFO3rYw.",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-21T11:22:08.183Z"
+    },
+    {
+      "id": "usr-mub5oi9m",
+      "name": "Testing Student",
+      "email": "student-1789989749625@uns.ac.id",
+      "password": "$2b$10$wSW.thk2Niql//v5zhLEweIxopwvhu6saws34M2bQQLmV8Kp4Th42",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-21T11:22:29.781Z"
+    },
+    {
+      "id": "usr-mub5t6wm",
+      "name": "Testing Student",
+      "email": "student-1789989968181@uns.ac.id",
+      "password": "$2b$10$v37O8p6Sdca/KOzhs8NFJuH/8OARv2FrNtNajBHwyGFgcqirs9WNC",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-21T11:26:08.304Z"
+    },
+    {
+      "id": "usr-mub604we",
+      "name": "Testing Student",
+      "email": "student-1789990292172@uns.ac.id",
+      "password": "$2b$10$XS7FZiGojFFcodxpPl1wmuYE9AS3dculn1/wzNeW9PxX9a3dLFXXC",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-21T11:31:32.401Z"
+    }
+  ],
+  "competencyVectors": [
+    {
+      "id": "vec-001",
+      "userId": "usr-student-001",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-15T16:16:01.621Z"
+    },
+    {
+      "id": "vec-usr-mub5o1ln",
+      "userId": "usr-mub5o1ln",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-21T11:22:08.183Z"
+    },
+    {
+      "id": "vec-usr-mub5oi9m",
+      "userId": "usr-mub5oi9m",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-21T11:22:29.781Z"
+    },
+    {
+      "id": "vec-usr-mub5t6wm",
+      "userId": "usr-mub5t6wm",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-21T11:26:08.304Z"
+    },
+    {
+      "id": "vec-usr-mub604we",
+      "userId": "usr-mub604we",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-21T11:31:32.401Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-mub6053d",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mub5t706",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mub5oie5",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mub5o1q5",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mu573tgr",
+      "title": "Implementasi AI Multi-Agent Autonomous Testing",
+      "company": "PT Inovasi Kode Nusantara",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "6 Bulan",
+      "stipend": "Rp 5.000.000 / bln",
+      "description": "Membangun platform pengujian otomatis perangkat lunak berbasis LLM multi-agent dengan verifikasi state runtime.",
+      "skillsRequired": [
+        "Python",
+        "TypeScript",
+        "FastAPI",
+        "LLM"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 85,
+        "frontend": 70,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-001",
+      "title": "Pengembangan Engine NLP Berbasis Transformer untuk Riset Medis",
+      "company": "BioInformatika Nusantara & RS Cipto",
+      "category": "AI & Machine Learning",
+      "workType": "Hybrid (Jakarta Pusat)",
+      "duration": "4 Bulan",
+      "stipend": "Rp 4.500.000 / bln",
+      "description": "Membangun pipeline fine-tuning model LLM lokal untuk ekstraksi entitas klinis (NER) pada rekam medis elektronik berbahasa Indonesia. Mahasiswa akan bekerja langsung dengan tim data scientist dan spesialis klinis.",
+      "skillsRequired": [
+        "Python",
+        "PyTorch",
+        "HuggingFace",
+        "FastAPI",
+        "Docker"
+      ],
+      "matchScore": 94,
+      "requirementsBreakdown": {
+        "aiml": 98,
+        "frontend": 45,
+        "uiux": 35,
+        "backend": 88,
+        "architecture": 82
+      },
+      "verified": true,
+      "postedAt": "2 hari yang lalu",
+      "createdBy": "usr-partner-001"
+    },
+    {
+      "id": "proj-002",
+      "title": "Redesain Sistem Dashboard Telemetri IoT & Smart Campus",
+      "company": "Pusat Riset Smart City ITB",
+      "category": "Frontend & UI/UX",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.800.000 / bln",
+      "description": "Mengembangkan antarmuka monitoring sensor energi dan kualitas udara berbasis WebSocket real-time dengan visualisasi canvas interaktif serta standar aksesibilitas WCAG 2.1 AA.",
+      "skillsRequired": [
+        "HTML5/CSS3",
+        "JavaScript ES6+",
+        "Tailwind CSS",
+        "Chart.js",
+        "Figma",
+        "WebSocket"
+      ],
+      "matchScore": 88,
+      "requirementsBreakdown": {
+        "aiml": 40,
+        "frontend": 95,
+        "uiux": 92,
+        "backend": 60,
+        "architecture": 70
+      },
+      "verified": true,
+      "postedAt": "1 hari yang lalu"
+    },
+    {
+      "id": "proj-003",
+      "title": "Microservices Payment Gateway & High-Throughput Ledger",
+      "company": "Fintech DanaNusantara Inc.",
+      "category": "Backend & Cloud",
+      "workType": "Hybrid (Bandung)",
+      "duration": "6 Bulan",
+      "stipend": "Rp 5.200.000 / bln",
+      "description": "Optimasi arsitektur perutean transaksi finansial dengan idempotency key, message broker Kafka, serta database transaction locking berskala ribuan QPS.",
+      "skillsRequired": [
+        "Go / Golang",
+        "PostgreSQL",
+        "Kafka",
+        "Redis",
+        "gRPC",
+        "Kubernetes"
+      ],
+      "matchScore": 76,
+      "requirementsBreakdown": {
+        "aiml": 50,
+        "frontend": 30,
+        "uiux": 20,
+        "backend": 96,
+        "architecture": 95
+      },
+      "verified": true,
+      "postedAt": "3 hari yang lalu"
+    },
+    {
+      "id": "proj-004",
+      "title": "Computer Vision untuk Deteksi Cacat Mutu Produk Manufaktur Otomotif",
+      "company": "PT Rekayasa Industri Presisi",
+      "category": "AI & Machine Learning",
+      "workType": "Onsite (Cikarang)",
+      "duration": "5 Bulan",
+      "stipend": "Rp 4.800.000 / bln",
+      "description": "Implementasi model YOLOv8 / Segment Anything untuk inspeksi cacat mikro pada plat logam perakitan otomotif berkecepatan 60 frame per detik.",
+      "skillsRequired": [
+        "Python",
+        "OpenCV",
+        "YOLOv8",
+        "TensorRT",
+        "Edge AI / Jetson"
+      ],
+      "matchScore": 91,
+      "requirementsBreakdown": {
+        "aiml": 96,
+        "frontend": 40,
+        "uiux": 30,
+        "backend": 75,
+        "architecture": 80
+      },
+      "verified": true,
+      "postedAt": "4 hari yang lalu"
+    },
+    {
+      "id": "proj-005",
+      "title": "Platform Kolaborasi Riset Terbuka Dosen & Mahasiswa",
+      "company": "Lembaga Penelitian & Pengabdian Masyarakat",
+      "category": "Fullstack Web",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.500.000 / bln",
+      "description": "Pembuatan portal kolaborasi hibah penelitian terintegrasi dengan pengindeks publikasi SINTA & Scopus serta sistem peer-review otomatis.",
+      "skillsRequired": [
+        "Next.js",
+        "TypeScript",
+        "Prisma ORM",
+        "Tailwind CSS",
+        "PostgreSQL"
+      ],
+      "matchScore": 82,
+      "requirementsBreakdown": {
+        "aiml": 60,
+        "frontend": 88,
+        "uiux": 80,
+        "backend": 85,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "5 hari yang lalu"
+    },
+    {
+      "id": "proj-006",
+      "title": "Smart Contract & Verifikasi Ijazah Digital Kampus",
+      "company": "EduChain Tech Labs",
+      "category": "Blockchain & Web3",
+      "workType": "Remote",
+      "duration": "4 Bulan",
+      "stipend": "Rp 4.000.000 / bln",
+      "description": "Pembangunan protokol verifikasi kredensial akademik terdesentralisasi menggunakan EVM smart contracts dengan bukti zk-SNARKs untuk privasi mahasiswa.",
+      "skillsRequired": [
+        "Solidity",
+        "Hardhat",
+        "TypeScript",
+        "Ethers.js",
+        "IPFS"
+      ],
+      "matchScore": 68,
+      "requirementsBreakdown": {
+        "aiml": 30,
+        "frontend": 60,
+        "uiux": 50,
+        "backend": 85,
+        "architecture": 90
+      },
+      "verified": true,
+      "postedAt": "1 minggu yang lalu"
+    }
+  ],
+  "applications": [
+    {
+      "id": "app-001",
+      "projectId": "proj-001",
+      "userId": "usr-student-001",
+      "studentName": "Raden Satria (V3925028)",
+      "projectTitle": "Pengembangan Engine NLP Berbasis Transformer",
+      "companyName": "BioInformatika Nusantara & RS Cipto",
+      "matchScore": 94,
+      "status": "REVIEWING",
+      "appliedAt": "2 hari yang lalu"
+    },
+    {
+      "id": "app-002",
+      "projectId": "proj-002",
+      "userId": "usr-student-001",
+      "studentName": "Raden Satria (V3925028)",
+      "projectTitle": "Redesain Sistem Dashboard Telemetri IoT",
+      "companyName": "Pusat Riset Smart City ITB",
+      "matchScore": 88,
+      "status": "ACCEPTED",
+      "appliedAt": "1 minggu yang lalu"
+    },
+    {
+      "id": "app-003",
+      "projectId": "proj-004",
+      "userId": "usr-student-002",
+      "studentName": "Abdullah Abil (V3925001)",
+      "projectTitle": "Computer Vision Deteksi Cacat Mutu Otomotif",
+      "companyName": "PT Rekayasa Industri Presisi",
+      "matchScore": 91,
+      "status": "SUBMITTED",
+      "appliedAt": "3 jam yang lalu"
+    }
+  ],
+  "kiosks": [
+    {
+      "id": "KIOSK-UNS-01",
+      "name": "Smart Kiosk Lobby Utama",
+      "location": "Gedung Rektorat & PSDKU Madiun Lantai 1",
+      "ipAddress": "192.168.1.101",
+      "firmware": "v2.4.1-ESP32-RC522",
+      "status": "ONLINE",
+      "lastHeartbeat": "Baru saja",
+      "totalTapsToday": 142
+    },
+    {
+      "id": "KIOSK-UNS-02",
+      "name": "Smart Kiosk Laboratorium Komputer",
+      "location": "Lab Terpadu Teknik Informatika Lt. 2",
+      "ipAddress": "192.168.1.102",
+      "firmware": "v2.4.1-ESP32-RC522",
+      "status": "ONLINE",
+      "lastHeartbeat": "6 detik yang lalu",
+      "totalTapsToday": 98
+    },
+    {
+      "id": "KIOSK-UNS-03",
+      "name": "Smart Kiosk Career Center & Perpustakaan",
+      "location": "Perpustakaan Kampus Pusat",
+      "ipAddress": "192.168.1.105",
+      "firmware": "v2.4.0-ESP32-RC522",
+      "status": "STANDBY",
+      "lastHeartbeat": "1 menit yang lalu",
+      "totalTapsToday": 64
+    }
+  ]
+}
