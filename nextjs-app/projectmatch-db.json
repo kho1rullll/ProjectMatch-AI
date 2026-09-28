@@ -212,6 +212,15 @@
       "role": "MAHASISWA",
       "academicVerified": true,
       "createdAt": "2026-09-28T18:00:28.336Z"
+    },
+    {
+      "id": "usr-mulk3yxh",
+      "name": "Testing Student",
+      "email": "student-1790618647444@uns.ac.id",
+      "password": "$2b$10$687a4HpYIfnIUtCtF3qDju6HrtKrvd4b.jcCphfSzcUKuHVFty8p6",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-09-28T18:04:07.576Z"
     }
   ],
   "competencyVectors": [
@@ -394,9 +403,44 @@
       "backend": 90,
       "architecture": 84,
       "updatedAt": "2026-09-28T18:00:28.336Z"
+    },
+    {
+      "id": "vec-usr-mulk3yxh",
+      "userId": "usr-mulk3yxh",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-09-28T18:04:07.576Z"
     }
   ],
   "projects": [
+    {
+      "id": "proj-mulk3z18",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
     {
       "id": "proj-muljz9vh",
       "title": "Automated Test Project for Verification",
