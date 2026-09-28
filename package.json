@@ -1,0 +1,15 @@
+{
+  "name": "projectmatch-ai-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix nextjs-app",
+    "build": "npm run build --prefix nextjs-app",
+    "start": "npm run start --prefix nextjs-app",
+    "lint": "npm run lint --prefix nextjs-app",
+    "module8:dev": "npm run dev --prefix module-8-vite",
+    "module8:build": "npm run build --prefix module-8-vite",
+    "module8:lint": "npm run lint --prefix module-8-vite",
+    "module8:check": "npm run check --prefix module-8-vite"
+  }
+}
