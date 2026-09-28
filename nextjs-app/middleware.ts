@@ -26,9 +26,18 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  // Proteksi rute /mitra (khusus role MITRA)
+  if (pathname.startsWith('/mitra')) {
+    if (!sessionCookie) {
+      const loginUrl = new URL('/auth', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/admin/:path*'],
+  matcher: ['/dashboard/:path*', '/admin/:path*', '/mitra/:path*'],
 };

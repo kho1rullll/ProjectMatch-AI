@@ -18,7 +18,7 @@ export interface AuthUser {
 
 interface AuthContextType {
   user: AuthUser | null;
-  login: (role: UserRole, email?: string) => void;
+  login: (role: UserRole, email?: string, customData?: Partial<AuthUser>) => void;
   switchAccount: (role: UserRole) => void;
   logout: () => void;
   isAuthenticated: boolean;
@@ -104,9 +104,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const login = (role: UserRole, email?: string) => {
+  const login = (role: UserRole, email?: string, customData?: Partial<AuthUser>) => {
     const template = PRESET_ACCOUNTS[role] || PRESET_ACCOUNTS.MAHASISWA;
-    const authData = { ...template, email: email || template.email };
+    const authData: AuthUser = {
+      ...template,
+      ...(customData || {}),
+      email: email || customData?.email || template.email,
+      role: role,
+    };
     setUser(authData);
     if (typeof window !== 'undefined') {
       localStorage.setItem('projectmatch_authenticated', 'true');

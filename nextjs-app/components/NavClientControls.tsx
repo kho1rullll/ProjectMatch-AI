@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useAuth, UserRole } from '@/lib/auth-context';
 
 export default function NavClientControls() {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, switchAccount, logout } = useAuth();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,11 +17,12 @@ export default function NavClientControls() {
 
   const isLandingPage = pathname === '/';
   const isAuthPage = pathname === '/auth';
+  const isRegisterParam = searchParams.get('register') === 'true';
 
   const navLinks = [
     { name: 'Dashboard Mahasiswa', href: '/dashboard', role: 'MAHASISWA' },
     { name: 'Eksplorasi Proyek', href: '/projects' },
-    { name: 'Pasang Lowongan', href: '/post-project', role: 'MITRA' },
+    { name: 'Portal Mitra', href: '/mitra', role: 'MITRA' },
     { name: 'Admin Panel', href: '/admin', role: 'ADMIN' },
   ];
 
@@ -39,7 +41,7 @@ export default function NavClientControls() {
     switchAccount(role);
     setProfileDropdownOpen(false);
     if (role === 'MAHASISWA') router.push('/dashboard');
-    else if (role === 'MITRA') router.push('/projects');
+    else if (role === 'MITRA') router.push('/mitra');
     else if (role === 'ADMIN') router.push('/admin');
   };
 
@@ -52,28 +54,14 @@ export default function NavClientControls() {
   return (
     <>
       {/* Desktop Navigation: Halaman Landing Page */}
-      {isLandingPage && (
+      {isLandingPage && user && (
         <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600">
-          <a href="#features" className="hover:text-slate-900 transition-colors">
-            Solusi AI
-          </a>
-          <a href="#hero-rpg" className="hover:text-slate-900 transition-colors">
-            Hero RPG
-          </a>
-          <Link href="/projects" className="hover:text-slate-900 transition-colors">
-            Eksplorasi Proyek
+          <Link
+            href={user.role === 'MAHASISWA' ? '/dashboard' : user.role === 'ADMIN' ? '/admin' : '/mitra'}
+            className="text-blue-600 font-bold hover:underline"
+          >
+            Dasbor Saya →
           </Link>
-          <a href="#workflow" className="hover:text-slate-900 transition-colors">
-            Alur Kerja
-          </a>
-          {user && (
-            <Link
-              href={user.role === 'MAHASISWA' ? '/dashboard' : user.role === 'ADMIN' ? '/admin' : '/projects'}
-              className="text-blue-600 font-bold hover:underline"
-            >
-              Dasbor Saya →
-            </Link>
-          )}
         </nav>
       )}
 
@@ -107,23 +95,50 @@ export default function NavClientControls() {
       <div className="flex items-center gap-2 sm:gap-3">
         {/* JIKA USER BELUM LOGIN */}
         {!user ? (
-          <div className="flex items-center gap-2">
-            <Link
-              href="/auth"
-              className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer"
-            >
-              Masuk
-            </Link>
-            <Link
-              href="/auth?register=true"
-              className={
-                isLandingPage
-                  ? 'px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs font-bold text-white bg-slate-950 hover:bg-slate-800 shadow-xs transition-all cursor-pointer'
-                  : 'px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition-all cursor-pointer'
-              }
-            >
-              Daftar Akun
-            </Link>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {isAuthPage ? (
+              <>
+                <Link
+                  href="/auth"
+                  className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                    !isRegisterParam
+                      ? 'text-white bg-blue-600 shadow-md shadow-blue-500/25'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                >
+                  Masuk
+                </Link>
+                <Link
+                  href="/auth?register=true"
+                  className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                    isRegisterParam
+                      ? 'text-white bg-blue-600 shadow-md shadow-blue-500/25'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                >
+                  Daftar Akun
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/auth"
+                  className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer"
+                >
+                  Masuk
+                </Link>
+                <Link
+                  href="/auth?register=true"
+                  className={
+                    isLandingPage
+                      ? 'px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs font-bold text-white bg-slate-950 hover:bg-slate-800 shadow-xs transition-all cursor-pointer'
+                      : 'px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition-all cursor-pointer'
+                  }
+                >
+                  Daftar Akun
+                </Link>
+              </>
+            )}
           </div>
         ) : (
           /* JIKA USER SUDAH LOGIN */
@@ -256,7 +271,7 @@ export default function NavClientControls() {
 
                   <div className="pt-2 border-t border-slate-100 flex items-center justify-between px-1">
                     <Link
-                      href={user.role === 'MAHASISWA' ? '/dashboard' : user.role === 'ADMIN' ? '/admin' : '/projects'}
+                      href={user.role === 'MAHASISWA' ? '/dashboard' : user.role === 'ADMIN' ? '/admin' : '/mitra'}
                       onClick={() => setProfileDropdownOpen(false)}
                       className="text-xs text-blue-600 font-bold hover:underline"
                     >
@@ -294,7 +309,7 @@ export default function NavClientControls() {
             )}
 
             {/* Mobile Menu Toggle Button for Landing Page */}
-            {isLandingPage && (
+            {isLandingPage && user && (
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -325,36 +340,15 @@ export default function NavClientControls() {
       </div>
 
       {/* Mobile Navigation Dropdown for Landing Page */}
-      {isLandingPage && mobileMenuOpen && (
+      {isLandingPage && mobileMenuOpen && user && (
         <div className="md:hidden absolute top-full left-0 right-0 w-full bg-white/95 border-b border-slate-200 shadow-xl backdrop-blur-xl px-4 py-3 space-y-1.5 text-xs font-semibold z-50">
-          <a
-            href="#features"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-50"
-          >
-            Solusi AI
-          </a>
-          <a
-            href="#hero-rpg"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-50"
-          >
-            Hero RPG
-          </a>
           <Link
-            href="/projects"
+            href={user.role === 'MAHASISWA' ? '/dashboard' : user.role === 'ADMIN' ? '/admin' : '/mitra'}
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-50"
+            className="block px-3 py-2 rounded-xl text-blue-600 font-bold hover:bg-slate-50"
           >
-            Eksplorasi Proyek
+            Dasbor Saya →
           </Link>
-          <a
-            href="#workflow"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-50"
-          >
-            Alur Kerja
-          </a>
         </div>
       )}
 

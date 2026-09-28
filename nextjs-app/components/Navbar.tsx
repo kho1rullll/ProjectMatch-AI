@@ -1,8 +1,18 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import NavClientControls from './NavClientControls';
 
 export default function Navbar() {
+  const pathname = usePathname();
+
+  // Sembunyikan topbar pada halaman dashboard mahasiswa, admin, & mitra (menggunakan sidebar khusus)
+  if (pathname.startsWith('/dashboard') || pathname.startsWith('/admin') || pathname.startsWith('/mitra')) {
+    return null;
+  }
+
   return (
     <header className="sticky top-0 z-50 glass-nav border-b border-slate-200/60 bg-white/80 backdrop-blur-xl transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
@@ -24,7 +34,9 @@ export default function Navbar() {
         </div>
 
         {/* Client Interactive Controls: Links, User Menu, Dropdowns, Mobile Menu */}
-        <NavClientControls />
+        <React.Suspense fallback={<div className="w-24 h-8" />}>
+          <NavClientControls />
+        </React.Suspense>
       </div>
     </header>
   );

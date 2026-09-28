@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         );
       }
 
-      const { name, email, password, role, companyName } = parseResult.data;
+      const { name, email, password, role, nim, companyName } = parseResult.data;
       const existing = getUserByEmail(email);
       if (existing) {
         return NextResponse.json(
@@ -37,6 +37,7 @@ export async function POST(request: Request) {
         email,
         password,
         role,
+        nim,
         companyName,
       });
 
@@ -56,6 +57,7 @@ export async function POST(request: Request) {
           name: newUser.name,
           email: newUser.email,
           role: newUser.role,
+          nim: newUser.nim,
         },
       });
     }
@@ -79,12 +81,20 @@ export async function POST(request: Request) {
     const { email, password, role } = parseResult.data;
     let user = getUserByEmail(email);
     if (!user) {
-      // Auto-create test user with hashed password for convenience if logging in for first time
+      // Auto-create user if logging in for first time with appropriate role inference
+      const inferredRole: 'MAHASISWA' | 'MITRA' | 'ADMIN' =
+        role ||
+        (email.toLowerCase().includes('admin')
+          ? 'ADMIN'
+          : email.toLowerCase().includes('mitra') || email.toLowerCase().includes('co.id') || email.toLowerCase().includes('corp')
+          ? 'MITRA'
+          : 'MAHASISWA');
+
       user = createUser({
-        name: role === 'MAHASISWA' ? 'Raden Satria' : 'Mitra Industri',
+        name: inferredRole === 'ADMIN' ? 'Biro Kemahasiswaan (Admin)' : inferredRole === 'MITRA' ? 'Mitra Industri' : 'Mahasiswa ProjectMatch',
         email,
-        password,
-        role,
+        password: password || 'password123',
+        role: inferredRole,
       });
     } else if (user.password && !verifyPassword(password, user.password)) {
       return NextResponse.json(

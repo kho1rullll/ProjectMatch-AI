@@ -452,6 +452,28 @@ export function updateKioskStatus(kioskId: string, status: 'ONLINE' | 'STANDBY' 
   return null;
 }
 
+export function updateApplicationStatus(applicationId: string, status: string): ApplicationRecord | null {
+  const db = readDatabase();
+  const app = db.applications.find((a) => a.id === applicationId);
+  if (app) {
+    app.status = status;
+    writeDatabase(db);
+    return app;
+  }
+  return null;
+}
+
+export function deleteProject(projectId: string): boolean {
+  const db = readDatabase();
+  const index = db.projects.findIndex((p) => p.id === projectId);
+  if (index !== -1) {
+    db.projects.splice(index, 1);
+    writeDatabase(db);
+    return true;
+  }
+  return false;
+}
+
 export function getProjectById(id: string): ProjectRecord | null {
   const db = readDatabase();
   return db.projects.find((p) => p.id === id) || null;
@@ -518,6 +540,7 @@ export function createUser(data: {
   email: string;
   password?: string;
   role: 'MAHASISWA' | 'MITRA' | 'ADMIN';
+  nim?: string;
   companyName?: string;
 }): UserRecord {
   const db = readDatabase();
@@ -528,6 +551,7 @@ export function createUser(data: {
     email: data.email,
     password: hashPassword(data.password || 'password123'),
     role: data.role,
+    nim: data.nim,
     companyName: data.companyName,
     academicVerified: data.role === 'MAHASISWA' ? true : undefined,
     createdAt: new Date().toISOString(),

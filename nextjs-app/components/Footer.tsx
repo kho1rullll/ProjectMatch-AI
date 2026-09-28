@@ -1,7 +1,16 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Sembunyikan footer pada dashboard mahasiswa, admin, & mitra agar tampilan full-height bersih
+  if (pathname.startsWith('/dashboard') || pathname.startsWith('/admin') || pathname.startsWith('/mitra')) {
+    return null;
+  }
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 mt-20 relative overflow-hidden">
       {/* Subtle top glow */}

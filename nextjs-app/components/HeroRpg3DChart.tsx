@@ -541,28 +541,28 @@ export default function HeroRpg3DChart() {
     <div className="glass-card rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-xl relative overflow-hidden space-y-6">
       
       {/* Top Header Controls */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-            <h3 className="text-base sm:text-lg font-black text-slate-900 font-display">
-              Hero RPG Multi-Dimensional Matrix (SKPL Spesifikasi)
+            <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+            <h3 className="text-base font-bold text-slate-900">
+              Matriks Kompetensi &amp; Keselarasan Proyek
             </h3>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Menerapkan 3 Pilar Interaktivitas SKPL: <em>Touch Drill-down Bukti Portofolio</em>, <em>Automatic Overlay Project Matching</em>, &amp; <em>Vektor Cosine Similarity</em>.
+            Bandingkan 5 dimensi keahlian Anda terhadap standar kualifikasi proyek mitra.
           </p>
         </div>
 
         {/* View Mode & Project Overlay Target Selector */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex items-center gap-2.5 shrink-0">
           {/* Switch 3D vs 2D Radar */}
-          <div className="p-1 bg-slate-100 rounded-xl border border-slate-200 flex items-center text-xs font-bold">
+          <div className="p-1 bg-slate-100 rounded-xl border border-slate-200 flex items-center text-xs font-semibold">
             <button
               type="button"
               onClick={() => setViewMode('3d')}
-              className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                viewMode === '3d' ? 'bg-white text-blue-700 shadow-xs' : 'text-slate-600'
+              className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                viewMode === '3d' ? 'bg-white text-blue-700 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               🎮 3D Voxel
@@ -570,8 +570,8 @@ export default function HeroRpg3DChart() {
             <button
               type="button"
               onClick={() => setViewMode('radar')}
-              className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                viewMode === 'radar' ? 'bg-white text-blue-700 shadow-xs' : 'text-slate-600'
+              className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                viewMode === 'radar' ? 'bg-white text-blue-700 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               🕸️ Radar 2D
@@ -579,61 +579,60 @@ export default function HeroRpg3DChart() {
           </div>
 
           {/* Project Target Dropdown */}
-          <div className="flex items-center gap-2 text-xs">
-            <label className="font-bold text-slate-600">Overlay Proyek:</label>
+          <div className="flex items-center gap-1.5 text-xs">
             <select
               value={selectedProjectId}
               onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[220px]"
+              className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[210px]"
             >
-              <option value="benchmark">Standar Rata-Rata Industri (Baseline)</option>
+              <option value="benchmark">Standar Rata-Rata Industri</option>
               {ALL_PROJECTS.map((proj) => (
                 <option key={proj.id} value={proj.id}>
-                  {proj.company.slice(0, 18)} - {proj.title.slice(0, 24)}...
+                  {proj.company.slice(0, 16)} - {proj.title.slice(0, 20)}...
                 </option>
               ))}
             </select>
           </div>
-
-          {viewMode === '3d' && (
-            <button
-              type="button"
-              onClick={() => setAutoRotate(!autoRotate)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                autoRotate
-                  ? 'bg-blue-600 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
-            >
-              {autoRotate ? '⏸ Hentikan Putar' : '🔄 Putar 3D Otomatis'}
-            </button>
-          )}
         </div>
       </div>
 
       {/* Main Viewport & Controls */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         
         {/* Canvas or Radar Area */}
-        <div className="lg:col-span-8 relative bg-gradient-to-b from-slate-50 to-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-inner flex flex-col items-center justify-center min-h-[440px]">
+        <div className="lg:col-span-8 relative bg-gradient-to-b from-slate-50 to-white rounded-2xl border border-slate-200 overflow-hidden shadow-inner flex flex-col items-center justify-center h-[460px] min-h-[460px] max-h-[460px]">
           
           {/* Overlay Cosine Badge */}
-          <div className="absolute top-3 right-3 z-10 bg-white/95 backdrop-blur-md p-2.5 rounded-2xl border border-blue-100 shadow-md text-right pointer-events-none">
-            <span className="text-[10px] font-bold text-slate-400 block uppercase">Cosine Similarity (SKPL §6.3)</span>
-            <span className="text-xl font-black gradient-text-blue font-display">
-              {cosineSimilarity}%
+          <div className="absolute top-3 right-3 z-10 bg-white/95 p-2.5 rounded-xl border border-slate-200 shadow-xs text-right pointer-events-none">
+            <span className="text-[10px] font-semibold text-slate-400 block uppercase">Skor Kecocokan</span>
+            <span className="text-lg font-bold text-blue-600">
+              {cosineSimilarity}% Cocok
             </span>
           </div>
 
           {/* Interaction Instruction pill */}
-          <div className="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-md px-3 py-1 rounded-xl border border-slate-200 text-[10px] font-bold text-slate-500 flex items-center gap-1.5 shadow-xs">
-            <span>💡 Klik pilar/simpul untuk membuka <strong>Bukti Nyata Portofolio (Drill-Down)</strong></span>
+          <div className="absolute top-3 left-3 z-10 bg-white/90 px-3 py-1 rounded-lg border border-slate-200 text-[11px] font-medium text-slate-600 flex items-center gap-1.5 shadow-xs">
+            <span>💡 Klik pilar untuk melihat rincian bukti portofolio</span>
           </div>
 
           {viewMode === '3d' ? (
             <>
               {/* Three.js 3D Viewport */}
-              <div ref={mountRef} className="w-full h-[440px] select-none" />
+              <div ref={mountRef} className="w-full h-full select-none" />
+
+              {/* Floating 3D Auto Rotate Button */}
+              <button
+                type="button"
+                onClick={() => setAutoRotate(!autoRotate)}
+                className={`absolute bottom-3 left-3 z-10 px-3 py-1.5 rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer flex items-center gap-1.5 ${
+                  autoRotate
+                    ? 'bg-blue-600 text-white shadow-blue-500/20'
+                    : 'bg-white/95 text-slate-700 hover:bg-white border border-slate-200'
+                }`}
+              >
+                <span>{autoRotate ? '⏸' : '🔄'}</span>
+                <span>{autoRotate ? 'Hentikan Putar' : 'Putar 3D Otomatis'}</span>
+              </button>
 
               {/* Hover Tooltip Overlay */}
               {hoveredInfo && (
@@ -657,7 +656,7 @@ export default function HeroRpg3DChart() {
             </>
           ) : (
             /* 2D Interactive Radar SVG View */
-            <div className="py-8 flex flex-col items-center justify-center">
+            <div className="w-full h-full flex flex-col items-center justify-center select-none pt-4">
               <svg width={size} height={size} className="overflow-visible select-none">
                 {[0.2, 0.4, 0.6, 0.8, 1.0].map((level, idx) => {
                   const points = dimensions
@@ -733,7 +732,7 @@ export default function HeroRpg3DChart() {
                         y={labelPos.y}
                         textAnchor="middle"
                         dominantBaseline="central"
-                        className="text-[11px] font-bold fill-slate-700 font-sans hover:fill-blue-600"
+                        className="text-xs font-semibold fill-slate-800 hover:fill-blue-600 font-sans select-none"
                       >
                         {d.label} ({studentStats[d.key]})
                       </text>
@@ -745,11 +744,11 @@ export default function HeroRpg3DChart() {
           )}
 
           {/* Color Legend Bar */}
-          <div className="w-full py-3 px-6 bg-white border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs font-bold">
+          <div className="w-full py-3 px-6 bg-white border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs font-semibold">
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="w-3.5 h-3.5 rounded-md bg-blue-600 border border-blue-400 shadow-xs" />
-                <span className="text-slate-800">Raden Satria (V3925028)</span>
+                <span className="text-slate-800 font-bold">Raden Satria (V3925028)</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3.5 h-3.5 rounded-md bg-orange-500 border border-orange-400 shadow-xs" />
@@ -757,22 +756,22 @@ export default function HeroRpg3DChart() {
               </div>
             </div>
 
-            <div className="text-[11px] text-blue-600 font-semibold flex items-center gap-1">
-              <span>🎯 Automatic Overlay Skill Matching Active</span>
+            <div className="text-xs text-blue-600 font-semibold flex items-center gap-1">
+              <span>🎯 Pencocokan Otomatis Aktif</span>
             </div>
           </div>
         </div>
 
-        {/* Real-time Interactive Sliders Column (SKPL Specification) */}
-        <div className="lg:col-span-4 space-y-4 bg-slate-50/90 p-5 rounded-2xl border border-slate-200">
+        {/* Real-time Interactive Sliders Column */}
+        <div className="lg:col-span-4 flex flex-col justify-between bg-slate-50/90 p-5 rounded-2xl border border-slate-200 h-[460px] min-h-[460px] max-h-[460px] overflow-y-auto space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-200">
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
-                Uji Penyesuaian Vektor Mahasiswa
+              <h4 className="text-sm font-bold text-slate-900">
+                Penyesuaian Skor Portofolio
               </h4>
-              <p className="text-[10px] text-slate-500">Klik dimensi untuk rincian bukti portofolio</p>
+              <p className="text-xs text-slate-500">Klik dimensi untuk rincian bukti</p>
             </div>
-            <span className="text-xs font-black text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md">
+            <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md">
               Hero Lv.4
             </span>
           </div>
@@ -786,15 +785,15 @@ export default function HeroRpg3DChart() {
 
               return (
                 <div key={key} className="space-y-1 p-2 rounded-xl hover:bg-white/80 transition-colors">
-                  <div className="flex justify-between font-bold text-slate-700 items-center">
+                  <div className="flex justify-between font-semibold text-slate-800 items-center">
                     <button
                       type="button"
                       onClick={() => setActiveDrilldown(item)}
-                      className="text-left font-bold text-slate-800 hover:text-blue-600 hover:underline flex items-center gap-1 cursor-pointer"
+                      className="text-left font-semibold text-slate-900 hover:text-blue-600 hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <span>🔍 {item.name}</span>
                     </button>
-                    <span className="text-blue-700 font-black">{studScore} / 100</span>
+                    <span className="text-blue-700 font-bold">{studScore} / 100</span>
                   </div>
                   <input
                     type="range"
@@ -806,10 +805,10 @@ export default function HeroRpg3DChart() {
                     }
                     className="w-full accent-blue-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-400">
-                    <span>Target Proyek: {benchScore}</span>
+                  <div className="flex justify-between text-xs text-slate-600">
+                    <span>Target: {benchScore}</span>
                     <span className={isSurplus ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
-                      {isSurplus ? `+${studScore - benchScore} (Surplus)` : `-${benchScore - studScore} (Skill Gap)`}
+                      {isSurplus ? `+${studScore - benchScore} (Surplus)` : `-${benchScore - studScore} (Gap)`}
                     </span>
                   </div>
                 </div>
@@ -829,9 +828,9 @@ export default function HeroRpg3DChart() {
                   architecture: 84,
                 })
               }
-              className="w-full py-2 rounded-xl text-xs font-bold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 transition-colors"
+              className="w-full py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer"
             >
-              ↺ Reset Nilai Portofolio
+              ↺ Reset Nilai
             </button>
           </div>
         </div>

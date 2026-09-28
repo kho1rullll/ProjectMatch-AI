@@ -18,6 +18,7 @@ export const RegisterRequestSchema = z.object({
   email: z.string().email('Format email tidak valid'),
   password: z.string().min(6, 'Password minimal 6 karakter'),
   role: UserRoleEnum.default('MAHASISWA'),
+  nim: z.string().optional(),
   companyName: z.string().optional(),
 });
 

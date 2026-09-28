@@ -1,20 +1,13 @@
 import type { Metadata } from 'next';
-import { Outfit, Plus_Jakarta_Sans } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Providers from '@/components/Providers';
 
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
-});
-
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-body',
+  variable: '--font-sans',
   display: 'swap',
   weight: ['400', '500', '600', '700', '800'],
 });
@@ -31,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`${outfit.variable} ${plusJakartaSans.variable}`}>
+    <html lang="id" className={plusJakartaSans.variable}>
       <body className="min-h-screen flex flex-col antialiased text-slate-800 selection:bg-blue-600 selection:text-white relative">
         <Providers>
           <div className="mesh-bg" aria-hidden="true" />
