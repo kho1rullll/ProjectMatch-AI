@@ -59,6 +59,8 @@ export type Kiosk = z.infer<typeof KioskSchema>;
 export type AdminApplication = z.infer<typeof AdminApplicationSchema>;
 export type AdminStats = z.infer<typeof AdminStatsSchema>;
 export type AdminDataResponse = z.infer<typeof AdminDataSchema>;
+export type Application = AdminApplication;
+export type Project = AdminDataResponse['projects'][number];
 
 export const fetchAdminData = async (): Promise<AdminDataResponse> => {
   const response = await fetch('/api/admin', {

@@ -456,7 +456,7 @@ export function updateApplicationStatus(applicationId: string, status: string): 
   const db = readDatabase();
   const app = db.applications.find((a) => a.id === applicationId);
   if (app) {
-    app.status = status;
+    app.status = status as ApplicationRecord['status'];
     writeDatabase(db);
     return app;
   }
