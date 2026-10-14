@@ -33,10 +33,10 @@ export async function POST(request: Request) {
       }
 
       const newUser = createUser({
-        name,
+        name: name || 'Mahasiswa',
         email,
         password,
-        role,
+        role: (role as any) || 'MAHASISWA',
         nim,
         companyName,
       });
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     if (!user) {
       // Auto-create user if logging in for first time with appropriate role inference
       const inferredRole: 'MAHASISWA' | 'MITRA' | 'ADMIN' =
-        role ||
+        (role as any) ||
         (email.toLowerCase().includes('admin')
           ? 'ADMIN'
           : email.toLowerCase().includes('mitra') || email.toLowerCase().includes('co.id') || email.toLowerCase().includes('corp')

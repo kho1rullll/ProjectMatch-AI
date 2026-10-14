@@ -221,6 +221,60 @@
       "role": "MAHASISWA",
       "academicVerified": true,
       "createdAt": "2026-09-28T18:04:07.576Z"
+    },
+    {
+      "id": "usr-mv4qwqgd",
+      "name": "Testing Student",
+      "email": "student-1791778924524@uns.ac.id",
+      "password": "$2b$10$hGyv9979Vdlpsgs6qWjrCeG6anmz.JdngjwqvIB.mb.YnhB1OLHOS",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-10-12T04:22:04.667Z"
+    },
+    {
+      "id": "usr-mv4rmdky",
+      "name": "Testing Student",
+      "email": "student-1791780120897@uns.ac.id",
+      "password": "$2b$10$pl/9qRz5BdIK4NYf0sJS7uziWguTHHH4L/9Wxfpm11/4YfRgrNK36",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-10-12T04:42:01.034Z"
+    },
+    {
+      "id": "usr-mv4rn14x",
+      "name": "Testing Student",
+      "email": "student-1791780151424@uns.ac.id",
+      "password": "$2b$10$oJcu/Lh9jwAx8zqMJIiUkO8eDYDyOTfdDqhES0F5BeyrXGonOS4i2",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-10-12T04:42:31.561Z"
+    },
+    {
+      "id": "usr-mv4rng6o",
+      "name": "Testing Student",
+      "email": "student-1791780170927@uns.ac.id",
+      "password": "$2b$10$PKr/Seg/6YZbam6yGPopMeLzsssKtFHEtNIAYScwR1tTzZ8H8hzeu",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-10-12T04:42:51.066Z"
+    },
+    {
+      "id": "usr-mv4rt549",
+      "name": "Testing Student",
+      "email": "student-1791780436520@uns.ac.id",
+      "password": "$2b$10$SZ0Ne6GvFMf6F7JQrsXR1.UlWKvjk62wZs9v23PUEOTQpxi5kxTh2",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-10-12T04:47:16.656Z"
+    },
+    {
+      "id": "usr-mv7l42c9",
+      "name": "Testing Student",
+      "email": "student-1791950587352@uns.ac.id",
+      "password": "$2b$10$6Zczks/ykHvIFPChzSD8uOOIe1oBes8DaL41SzCPX7yaRtRtp/8Xi",
+      "role": "MAHASISWA",
+      "academicVerified": true,
+      "createdAt": "2026-10-14T04:03:07.437Z"
     }
   ],
   "competencyVectors": [
@@ -413,9 +467,219 @@
       "backend": 90,
       "architecture": 84,
       "updatedAt": "2026-09-28T18:04:07.576Z"
+    },
+    {
+      "id": "vec-usr-mv4qwqgd",
+      "userId": "usr-mv4qwqgd",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-10-12T04:22:04.667Z"
+    },
+    {
+      "id": "vec-usr-mv4rmdky",
+      "userId": "usr-mv4rmdky",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-10-12T04:42:01.034Z"
+    },
+    {
+      "id": "vec-usr-mv4rn14x",
+      "userId": "usr-mv4rn14x",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-10-12T04:42:31.561Z"
+    },
+    {
+      "id": "vec-usr-mv4rng6o",
+      "userId": "usr-mv4rng6o",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-10-12T04:42:51.066Z"
+    },
+    {
+      "id": "vec-usr-mv4rt549",
+      "userId": "usr-mv4rt549",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-10-12T04:47:16.656Z"
+    },
+    {
+      "id": "vec-usr-mv7l42c9",
+      "userId": "usr-mv7l42c9",
+      "aiml": 92,
+      "frontend": 85,
+      "uiux": 78,
+      "backend": 90,
+      "architecture": 84,
+      "updatedAt": "2026-10-14T04:03:07.437Z"
     }
   ],
   "projects": [
+    {
+      "id": "proj-mv7l42eq",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mv4rt586",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mv4rngam",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mv4rn18u",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mv4rmdou",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
+    {
+      "id": "proj-mv4qwqkh",
+      "title": "Automated Test Project for Verification",
+      "company": "SV UNS Lab",
+      "category": "AI & Machine Learning",
+      "workType": "Remote",
+      "duration": "3 Bulan",
+      "stipend": "Rp 3.000.000",
+      "description": "Project created during test execution to verify DB persistence.",
+      "skillsRequired": [
+        "TypeScript",
+        "Vitest",
+        "React"
+      ],
+      "matchScore": 90,
+      "requirementsBreakdown": {
+        "aiml": 88,
+        "frontend": 85,
+        "uiux": 65,
+        "backend": 80,
+        "architecture": 75
+      },
+      "verified": true,
+      "postedAt": "Baru saja"
+    },
     {
       "id": "proj-mulk3z18",
       "title": "Automated Test Project for Verification",

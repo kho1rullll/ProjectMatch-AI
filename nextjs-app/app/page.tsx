@@ -11,18 +11,16 @@ import HeroMetricsBar from '@/components/landing/HeroMetricsBar';
 import HeroFeaturesGrid from '@/components/landing/HeroFeaturesGrid';
 
 export const metadata: Metadata = {
-  title: 'ProjectMatch AI — Hubungkan Potensi Mahasiswa dengan Proyek Industri',
+  title: 'ProjectMatch AI — Link-and-Match Mahasiswa & Lowongan Digital',
   description:
-    'Platform rekomendasi cerdas berbasis Cosine Similarity, visualisasi kompetensi interaktif Hero RPG, serta terminal Smart Campus Kiosk (RFID).',
+    'Platform otomatisasi karier digital berbasis web yang mempertemukan keahlian riil mahasiswa pada repositori GitHub dengan lowongan freelance dan part-time dari LinkedIn, Fiverr, dan Upwork.',
 };
 
 export default function RootHomePage() {
   return (
     <div className="w-full space-y-16 sm:space-y-20 pb-20">
       
-      {/* ========================================================================= */}
-      {/* HERO SECTION: DEFLEXAI REFERENCE ARCHITECTURE CANVAS                     */}
-      {/* ========================================================================= */}
+      {/* HERO SECTION */}
       <section className="px-3 sm:px-6 lg:px-8 pt-1 sm:pt-2">
         <div className="hero-canvas max-w-6xl mx-auto relative overflow-hidden p-6 sm:p-10 lg:p-12 min-h-[860px] lg:min-h-[920px] flex flex-col justify-between">
           
@@ -49,24 +47,24 @@ export default function RootHomePage() {
             
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/90 border border-blue-200 text-blue-700 text-xs font-bold tracking-tight shadow-xs backdrop-blur-xs">
               <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-              <span>Sistem Pencocokan Otomatis AI &amp; Smart Campus Kiosk v1.0</span>
+              <span>ProjectMatch AI: Otomatisasi Karier Digital Berbasis GitHub (SKPL V12)</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] font-display">
-              Hubungkan Potensi Mahasiswa dengan{' '}
-              <span className="gradient-text-blue">Proyek Industri</span> Nyata.
+              Pertemukan Repositori GitHub Mahasiswa dengan{' '}
+              <span className="gradient-text-blue">Lowongan Digital</span>.
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed font-normal">
-              Platform inferensi cerdas berbasis <strong className="text-slate-800 font-semibold">Cosine Similarity</strong>, visualisasi kompetensi interaktif <strong className="text-slate-800 font-semibold">Hero RPG</strong>, serta integrasi fisik terminal kampus <strong className="text-slate-800 font-semibold">Smart Kiosk RFID</strong>.
+              Inferensi AI semantik (<strong className="text-slate-800 font-semibold">Sentence Transformers &amp; Llama 3.1</strong>) menghubungkan portofolio coding riil dengan lowongan freelance &amp; part-time dari <strong className="text-slate-800 font-semibold">LinkedIn, Upwork, dan Fiverr</strong>.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <Link
-                href="/projects"
+                href="/dashboard"
                 className="w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 transition-all flex items-center justify-center gap-2 group cursor-pointer"
               >
-                <span>Eksplorasi Proyek AI</span>
+                <span>Mulai Eksplorasi Lowongan</span>
                 <span className="group-hover:translate-x-0.5 transition-transform">→</span>
               </Link>
 
@@ -74,7 +72,7 @@ export default function RootHomePage() {
                 href="/auth"
                 className="w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200/90 shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
-                <span>Masuk dengan KTM / Akun</span>
+                <span>Masuk ke Akun</span>
               </Link>
             </div>
 
@@ -93,19 +91,13 @@ export default function RootHomePage() {
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* LIVE METRICS BAR (EXTRACTED SERVER COMPONENT)                             */}
-      {/* ========================================================================= */}
+      {/* LIVE METRICS BAR */}
       <HeroMetricsBar />
 
-      {/* ========================================================================= */}
-      {/* LIST FITUR UNGGULAN SISTEM (EXTRACTED SERVER COMPONENT)                   */}
-      {/* ========================================================================= */}
+      {/* FITUR UNGGULAN SISTEM */}
       <HeroFeaturesGrid />
 
-      {/* ========================================================================= */}
-      {/* FEATURE ZIG-ZAG COMPONENT (PRESERVED)                                     */}
-      {/* ========================================================================= */}
+      {/* FEATURE ZIG-ZAG COMPONENT */}
       <section id="workflow" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
         <FeatureZigZag />
       </section>

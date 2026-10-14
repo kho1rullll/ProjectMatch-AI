@@ -1,4 +1,4 @@
-// middleware.ts — Edge Middleware Route Guard (Modul 6)
+// middleware.ts — Edge Middleware Route Guard Sesuai SKPL & Backend Architecture
 // Memvalidasi cookie projectmatch_session sebelum request mencapai segmen terlindungi (/dashboard, /admin)
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -7,9 +7,8 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const sessionCookie = request.cookies.get('projectmatch_session')?.value;
 
-  // Proteksi rute /dashboard
+  // Proteksi rute /dashboard (khusus role mahasiswa)
   if (pathname.startsWith('/dashboard')) {
-    // Jika belum ada cookie sesi, redirect ke login
     if (!sessionCookie) {
       const loginUrl = new URL('/auth', request.url);
       loginUrl.searchParams.set('redirect', pathname);
@@ -17,17 +16,8 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Proteksi rute /admin (khusus role ADMIN)
+  // Proteksi rute /admin (khusus role admin)
   if (pathname.startsWith('/admin')) {
-    if (!sessionCookie) {
-      const loginUrl = new URL('/auth', request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-  }
-
-  // Proteksi rute /mitra (khusus role MITRA)
-  if (pathname.startsWith('/mitra')) {
     if (!sessionCookie) {
       const loginUrl = new URL('/auth', request.url);
       loginUrl.searchParams.set('redirect', pathname);
@@ -39,5 +29,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/admin/:path*', '/mitra/:path*'],
+  matcher: ['/dashboard/:path*', '/admin/:path*'],
 };

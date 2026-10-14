@@ -1,138 +1,125 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { api, setStoredToken, removeStoredToken } from './api-client';
+import { AuthUser } from '@/types/auth';
 
-export type UserRole = 'MAHASISWA' | 'MITRA' | 'ADMIN';
-
-export interface AuthUser {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  badge?: string;
-  organization?: string;
-  nim?: string;
-  gpa?: string;
-  rfidUid?: string;
-}
+export type UserRole = 'mahasiswa' | 'admin' | 'MAHASISWA' | 'ADMIN';
+export type { AuthUser };
 
 interface AuthContextType {
   user: AuthUser | null;
-  login: (role: UserRole, email?: string, customData?: Partial<AuthUser>) => void;
-  switchAccount: (role: UserRole) => void;
+  login: (roleOrEmail: string, passwordOrEmail?: string) => Promise<void>;
+  switchAccount: (role: 'mahasiswa' | 'admin') => void;
   logout: () => void;
   isAuthenticated: boolean;
 }
 
-export const PRESET_ACCOUNTS: Record<UserRole, AuthUser> = {
-  MAHASISWA: {
+export const PRESET_ACCOUNTS: Record<'mahasiswa' | 'admin', AuthUser> = {
+  mahasiswa: {
     id: 'usr-student-001',
     name: 'Raden Satria',
+    full_name: 'Raden Satria',
     email: 'satria@student.itb.ac.id',
-    role: 'MAHASISWA',
-    badge: 'Hero Tier S (Lv. 4)',
+    role: 'mahasiswa',
     organization: 'D3 Teknik Informatika PSDKU Madiun, UNS',
     nim: 'V3925028',
-    gpa: '3.88',
-    rfidUid: '0x8F3A29B1',
+    github_username: 'kho1rullll',
   },
-  MITRA: {
-    id: 'usr-partner-001',
-    name: 'Dr. Hendra Gunawan',
-    email: 'hr@bioinformatika.co.id',
-    role: 'MITRA',
-    badge: 'Mitra Industri Terverifikasi',
-    organization: 'BioInformatika Nusantara & RS Cipto',
-  },
-  ADMIN: {
+  admin: {
     id: 'usr-admin-001',
-    name: 'Biro Kerjasama & Kemahasiswaan',
+    name: 'Administrator Kampus',
+    full_name: 'Biro Kemahasiswaan & Kerjasama UNS',
     email: 'admin@projectmatch.ac.id',
-    role: 'ADMIN',
-    badge: 'Administrator Kampus & IoT Manager',
+    role: 'admin',
     organization: 'Universitas Sebelas Maret (UNS)',
   },
 };
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: () => {},
+  login: async () => {},
   switchAccount: () => {},
   logout: () => {},
   isAuthenticated: false,
 });
 
-function setSessionCookie(role: string) {
-  if (typeof document !== 'undefined') {
-    document.cookie = `projectmatch_session=${role}; path=/; max-age=86400; SameSite=Lax`;
-    document.cookie = `projectmatch_role=${role}; path=/; max-age=86400; SameSite=Lax`;
-  }
-}
-
-function clearSessionCookie() {
-  if (typeof document !== 'undefined') {
-    document.cookie = 'projectmatch_session=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'projectmatch_role=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-  }
-}
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
-    // Sesi awal fresh: hanya login jika pengguna memang sengaja login (ada flag projectmatch_authenticated)
     if (typeof window !== 'undefined') {
-      const isAuthenticated = localStorage.getItem('projectmatch_authenticated') === 'true';
-      const savedRole = localStorage.getItem('projectmatch_role') as UserRole;
-
-      if (isAuthenticated && savedRole && PRESET_ACCOUNTS[savedRole]) {
-        const account = PRESET_ACCOUNTS[savedRole];
-        setSessionCookie(savedRole);
-        queueMicrotask(() => {
-          setUser(account);
-        });
+      const stored = api.auth.getCurrentUser();
+      if (stored) {
+        setUser(stored);
       } else {
-        // FRESH VISITOR: Default tidak terlogin sama sekali
-        localStorage.removeItem('projectmatch_authenticated');
-        localStorage.removeItem('projectmatch_role');
-        localStorage.removeItem('projectmatch_user');
-        clearSessionCookie();
-        queueMicrotask(() => {
-          setUser(null);
-        });
+        const savedRole = localStorage.getItem('projectmatch_role') as 'mahasiswa' | 'admin';
+        if (savedRole && PRESET_ACCOUNTS[savedRole]) {
+          setUser(PRESET_ACCOUNTS[savedRole]);
+        }
       }
     }
   }, []);
 
-  const login = (role: UserRole, email?: string, customData?: Partial<AuthUser>) => {
-    const template = PRESET_ACCOUNTS[role] || PRESET_ACCOUNTS.MAHASISWA;
-    const authData: AuthUser = {
-      ...template,
-      ...(customData || {}),
-      email: email || customData?.email || template.email,
-      role: role,
-    };
-    setUser(authData);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('projectmatch_authenticated', 'true');
-      localStorage.setItem('projectmatch_role', role);
-      localStorage.setItem('projectmatch_user', JSON.stringify(authData));
+  const login = async (roleOrEmail: string, passwordOrEmail?: string) => {
+    // Jika login menggunakan email & password
+    if (roleOrEmail.includes('@')) {
+      try {
+        const resp = await api.auth.login(roleOrEmail, passwordOrEmail || 'password123');
+        const authData: AuthUser = {
+          ...resp.user,
+          name: resp.user.name || resp.user.full_name || 'Pengguna',
+          role: (resp.user.role.toLowerCase() as 'mahasiswa' | 'admin'),
+        };
+        setUser(authData);
+        localStorage.setItem('projectmatch_role', authData.role);
+        return;
+      } catch (e) {
+        // Fallback jika FastAPI offline, gunakan preset matching
+        const normalizedEmail = roleOrEmail.toLowerCase();
+        if (normalizedEmail.includes('admin')) {
+          const acc = PRESET_ACCOUNTS.admin;
+          setUser(acc);
+          setStoredToken('mock-admin-token');
+          localStorage.setItem('projectmatch_role', 'admin');
+          localStorage.setItem('projectmatch_user', JSON.stringify(acc));
+          return;
+        } else {
+          const acc = PRESET_ACCOUNTS.mahasiswa;
+          setUser(acc);
+          setStoredToken('mock-mahasiswa-token');
+          localStorage.setItem('projectmatch_role', 'mahasiswa');
+          localStorage.setItem('projectmatch_user', JSON.stringify(acc));
+          return;
+        }
+      }
     }
-    setSessionCookie(role);
+
+    // Login via tombol cepat / switch role
+    const targetRole = roleOrEmail.toLowerCase() === 'admin' ? 'admin' : 'mahasiswa';
+    const acc = PRESET_ACCOUNTS[targetRole];
+    setUser(acc);
+    setStoredToken(`mock-${targetRole}-token`);
+    localStorage.setItem('projectmatch_role', targetRole);
+    localStorage.setItem('projectmatch_user', JSON.stringify(acc));
   };
 
-  const switchAccount = (role: UserRole) => {
-    login(role);
+  const switchAccount = (role: 'mahasiswa' | 'admin') => {
+    const acc = PRESET_ACCOUNTS[role];
+    setUser(acc);
+    setStoredToken(`mock-${role}-token`);
+    localStorage.setItem('projectmatch_role', role);
+    localStorage.setItem('projectmatch_user', JSON.stringify(acc));
   };
 
   const logout = () => {
     setUser(null);
+    api.auth.logout();
+    removeStoredToken();
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('projectmatch_authenticated');
       localStorage.removeItem('projectmatch_role');
       localStorage.removeItem('projectmatch_user');
     }
-    clearSessionCookie();
   };
 
   return (

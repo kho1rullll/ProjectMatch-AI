@@ -4,8 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import { Home, Briefcase, Bookmark, LogOut, ArrowLeft } from 'lucide-react';
+import { Github } from '@/components/icons/GithubIcon';
 
-export type DashboardTab = 'overview' | 'profile' | 'upload-cv' | 'projects' | 'applications';
+export type DashboardTab = 'overview' | 'github' | 'jobs' | 'bookmarks';
 
 interface StudentSidebarProps {
   activeTab: DashboardTab;
@@ -23,19 +25,18 @@ export default function StudentSidebar({
   const router = useRouter();
   const { user, logout } = useAuth();
 
-  const studentName = user?.name || 'Raden Satria';
+  const studentName = user?.name || user?.full_name || 'Raden Satria';
   const nim = user?.nim || 'V3925028';
 
   const navItems: Array<{
     id: DashboardTab;
     label: string;
-    icon: string;
+    icon: React.ReactNode;
   }> = [
-    { id: 'overview', label: 'Ringkasan Dashboard', icon: '🏠' },
-    { id: 'profile', label: 'Lihat Profil', icon: '👤' },
-    { id: 'upload-cv', label: 'Upload CV', icon: '📤' },
-    { id: 'projects', label: 'Daftar Proyek', icon: '🎯' },
-    { id: 'applications', label: 'Status Lamaran', icon: '📝' },
+    { id: 'overview', label: 'Ringkasan & Radar', icon: <Home className="w-4 h-4" /> },
+    { id: 'github', label: 'Tautkan Akun GitHub', icon: <Github className="w-4 h-4" /> },
+    { id: 'jobs', label: 'Eksplorasi Lowongan', icon: <Briefcase className="w-4 h-4" /> },
+    { id: 'bookmarks', label: 'Lowongan Tersimpan', icon: <Bookmark className="w-4 h-4" /> },
   ];
 
   const handleNavClick = (tab: DashboardTab) => {
@@ -59,13 +60,12 @@ export default function StudentSidebar({
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar Container */}
       <aside
         className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Top Logo & Navigation */}
         <div>
           {/* Header Brand */}
           <div className="h-16 px-6 border-b border-slate-100 flex items-center justify-between">
@@ -86,7 +86,7 @@ export default function StudentSidebar({
             <button
               type="button"
               onClick={onCloseMobile}
-              className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+              className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 rounded-lg cursor-pointer"
               aria-label="Tutup menu"
             >
               ✕
@@ -95,8 +95,8 @@ export default function StudentSidebar({
 
           {/* Navigation Links */}
           <nav className="p-4 space-y-1">
-            <p className="px-3 pb-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-              Menu Navigasi
+            <p className="px-3 pb-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Menu Mahasiswa (SKPL V12)
             </p>
 
             {navItems.map((item) => {
@@ -106,13 +106,13 @@ export default function StudentSidebar({
                   key={item.id}
                   type="button"
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer text-left ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left ${
                     isActive
                       ? 'bg-blue-600 text-white shadow-xs'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
-                  <span className="text-base leading-none">{item.icon}</span>
+                  <span className="leading-none">{item.icon}</span>
                   <span>{item.label}</span>
                 </button>
               );
@@ -121,7 +121,7 @@ export default function StudentSidebar({
         </div>
 
         {/* Bottom User Info & Logout */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50 space-y-3">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/80 space-y-3">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0">
               {studentName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
@@ -139,16 +139,18 @@ export default function StudentSidebar({
           <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60 font-medium">
             <Link
               href="/"
-              className="text-slate-600 hover:text-slate-900 transition-colors"
+              className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1"
             >
-              ← Beranda
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Beranda</span>
             </Link>
             <button
               type="button"
               onClick={handleLogout}
-              className="text-rose-600 hover:text-rose-700 transition-colors cursor-pointer"
+              className="text-rose-600 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1"
             >
-              Keluar
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Keluar</span>
             </button>
           </div>
         </div>

@@ -7,7 +7,7 @@ export default function DashboardHeroStats() {
   const { user } = useAuth();
   const studentName = user?.name || 'Raden Satria';
   const nim = user?.nim || 'V3925028';
-  const gpa = user?.gpa || '3.88';
+  const gpa = (user as any)?.gpa || '3.88';
 
   return (
     <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-6">

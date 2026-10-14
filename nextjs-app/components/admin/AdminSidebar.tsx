@@ -4,15 +4,15 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import { BarChart3, Users, ArrowLeft, LogOut, Shield } from 'lucide-react';
 
-export type AdminTab = 'overview' | 'validation' | 'analytics' | 'kiosks';
+export type AdminTab = 'overview' | 'users';
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
   onSelectTab: (tab: AdminTab) => void;
   mobileOpen: boolean;
   onCloseMobile: () => void;
-  pendingValidationCount?: number;
 }
 
 export default function AdminSidebar({
@@ -20,29 +20,28 @@ export default function AdminSidebar({
   onSelectTab,
   mobileOpen,
   onCloseMobile,
-  pendingValidationCount = 0,
 }: AdminSidebarProps) {
   const router = useRouter();
   const { user, logout } = useAuth();
 
-  const adminName = user?.name || 'Biro Kemahasiswaan UNS';
+  const adminName = user?.name || user?.full_name || 'Biro Kemahasiswaan UNS';
   const adminEmail = user?.email || 'admin@projectmatch.ac.id';
 
   const navItems: Array<{
     id: AdminTab;
     label: string;
-    icon: string;
-    badge?: number | string;
+    icon: React.ReactNode;
   }> = [
-    { id: 'overview', label: 'Ringkasan & Metrik', icon: '📊' },
     {
-      id: 'validation',
-      label: 'Validasi Mahasiswa',
-      icon: '📋',
-      badge: pendingValidationCount > 0 ? pendingValidationCount : undefined,
+      id: 'overview',
+      label: 'Monitoring & Statistik Agregasi',
+      icon: <BarChart3 className="w-4 h-4" />,
     },
-    { id: 'analytics', label: 'Monitoring Rekrutmen', icon: '📈' },
-    { id: 'kiosks', label: 'Smart Kiosk (IoT)', icon: '📡' },
+    {
+      id: 'users',
+      label: 'Manajemen Akun & Hak Akses',
+      icon: <Users className="w-4 h-4" />,
+    },
   ];
 
   const handleNavClick = (tab: AdminTab) => {
@@ -72,20 +71,19 @@ export default function AdminSidebar({
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Top Section: Logo & Nav Links */}
         <div>
           {/* Header Brand */}
           <div className="h-16 px-6 border-b border-slate-100 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white flex items-center justify-center font-black text-sm shadow-xs group-hover:scale-105 transition-transform">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white flex items-center justify-center font-black text-sm shadow-xs">
                 P
               </div>
               <div>
-                <span className="font-display font-black text-slate-900 text-sm tracking-tight block">
+                <span className="font-bold text-slate-900 text-sm tracking-tight block">
                   ProjectMatch <span className="text-indigo-600">AI</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-wider text-indigo-600 font-bold -mt-0.5 block">
-                  Portal Admin Kampus
+                <span className="text-[10px] uppercase tracking-wider text-indigo-600 font-bold -mt-0.5 block flex items-center gap-1">
+                  <Shield className="w-3 h-3" /> Super Admin
                 </span>
               </div>
             </Link>
@@ -93,7 +91,7 @@ export default function AdminSidebar({
             <button
               type="button"
               onClick={onCloseMobile}
-              className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg cursor-pointer"
+              className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 rounded-lg cursor-pointer"
               aria-label="Tutup menu"
             >
               ✕
@@ -103,7 +101,7 @@ export default function AdminSidebar({
           {/* Navigation Items */}
           <nav className="p-4 space-y-1.5">
             <p className="px-3 pb-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              Menu Utama Administrator
+              Administrasi Sistem (FR-11, FR-12)
             </p>
 
             {navItems.map((item) => {
@@ -113,45 +111,31 @@ export default function AdminSidebar({
                   key={item.id}
                   type="button"
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer text-left ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer text-left ${
                     isActive
-                      ? 'bg-indigo-600 text-white shadow-sm'
+                      ? 'bg-indigo-600 text-white shadow-xs'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-base leading-none">{item.icon}</span>
-                    <span>{item.label}</span>
-                  </div>
-
-                  {item.badge !== undefined && (
-                    <span
-                      className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
-                        isActive
-                          ? 'bg-white/20 text-white'
-                          : 'bg-amber-100 text-amber-800'
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
+                  <span className="leading-none">{item.icon}</span>
+                  <span>{item.label}</span>
                 </button>
               );
             })}
           </nav>
         </div>
 
-        {/* Bottom Section: Admin User Info & Navigation Actions */}
+        {/* Bottom Section: Admin User Info */}
         <div className="p-4 border-t border-slate-100 bg-slate-50/80 space-y-3">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+            <div className="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs shrink-0">
               ADM
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-xs font-bold text-slate-900 truncate">
                 {adminName}
               </p>
-              <p className="text-[10px] text-slate-500 truncate">
+              <p className="text-[10px] text-slate-500 truncate font-mono">
                 {adminEmail}
               </p>
             </div>
@@ -160,16 +144,18 @@ export default function AdminSidebar({
           <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-200/60 font-semibold">
             <Link
               href="/"
-              className="text-slate-600 hover:text-slate-900 transition-colors"
+              className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1"
             >
-              ← Beranda
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Beranda</span>
             </Link>
             <button
               type="button"
               onClick={handleLogout}
-              className="text-rose-600 hover:text-rose-700 transition-colors cursor-pointer"
+              className="text-rose-600 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1"
             >
-              Keluar
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Keluar</span>
             </button>
           </div>
         </div>

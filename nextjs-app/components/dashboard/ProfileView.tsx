@@ -9,9 +9,9 @@ export default function ProfileView() {
 
   const name = user?.name || STUDENT_PROFILE.name;
   const nim = user?.nim || 'V3925028';
-  const university = user?.organization || 'D3 Teknik Informatika PSDKU Madiun, Universitas Sebelas Maret (UNS)';
-  const gpa = user?.gpa || '3.88 / 4.00';
-  const rfid = user?.rfidUid || '0x8F3A29B1';
+  const university = (user as any)?.organization || 'D3 Teknik Informatika PSDKU Madiun, Universitas Sebelas Maret (UNS)';
+  const gpa = (user as any)?.gpa || '3.88 / 4.00';
+  const rfid = (user as any)?.rfidUid || '0x8F3A29B1';
 
   const skillVectors = [
     { label: 'AI & Machine Learning', detail: 'PyTorch, Transformers, Computer Vision', score: 92 },
