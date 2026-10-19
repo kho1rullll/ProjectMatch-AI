@@ -1,0 +1,65 @@
+services:
+  # -----------------------------------------------------------
+  # BACKEND SERVICE (FastAPI + Uvicorn + SQLite/AI Engine)
+  # -----------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: projectmatch-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PROJECT_NAME=ProjectMatch AI Backend
+      - API_V1_STR=/api/v1
+      - SECRET_KEY=projectmatch-super-secret-jwt-key-2026-production
+      - DATABASE_URL=sqlite:///./projectmatch_ai.db
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GROQ_MODEL=llama-3.1-8b-instant
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
+    volumes:
+      # Persistensi data basis data SQLite ke host
+      - ./backend/projectmatch_ai.db:/app/projectmatch_ai.db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - projectmatch-network
+
+  # -----------------------------------------------------------
+  # FRONTEND SERVICE (Next.js 16 + React 19 + Tailwind v4)
+  # -----------------------------------------------------------
+  frontend:
+    build:
+      context: ./nextjs-app
+      dockerfile: Dockerfile
+    container_name: projectmatch-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - INTERNAL_API_URL=http://backend:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      # Persistensi data basis data JSON ke host
+      - ./nextjs-app/projectmatch-db.json:/app/projectmatch-db.json
+    networks:
+      - projectmatch-network
+
+# -----------------------------------------------------------
+# DOCKER NETWORK
+# -----------------------------------------------------------
+networks:
+  projectmatch-network:
+    driver: bridge

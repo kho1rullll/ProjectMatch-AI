@@ -10,9 +10,8 @@ from app.core.database import Base, engine
 from app.main import seed_initial_data
 
 def run_all_tests():
-    # Pastikan tabel dibuat & data awal diisi
+    # Pastikan tabel dibuat
     Base.metadata.create_all(bind=engine)
-    seed_initial_data()
 
     with TestClient(app) as client:
         # 1. Root Status

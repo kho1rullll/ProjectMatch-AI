@@ -160,10 +160,11 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Konfigurasi CORS
+# Konfigurasi CORS (Mendukung localhost port berapapun & domain deploy seperti Vercel)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Mengizinkan koneksi dari klien Next.js
+    allow_origins=settings.CORS_ORIGINS if settings.CORS_ORIGINS else ["*"],
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$|^https://.*\.vercel\.app$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
