@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '@/lib/api-client';
 import { AdminUserItem } from '@/types/admin';
-import { Users, Shield, Check, X, RefreshCw, AlertCircle, CheckCircle2, UserCheck, UserX } from 'lucide-react';
+import { Users, Shield, Check, X, RefreshCw, AlertCircle, CheckCircle2, UserCheck, UserX, Sparkles } from 'lucide-react';
 
 export default function AdminUsersView() {
   const [users, setUsers] = useState<AdminUserItem[]>([]);
@@ -107,32 +107,32 @@ export default function AdminUsersView() {
   return (
     <div className="space-y-6">
       {/* Header Info */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-[0_4px_25px_rgba(15,23,42,0.04)] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-semibold mb-3">
-            <Users className="w-3.5 h-3.5" />
-            <span>FR-11: Manajemen Akun & Hak Akses (RBAC)</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-semibold mb-3 shadow-xs">
+            <Users className="w-3.5 h-3.5 text-[#a3e635]" />
+            <span>Manajemen Akun &amp; Hak Akses</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Pengelolaan Akun Pengguna & Otorisasi
+            Pengelolaan Akun Pengguna &amp; Otorisasi
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Administrator dapat mengaktifkan atau menonaktifkan akses akun pengguna serta mengelola penetapan peran (Mahasiswa atau Administrator).
+            Administrator dapat mengaktifkan atau menonaktifkan akses akun pengguna serta mengelola penetapan peran pengguna.
           </p>
         </div>
 
         <button
           onClick={fetchUsers}
-          className="p-3 rounded-2xl border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors self-start md:self-auto cursor-pointer"
+          className="w-10 h-10 rounded-full border border-slate-200 bg-white hover:bg-slate-50 hover:border-purple-300 text-slate-700 transition-all flex items-center justify-center shadow-xs cursor-pointer shrink-0 self-start md:self-auto"
           title="Segarkan Data Pengguna"
         >
-          <RefreshCw className="w-4 h-4" />
+          <RefreshCw className="w-4 h-4 text-purple-600" />
         </button>
       </div>
 
       {feedback && (
         <div
-          className={`p-4 rounded-2xl text-xs font-semibold flex items-center gap-2.5 ${
+          className={`p-4 rounded-2xl text-xs font-semibold flex items-center gap-2.5 shadow-xs ${
             feedback.type === 'success'
               ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
               : 'bg-rose-50 text-rose-800 border border-rose-200'
@@ -148,10 +148,10 @@ export default function AdminUsersView() {
       )}
 
       {/* Tabel Pengguna */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 shadow-[0_4px_25px_rgba(15,23,42,0.04)] overflow-hidden">
         {isLoading ? (
-          <div className="text-center py-12 space-y-3">
-            <RefreshCw className="w-6 h-6 animate-spin mx-auto text-indigo-600" />
+          <div className="text-center py-14 space-y-3">
+            <RefreshCw className="w-7 h-7 animate-spin mx-auto text-purple-600" />
             <p className="text-xs font-semibold text-slate-500">Memuat daftar akun pengguna...</p>
           </div>
         ) : (
@@ -168,14 +168,21 @@ export default function AdminUsersView() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {users.map((u) => (
-                  <tr key={u.id} className="hover:bg-slate-50/80 transition-colors">
+                  <tr key={u.id} className="hover:bg-purple-50/20 transition-colors">
                     {/* Nama & Email */}
                     <td className="py-4 px-6">
-                      <div className="font-bold text-slate-900 text-sm">
-                        {u.full_name || 'Tidak ada nama'}
-                      </div>
-                      <div className="text-slate-500 font-mono text-[11px] mt-0.5">
-                        {u.email}
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm shadow-purple-600/20">
+                          {(u.full_name || 'U').split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-900 text-sm">
+                            {u.full_name || 'Tidak ada nama'}
+                          </div>
+                          <div className="text-slate-500 font-mono text-[11px] mt-0.5">
+                            {u.email}
+                          </div>
+                        </div>
                       </div>
                     </td>
 
@@ -187,7 +194,7 @@ export default function AdminUsersView() {
                             NIM: {u.nim}
                           </span>
                           {u.github_username && (
-                            <span className="text-[11px] text-blue-600 font-mono">
+                            <span className="text-[11px] text-purple-600 font-mono font-medium">
                               @{u.github_username}
                             </span>
                           )}
@@ -202,10 +209,10 @@ export default function AdminUsersView() {
                       <select
                         value={u.role}
                         onChange={(e) => handleRoleChange(u.id, e.target.value as any)}
-                        className={`px-3 py-1.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border cursor-pointer focus:outline-none ${
+                        className={`px-3 py-1.5 rounded-full font-bold text-[11px] uppercase tracking-wider border cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all ${
                           u.role === 'admin'
-                            ? 'bg-indigo-50 border-indigo-200 text-indigo-700'
-                            : 'bg-blue-50 border-blue-200 text-blue-700'
+                            ? 'bg-purple-50 border-purple-200 text-purple-700'
+                            : 'bg-slate-100 border-slate-200 text-slate-700'
                         }`}
                       >
                         <option value="mahasiswa">Mahasiswa</option>
@@ -216,12 +223,14 @@ export default function AdminUsersView() {
                     {/* Status Aktivasi */}
                     <td className="py-4 px-6">
                       {u.is_active ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">
-                          <Check className="w-3 h-3" /> Aktif
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lime-100 text-lime-900 border border-lime-300 font-bold text-[11px]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-lime-600" />
+                          <span>Aktif</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 font-bold text-[10px]">
-                          <X className="w-3 h-3" /> Nonaktif
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200 font-bold text-[11px]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
+                          <span>Nonaktif</span>
                         </span>
                       )}
                     </td>
@@ -231,10 +240,10 @@ export default function AdminUsersView() {
                       <button
                         type="button"
                         onClick={() => handleToggleActive(u.id, u.is_active)}
-                        className={`px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all cursor-pointer border ${
+                        className={`px-4 py-1.5 rounded-full font-bold text-xs transition-all cursor-pointer border ${
                           u.is_active
                             ? 'bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100'
-                            : 'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100'
+                            : 'bg-purple-600 hover:bg-purple-700 text-white border-transparent shadow-sm shadow-purple-600/25'
                         }`}
                       >
                         {u.is_active ? 'Nonaktifkan' : 'Aktifkan Akun'}

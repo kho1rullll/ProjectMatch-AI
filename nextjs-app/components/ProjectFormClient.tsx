@@ -97,20 +97,20 @@ export default function ProjectFormClient({ onSuccess }: Props) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       {/* Form Column */}
-      <div className="lg:col-span-7 glass-card rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-xl space-y-6">
+      <div className="lg:col-span-7 bg-surface-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-border-light shadow-[0_20px_50px_rgba(15,23,42,0.08)] space-y-6">
         {submissionState.status === 'success' ? (
           <div className="text-center py-12 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto shadow-xs font-bold">
+            <div className="w-16 h-16 rounded-full bg-secondary-fixed text-surface-dark flex items-center justify-center text-2xl mx-auto shadow-sm font-bold">
               ✓
             </div>
-            <h2 className="text-xl font-bold text-slate-900">Lowongan Berhasil Disimpan ke Database!</h2>
-            <p className="text-xs text-slate-600 max-w-md mx-auto">
-              Proyek <strong>&quot;{submissionState.data.title}&quot;</strong> (ID: <code>{submissionState.data.id}</code>) telah masuk ke SQLite database (<code>projectmatch.db</code>) dan siap untuk pencocokan AI dengan mahasiswa.
+            <h2 className="text-xl font-headline-md font-extrabold text-text-heading">Lowongan Berhasil Disimpan ke Database!</h2>
+            <p className="text-xs text-text-body max-w-md mx-auto leading-relaxed">
+              Proyek <strong>&quot;{submissionState.data.title}&quot;</strong> (ID: <code className="bg-surface-container-high px-2 py-0.5 rounded font-mono text-primary">{submissionState.data.id}</code>) telah masuk ke database dan siap untuk pencocokan AI dengan mahasiswa.
             </p>
             <div className="pt-4 flex justify-center gap-3">
               <Button
                 type="button"
-                variant="secondary"
+                variant="outline"
                 size="md"
                 onClick={() => {
                   setSubmissionState({ status: 'idle' });
@@ -130,12 +130,13 @@ export default function ProjectFormClient({ onSuccess }: Props) {
                     reqArchitecture: 75,
                   });
                 }}
+                className="rounded-full font-bold"
               >
                 Pasang Lowongan Lain
               </Button>
               <Link
                 href="/projects"
-                className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+                className="px-6 py-2.5 rounded-full text-xs font-bold text-white bg-primary-container hover:bg-primary-hover shadow-md shadow-purple-500/20 transition-all"
               >
                 Lihat di Katalog Proyek
               </Link>
@@ -144,14 +145,14 @@ export default function ProjectFormClient({ onSuccess }: Props) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             {submissionState.status === 'error' && (
-              <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl font-medium">
+              <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-2xl font-medium">
                 ⚠️ {submissionState.errorMessage}
               </div>
             )}
 
             {/* Judul Proyek */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700">
+              <label className="text-xs font-bold text-text-heading">
                 Judul Proyek / Posisi Riset <span className="text-red-500">*</span>
               </label>
               <input
@@ -161,8 +162,8 @@ export default function ProjectFormClient({ onSuccess }: Props) {
                 placeholder="Contoh: Implementasi Transformer untuk Rekam Medis"
                 value={formData.title}
                 onChange={handleChange}
-                className={`w-full px-4 py-2.5 rounded-xl bg-slate-50 border text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white ${
-                  errors.title ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
+                className={`w-full px-4 py-2.5 rounded-2xl bg-surface-container-low/60 border text-xs text-text-heading focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all ${
+                  errors.title ? 'border-rose-400 bg-rose-50/30' : 'border-border-light'
                 }`}
               />
               {errors.title && <p className="text-[11px] text-rose-600 font-semibold">{errors.title}</p>}
@@ -171,7 +172,7 @@ export default function ProjectFormClient({ onSuccess }: Props) {
             {/* Perusahaan / Lab & Kategori */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">
+                <label className="text-xs font-bold text-text-heading">
                   Nama Mitra / Lembaga <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -181,22 +182,22 @@ export default function ProjectFormClient({ onSuccess }: Props) {
                   placeholder="Contoh: PT Riset Digital Nusantara"
                   value={formData.company}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-xl bg-slate-50 border text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white ${
-                    errors.company ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
+                  className={`w-full px-4 py-2.5 rounded-2xl bg-surface-container-low/60 border text-xs text-text-heading focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all ${
+                    errors.company ? 'border-rose-400 bg-rose-50/30' : 'border-border-light'
                   }`}
                 />
                 {errors.company && <p className="text-[11px] text-rose-600 font-semibold">{errors.company}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">
+                <label className="text-xs font-bold text-text-heading">
                   Bidang / Kategori Proyek
                 </label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-surface-container-low/60 border border-border-light text-xs text-text-heading focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all"
                 >
                   <option>AI & Machine Learning</option>
                   <option>Frontend & UI/UX</option>
@@ -210,42 +211,42 @@ export default function ProjectFormClient({ onSuccess }: Props) {
             {/* Tipe Kerja, Durasi, Stipend */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">Model Kerja</label>
+                <label className="text-xs font-bold text-text-heading">Model Kerja</label>
                 <input
                   type="text"
                   name="workType"
                   value={formData.workType}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-surface-container-low/60 border border-border-light text-xs text-text-heading focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">Durasi</label>
+                <label className="text-xs font-bold text-text-heading">Durasi</label>
                 <input
                   type="text"
                   name="duration"
                   value={formData.duration}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-surface-container-low/60 border border-border-light text-xs text-text-heading focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">Insentif / Stipend</label>
+                <label className="text-xs font-bold text-text-heading">Insentif / Stipend</label>
                 <input
                   type="text"
                   name="stipend"
                   value={formData.stipend}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-surface-container-low/60 border border-border-light text-xs text-text-heading focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all"
                 />
               </div>
             </div>
 
             {/* Kebutuhan Skill Tags */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700">
+              <label className="text-xs font-bold text-text-heading">
                 Keahlian &amp; Teknologi Dibutuhkan (Pisahkan dengan koma)
               </label>
               <input
@@ -254,14 +255,14 @@ export default function ProjectFormClient({ onSuccess }: Props) {
                 value={formData.skillsRequired}
                 onChange={handleChange}
                 placeholder="Python, PyTorch, Docker, PostgreSQL"
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+                className="w-full px-4 py-2.5 rounded-2xl bg-surface-container-low/60 border border-border-light text-xs text-text-heading focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all"
               />
               {errors.skillsRequired && <p className="text-[11px] text-rose-600 font-semibold">{errors.skillsRequired}</p>}
             </div>
 
             {/* Deskripsi */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700">
+              <label className="text-xs font-bold text-text-heading">
                 Deskripsi Lengkap &amp; Deliverables <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -271,25 +272,25 @@ export default function ProjectFormClient({ onSuccess }: Props) {
                 placeholder="Jelaskan tujuan riset, tanggung jawab mahasiswa, dan hasil yang diharapkan..."
                 value={formData.description}
                 onChange={handleChange}
-                className={`w-full px-4 py-2.5 rounded-xl bg-slate-50 border text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white ${
-                  errors.description ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
+                className={`w-full px-4 py-2.5 rounded-2xl bg-surface-container-low/60 border text-xs text-text-heading focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all ${
+                  errors.description ? 'border-rose-400 bg-rose-50/30' : 'border-border-light'
                 }`}
               />
               {errors.description && <p className="text-[11px] text-rose-600 font-semibold">{errors.description}</p>}
             </div>
 
-            {/* Submit Button using CVA Button */}
+            {/* Submit Button */}
             <Button
               type="submit"
               variant="primary"
               size="lg"
               disabled={createMutation.isPending || submissionState.status === 'loading'}
-              className="w-full py-3.5 btn-primary-shimmer shadow-lg hover:opacity-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-full shadow-lg shadow-purple-500/25 hover:scale-[1.01] transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               {createMutation.isPending || submissionState.status === 'loading' ? (
                 <>
                   <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Menyimpan ke SQLite Database...</span>
+                  <span>Menyimpan ke Database...</span>
                 </>
               ) : (
                 'Publikasikan Lowongan Proyek & Simpan ke Database'
@@ -302,33 +303,35 @@ export default function ProjectFormClient({ onSuccess }: Props) {
       {/* Live Preview Column */}
       <div className="lg:col-span-5 space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-text-muted">
             👁️ Pratinjau Tampilan untuk Mahasiswa
           </h3>
-          <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+          <span className="text-[10px] font-bold text-surface-dark bg-secondary-fixed/40 px-2.5 py-0.5 rounded-full border border-secondary-fixed flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
             Live Preview
           </span>
         </div>
 
-        <div className="glass-card rounded-3xl p-6 border border-blue-200 shadow-lg space-y-4">
+        <div className="bg-surface-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-border-light shadow-xl space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg">
+            <span className="text-[11px] font-bold text-primary bg-primary-light/70 px-3 py-1 rounded-full border border-primary/20">
               {formData.category}
             </span>
-            <span className="badge-match-high px-3 py-1 rounded-full text-xs font-black">
-              92% Est. Match
+            <span className="bg-secondary-fixed/30 text-surface-dark border border-secondary-fixed px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-secondary animate-ping" />
+              92% Semantic Match
             </span>
           </div>
 
-          <h4 className="font-bold text-base text-slate-900 font-display leading-snug">
+          <h4 className="font-bold text-base text-text-heading font-display leading-snug">
             {formData.title || 'Judul Proyek Riset Industri'}
           </h4>
 
-          <p className="text-xs font-medium text-slate-600">
+          <p className="text-xs font-semibold text-text-body">
             🏢 {formData.company || 'Nama Perusahaan / Laboratorium'}
           </p>
 
-          <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+          <p className="text-xs text-text-muted line-clamp-3 leading-relaxed">
             {formData.description ||
               'Deskripsi proyek akan tampil di sini secara real-time saat Anda mengetik di formulir samping.'}
           </p>
@@ -338,22 +341,23 @@ export default function ProjectFormClient({ onSuccess }: Props) {
               skillsList.map((skill, idx) => (
                 <span
                   key={idx}
-                  className="text-[10px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100"
+                  className="text-[10px] font-semibold text-on-surface bg-surface-container-high px-2.5 py-1 rounded-full flex items-center gap-1"
                 >
+                  <span className="material-symbols-outlined text-[12px] text-secondary">check_circle</span>
                   {skill}
                 </span>
               ))
             ) : (
-              <span className="text-[10px] text-slate-400">Belum ada skill yang ditambahkan</span>
+              <span className="text-[10px] text-text-muted">Belum ada skill yang ditambahkan</span>
             )}
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+          <div className="pt-4 border-t border-border-light flex items-center justify-between text-xs">
             <div>
-              <span className="text-[10px] text-slate-400 block">Stipend</span>
-              <span className="font-bold text-slate-800">{formData.stipend}</span>
+              <span className="text-[10px] text-text-muted block font-bold uppercase tracking-wider">Stipend</span>
+              <span className="font-extrabold text-text-heading">{formData.stipend}</span>
             </div>
-            <span className="text-[11px] text-slate-500 font-medium">
+            <span className="text-[11px] text-text-body font-medium">
               {formData.workType} • {formData.duration}
             </span>
           </div>

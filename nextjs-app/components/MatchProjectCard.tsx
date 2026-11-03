@@ -18,40 +18,40 @@ export default function MatchProjectCard({ project, onSelect }: MatchProjectCard
   return (
     <Card
       variant="interactive"
-      padding="md"
-      className="glass-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between border border-blue-100 shadow-sm relative group"
+      padding="none"
+      className="bg-surface-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-7 flex flex-col justify-between border border-border-light shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 relative group"
     >
       <div>
         {/* Top Header: Category & Match Badge */}
         <div className="flex items-center justify-between gap-2 mb-3">
-          <Badge variant="default" size="sm" className="bg-slate-100 text-slate-600 font-bold">
+          <Badge variant="default" size="sm" className="bg-surface-container-high text-on-surface font-bold rounded-full">
             {project.category}
           </Badge>
           <Badge
             variant={isHighMatch ? 'high' : 'medium'}
             size="sm"
-            className="flex items-center gap-1.5 font-black px-3 py-1"
+            className="flex items-center gap-1.5 font-bold px-3 py-1 rounded-full"
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>{project.matchScore}% Match</span>
+            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+            <span>{project.matchScore}% Semantic Match</span>
           </Badge>
         </div>
 
         {/* Title & Company */}
-        <h3 className="font-bold text-base text-slate-900 line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors">
+        <h3 className="font-headline-sm font-bold text-base text-text-heading line-clamp-2 leading-snug group-hover:text-primary-container transition-colors">
           {project.title}
         </h3>
-        <p className="text-xs font-medium text-slate-600 mt-1 flex items-center gap-1.5">
+        <p className="text-xs font-semibold text-text-body mt-1.5 flex items-center gap-1.5">
           <span>🏢 {project.company}</span>
           {project.verified && (
-            <span className="text-blue-600 text-[11px]" title="Mitra Terverifikasi">
-              ✓
+            <span className="inline-flex items-center gap-0.5 text-primary text-[10px] bg-primary-light/70 px-2 py-0.5 rounded-full font-bold">
+              ✓ Verified
             </span>
           )}
         </p>
 
         {/* Short Description */}
-        <p className="text-xs text-slate-500 mt-3 line-clamp-3 leading-relaxed">
+        <p className="text-xs text-text-muted mt-3 line-clamp-3 leading-relaxed">
           {project.description}
         </p>
 
@@ -60,13 +60,14 @@ export default function MatchProjectCard({ project, onSelect }: MatchProjectCard
           {project.skillsRequired.slice(0, 4).map((skill, idx) => (
             <span
               key={idx}
-              className="text-[10px] font-semibold text-blue-700 bg-blue-50/80 px-2.5 py-1 rounded-md border border-blue-100/70"
+              className="text-[10px] font-semibold text-on-surface bg-surface-container-high px-2.5 py-1 rounded-full flex items-center gap-1"
             >
+              <span className="material-symbols-outlined text-[12px] text-secondary">check_circle</span>
               {skill}
             </span>
           ))}
           {project.skillsRequired.length > 4 && (
-            <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
+            <span className="text-[10px] font-semibold text-text-muted bg-surface-container-low px-2 py-1 rounded-full">
               +{project.skillsRequired.length - 4}
             </span>
           )}
@@ -74,27 +75,27 @@ export default function MatchProjectCard({ project, onSelect }: MatchProjectCard
       </div>
 
       {/* Bottom Info & Action */}
-      <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+      <div className="mt-6 pt-4 border-t border-border-light flex items-center justify-between text-xs">
         <div>
-          <span className="text-[10px] text-slate-400 block">Stipend / Bulan</span>
-          <span className="font-bold text-slate-800">{project.stipend}</span>
+          <span className="text-[10px] text-text-muted uppercase tracking-wider block font-bold">Stipend / Bulan</span>
+          <span className="font-extrabold text-text-heading">{project.stipend}</span>
         </div>
 
         <div className="flex items-center gap-2">
           {onSelect ? (
             <Button
               type="button"
-              variant="secondary"
+              variant="primary"
               size="sm"
               onClick={() => onSelect(project)}
-              className="font-bold text-blue-600 bg-blue-50 hover:bg-blue-100"
+              className="font-bold rounded-full cursor-pointer"
             >
               Lihat Detail
             </Button>
           ) : (
             <Link
               href={`/projects/${project.id}`}
-              className="px-3.5 py-2 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
+              className="px-4 py-2 rounded-full text-xs font-bold text-white bg-primary-container hover:bg-primary-hover shadow-md shadow-purple-500/20 transition-all"
             >
               Lihat Detail
             </Link>

@@ -63,13 +63,13 @@ export default function JobDetailModal({
   const matchPct = matchDetail?.match_percentage || (job.similarity_score ? Math.round(job.similarity_score * 100) : 85);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-slate-200 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white/95 backdrop-blur-xl rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-slate-200/80 shadow-[0_25px_60px_rgba(15,23,42,0.15)] relative">
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-all cursor-pointer z-10"
+          className="absolute top-5 right-5 p-2.5 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-all cursor-pointer z-10"
         >
           <X className="w-5 h-5" />
         </button>
@@ -83,13 +83,13 @@ export default function JobDetailModal({
             <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-700">
               {job.job_type.replace('_', ' ')}
             </span>
-            <div className="ml-auto flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-black">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>AI Cosine Match: {matchPct}%</span>
+            <div className="ml-auto flex items-center gap-1.5 px-3 py-1 rounded-full bg-lime-100 border border-lime-300 text-lime-900 text-xs font-black">
+              <Sparkles className="w-3.5 h-3.5 text-lime-600" />
+              <span>AI Match: {matchPct}%</span>
             </div>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
             {job.title}
           </h2>
 
@@ -101,8 +101,8 @@ export default function JobDetailModal({
               </span>
             )}
             {job.budget_or_salary && (
-              <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
-                <DollarSign className="w-4 h-4 text-emerald-600" />
+              <span className="flex items-center gap-1.5 text-slate-900 font-extrabold">
+                <DollarSign className="w-4 h-4 text-primary-container" />
                 {job.budget_or_salary}
               </span>
             )}
@@ -119,7 +119,7 @@ export default function JobDetailModal({
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
-                Visualisasi Radar Overlay (FR-07)
+                Visualisasi Radar Overlay
               </h3>
               <span className="text-xs text-slate-500 font-medium">
                 Kesesuaian Portofolio vs Syarat Lowongan
@@ -139,22 +139,23 @@ export default function JobDetailModal({
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
                 Deskripsi Lengkap Lowongan
               </h4>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-2xl border border-slate-100">
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line bg-slate-50/70 p-5 rounded-3xl border border-slate-100">
                 {job.description}
               </p>
             </div>
 
             <div className="md:col-span-4 space-y-4">
-              <div className="p-4 bg-blue-50/70 border border-blue-200/60 rounded-2xl space-y-3">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-blue-900">
+              <div className="p-5 bg-purple-50/70 border border-purple-200/60 rounded-3xl space-y-3">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-primary-container flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
                   Ringkasan AI Match
                 </h4>
-                <p className="text-xs text-blue-800 leading-relaxed">
+                <p className="text-xs text-purple-900 leading-relaxed font-medium">
                   {matchDetail?.summary_reason ||
                     `Kemiripan semantik ${matchPct}% menunjukkan kesesuaian kuat repositori GitHub Anda dengan kebutuhan proyek ini.`}
                 </p>
                 {job.extracted_skills?.estimated_duration && (
-                  <div className="pt-2 border-t border-blue-200/60 text-xs">
+                  <div className="pt-2 border-t border-purple-200/60 text-xs">
                     <span className="text-slate-500 block text-[10px]">Estimasi Durasi:</span>
                     <span className="font-bold text-slate-900">{job.extracted_skills.estimated_duration}</span>
                   </div>
@@ -165,28 +166,28 @@ export default function JobDetailModal({
         </div>
 
         {/* Modal Footer Actions */}
-        <div className="p-6 border-t border-slate-100 bg-slate-50 rounded-b-3xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-6 border-t border-slate-100 bg-slate-50/70 rounded-b-3xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <button
             type="button"
             onClick={handleToggleBookmark}
             disabled={isBookmarking}
-            className={`w-full sm:w-auto px-5 py-3 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
+            className={`w-full sm:w-auto px-5 py-3 rounded-full text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
               isBookmarked
                 ? 'bg-amber-100 border-amber-300 text-amber-900 hover:bg-amber-200'
                 : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'
             }`}
           >
             <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-amber-600 text-amber-600' : ''}`} />
-            <span>{isBookmarked ? 'Tersimpan di Bookmark' : 'Simpan ke Bookmark (FR-08)'}</span>
+            <span>{isBookmarked ? 'Tersimpan di Bookmark' : 'Simpan ke Bookmark'}</span>
           </button>
 
           <a
             href={job.external_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer group"
+            className="w-full sm:w-auto px-6 py-3 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md shadow-purple-500/25 cursor-pointer group"
           >
-            <span>Lamar di {job.platform_source.toUpperCase()} (Tautan Asal)</span>
+            <span>Lamar di {job.platform_source.toUpperCase()}</span>
             <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>

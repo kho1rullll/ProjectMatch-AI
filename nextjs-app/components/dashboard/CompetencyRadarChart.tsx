@@ -93,18 +93,18 @@ export default function CompetencyRadarChart({
   );
 
   return (
-    <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-sm relative overflow-hidden">
+    <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-[0_4px_25px_rgba(15,23,42,0.04)] relative overflow-hidden">
       {/* Header Visualisasi */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-            <h3 className="text-base sm:text-lg font-bold text-slate-900">
-              Radar Chart Kompetensi GitHub (Recharts)
+            <span className="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse" />
+            <h3 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+              Radar Chart Kompetensi GitHub
             </h3>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            FR-07: Visualisasi interaktif hasil sintesis repositori GitHub vs kebutuhan lowongan
+            Visualisasi interaktif hasil sintesis repositori GitHub vs kebutuhan lowongan
           </p>
         </div>
 
@@ -112,10 +112,10 @@ export default function CompetencyRadarChart({
           <button
             type="button"
             onClick={() => setShowOverlay(!showOverlay)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
               showOverlay
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-primary-container text-white shadow-md shadow-purple-500/25'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             {showOverlay ? `✓ Overlay ${comparisonTitle} Aktif` : `+ Tampilkan Overlay ${comparisonTitle}`}
@@ -131,7 +131,7 @@ export default function CompetencyRadarChart({
               <PolarGrid stroke="#e2e8f0" strokeDasharray="3 3" />
               <PolarAngleAxis
                 dataKey="subject"
-                tick={{ fill: '#334155', fontSize: 12, fontWeight: 600 }}
+                tick={{ fill: '#334155', fontSize: 12, fontWeight: 700 }}
               />
               <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#cbd5e1" />
 
@@ -139,9 +139,9 @@ export default function CompetencyRadarChart({
               <Radar
                 name="Portofolio Mahasiswa"
                 dataKey="student"
-                stroke="#2563eb"
-                fill="#3b82f6"
-                fillOpacity={0.4}
+                stroke="#7c3aed"
+                fill="#8b5cf6"
+                fillOpacity={0.45}
                 strokeWidth={2.5}
               />
 
@@ -150,10 +150,10 @@ export default function CompetencyRadarChart({
                 <Radar
                   name={comparisonTitle}
                   dataKey="required"
-                  stroke="#ef4444"
-                  fill="#f87171"
-                  fillOpacity={0.25}
-                  strokeWidth={2}
+                  stroke="#84cc16"
+                  fill="#bef264"
+                  fillOpacity={0.3}
+                  strokeWidth={2.5}
                   strokeDasharray="4 4"
                 />
               )}
@@ -163,13 +163,13 @@ export default function CompetencyRadarChart({
                   if (active && payload && payload.length && payload[0]?.payload) {
                     const data = payload[0].payload as (typeof chartData)[0];
                     return (
-                      <div className="bg-slate-900 text-white p-3 rounded-xl shadow-xl text-xs space-y-1 z-50">
-                        <p className="font-bold text-blue-300">{data.fullName}</p>
+                      <div className="bg-[#0B0F19] text-white p-3.5 rounded-2xl shadow-xl text-xs space-y-1.5 z-50 border border-white/10">
+                        <p className="font-bold text-accent-lime-glow">{data.fullName}</p>
                         <p>Keahlian Mahasiswa: <span className="font-bold text-white">{data.student}%</span></p>
                         {showOverlay && (
-                          <p>Kualifikasi Dibutuhkan: <span className="font-bold text-rose-300">{data.required}%</span></p>
+                          <p>Kualifikasi Dibutuhkan: <span className="font-bold text-lime-400">{data.required}%</span></p>
                         )}
-                        <p className="text-[11px] text-slate-300 pt-1 border-t border-slate-700">{data.description}</p>
+                        <p className="text-[11px] text-slate-300 pt-1.5 border-t border-slate-800">{data.description}</p>
                       </div>
                     );
                   }
@@ -182,12 +182,12 @@ export default function CompetencyRadarChart({
         </div>
 
         {/* Drill-down Kompetensi & Keterangan Rinci (FR-07) */}
-        <div className="lg:col-span-5 space-y-3 bg-slate-50/90 p-5 rounded-2xl border border-slate-200">
+        <div className="lg:col-span-5 space-y-3 bg-slate-50/80 p-5 sm:p-6 rounded-3xl border border-slate-200/80">
           <div className="flex items-center justify-between pb-2 border-b border-slate-200">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
               Drill-Down Kategori Skill
             </h4>
-            <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-700">
+            <span className="text-xs font-black px-3 py-1 rounded-full bg-purple-100 text-primary-container">
               Rata-rata: {avgStudent}%
             </span>
           </div>
@@ -199,28 +199,28 @@ export default function CompetencyRadarChart({
                 <div
                   key={item.subject}
                   onClick={() => setSelectedSkill(isSelected ? null : item.subject)}
-                  className={`p-2.5 rounded-xl transition-all cursor-pointer border text-xs ${
+                  className={`p-3 rounded-2xl transition-all cursor-pointer border text-xs ${
                     isSelected
-                      ? 'bg-blue-50 border-blue-300 shadow-xs'
-                      : 'bg-white border-slate-200 hover:border-slate-300'
+                      ? 'bg-purple-50/80 border-purple-300 shadow-sm'
+                      : 'bg-white border-slate-200/80 hover:border-purple-200'
                   }`}
                 >
-                  <div className="flex items-center justify-between font-semibold">
+                  <div className="flex items-center justify-between font-bold">
                     <span className="text-slate-900">{item.fullName}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-blue-600 font-bold">{item.student}%</span>
+                      <span className="text-primary-container font-extrabold">{item.student}%</span>
                       {showOverlay && (
-                        <span className="text-rose-500 font-mono text-[11px]">
-                          (req: {item.required}%)
+                        <span className="text-lime-700 font-mono text-[11px]">
+                          Target: {item.required}%
                         </span>
                       )}
                     </div>
                   </div>
 
                   {isSelected && (
-                    <div className="mt-2 pt-2 border-t border-blue-100 text-[11px] text-slate-600">
-                      <p>{item.description}</p>
-                      <p className="mt-1 font-mono text-[10px] text-blue-700">
+                    <div className="mt-2.5 pt-2.5 border-t border-purple-100 text-[11px] text-slate-600">
+                      <p className="leading-relaxed">{item.description}</p>
+                      <p className="mt-1.5 font-mono text-[10px] text-primary-container font-semibold">
                         {item.student >= item.required
                           ? '✓ Memenuhi atau melampaui kualifikasi target.'
                           : `Perlu peningkatan sekitar +${item.required - item.student}% untuk kecocokan optimal.`}
@@ -232,7 +232,7 @@ export default function CompetencyRadarChart({
             })}
           </div>
 
-          <p className="text-[10px] text-slate-400 text-center pt-1">
+          <p className="text-[10px] text-slate-400 text-center pt-1 font-medium">
             Klik salah satu kategori di atas untuk melihat detail drill-down kecocokan.
           </p>
         </div>

@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import BrandHeaderLink from '@/components/BrandLogo';
 
 export type MitraTab = 'overview' | 'my-projects' | 'post-project' | 'applicants' | 'talents';
 
@@ -69,32 +70,25 @@ export default function MitraSidebar({
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white/95 backdrop-blur-xl border-r border-slate-200/80 flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Top Section: Logo & Nav Links */}
         <div>
           {/* Header Brand */}
-          <div className="h-16 px-6 border-b border-slate-100 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 text-white flex items-center justify-center font-black text-sm shadow-xs group-hover:scale-105 transition-transform">
-                P
-              </div>
-              <div>
-                <span className="font-display font-black text-slate-900 text-sm tracking-tight block">
-                  ProjectMatch <span className="text-blue-600">AI</span>
-                </span>
-                <span className="text-[10px] uppercase tracking-wider text-blue-600 font-bold -mt-0.5 block">
-                  Portal Mitra Industri
-                </span>
-              </div>
-            </Link>
+          <div className="h-20 px-6 border-b border-slate-100 flex items-center justify-between">
+            <BrandHeaderLink
+              href="/"
+              variant="light"
+              size="md"
+              subtitle={<span className="text-[10px] uppercase tracking-wider text-purple-600 font-extrabold block">Portal Mitra Industri</span>}
+            />
 
             <button
               type="button"
               onClick={onCloseMobile}
-              className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg cursor-pointer"
+              className="lg:hidden p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full cursor-pointer"
               aria-label="Tutup menu"
             >
               ✕
@@ -114,10 +108,10 @@ export default function MitraSidebar({
                   key={item.id}
                   type="button"
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer text-left ${
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-left ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      ? 'bg-primary-container text-white shadow-md shadow-purple-500/25'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-purple-50/60'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -127,10 +121,10 @@ export default function MitraSidebar({
 
                   {item.badge !== undefined && (
                     <span
-                      className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                      className={`text-[10px] font-black px-2.5 py-0.5 rounded-full ${
                         isActive
                           ? 'bg-white/20 text-white'
-                          : 'bg-amber-100 text-amber-800'
+                          : 'bg-lime-100 text-lime-900 border border-lime-300'
                       }`}
                     >
                       {item.badge}
@@ -143,16 +137,16 @@ export default function MitraSidebar({
         </div>
 
         {/* Bottom Section: Partner User Info & Actions */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/80 space-y-3">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/70 space-y-3">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-container to-indigo-700 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-md shadow-purple-500/20">
               {partnerName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-xs font-bold text-slate-900 truncate">
                 {partnerName}
               </p>
-              <p className="text-[10px] text-blue-600 font-semibold truncate">
+              <p className="text-[10px] text-primary-container font-extrabold truncate">
                 {companyName}
               </p>
             </div>

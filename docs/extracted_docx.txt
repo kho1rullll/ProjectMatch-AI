@@ -1,0 +1,167 @@
+DOKUMEN SPESIFIKASI TEKNIS SISTEM
+PROJECTMATCH AI
+Link-and-Match Pendidikan dengan Kebutuhan Industri, Riset, dan Masyarakat
+Mata Kuliah     : 
+Manajemen Proyek Perangkat Lunak
+Program Studi   : 
+D3 Teknik Informatika - Kampus PSDKU Madiun, Universitas Sebelas Maret
+Penyusun        : 
+'Abdullah Abil Abi Yoso (V3925001) & Khoirulbarie Kholifatul Anshori (V3925028)
+Sektor Proyek  : 
+Pendidikan & Inovasi Teknologi Vokasi (Revisi Spesifikasi Desain Multimedia)
+1. GAMBARAN UMUM DAN PENJELASAN SISTEM
+1.1 Latar Belakang Masalah
+Fenomena pengangguran terdidik di Indonesia telah mencapai 1,03 juta orang (sekitar 14,31% dari total pengangguran nasional) berdasarkan data Badan Pusat Statistik (BPS). Faktor pemicu utamanya adalah ketidaksesuaian keterampilan (skill mismatch) yang memengaruhi lebih dari 50% hingga 72,3 juta tenaga kerja (Mandiri Institute). Di lingkungan akademis, proses penyaringan portofolio mahasiswa oleh mitra industri maupun dosen peneliti masih dilakukan secara manual dan berpatokan pada parameter administratif formal seperti IPK, yang belum merepresentasikan keterampilan spesifik (niche skills) dan pengalaman riil berbasis proyek.
+1.2 Solusi ProjectMatch AI
+ProjectMatch AI hadir sebagai ekosistem link-and-match cerdas berbasis web, Artificial Intelligence (AI), Internet of Things (IoT), dan Multimedia Interaktif. Sistem ini memetakan kualifikasi proyek industri dengan portofolio non-terstruktur mahasiswa menggunakan Large Language Model (LLM) dan Recommendation System berbasis semantic matching. Aksesibilitas sistem diperluas ke ruang fisik kampus melalui terminal Smart Campus Kiosk (berbasis RFID KTM) untuk otentikasi cepat, serta didukung visualisasi multimedia interaktif bergaya status hero RPG/game untuk pengalaman pengguna yang komunikatif dan responsif.
+1.3 Indikator Keberhasilan & Target Kinerja
+Akurasi AI Semantic Matching: 
+Mencapai ≥ 85% pada pengujian User Acceptance Testing (UAT).
+Waktu Pemrosesan Rekomendasi: 
+Berjalan secara real-time (< 1 menit per pencarian/pindaian).
+Keberhasilan RFID Kiosk: 
+Tingkat pembacaan identitas kartu RFID pada terminal IoT ≥ 95%.
+Kepuasan Pengguna (User Satisfaction): 
+Skor kepuasan antarmuka pengguna minimal 4.0 / 5.0.
+2. PERAN DAN HAK AKSES PENGGUNA (USER ROLES)
+Sistem ProjectMatch AI membagi hak akses ke dalam tiga kategori role utama:
+Role Pengguna
+Kategori User
+Hak Akses dan Deskripsi Fitur Utama
+Mahasiswa
+Primary User
+• Mengunggah & mengelola portofolio (PDF CV, repo GitHub, karya).
+• Memindai kartu RFID (KTM) pada Smart Campus Kiosk.
+• Melihat grafik status kompetensi interaktif (hero status radar chart).
+• Menguji penumpukan grafik (overlay) terhadap kualifikasi proyek.
+Mitra Industri / Dosen Peneliti
+Primary User (Project Owner)
+• Membuat lowongan proyek & mengunggah deskripsi/video briefing.
+• Menerima ekstraksi kriteria kompetensi otomatis dari LLM.
+• Mengakses dasbor pelamar, melihat skor kecocokan semantik, & memilih kandidat.
+Administrator Kampus
+Secondary User
+• Memvalidasi status akademik & data identitas mahasiswa.
+• Memantau aktivitas link-and-match serta analisis statistik rekrutmen.
+• Mengelola konfigurasi terminal Smart Kiosk dan hak akses.
+3. FITUR-FITUR UTAMA SISTEM
+Manajemen Profil & Portofolio Mahasiswa: 
+Modul pengunggahan CV/resume berbasis PDF, penautan repositori GitHub, serta ekstraksi riwayat proyek berbasis project-based learning secara otomatis.
+Manajemen Lowongan Proyek Mitra: 
+Antarmuka pembuatan deskripsi proyek oleh mitra industri/dosen yang secara otomatis diekstraksi kriteria skill-nya menggunakan LLM.
+AI Semantic Matching Engine: 
+Mesin utama berbasis AI yang menghitung nilai relevansi semantik antara kualifikasi proyek dengan portofolio mahasiswa secara kontekstual.
+Smart Campus Kiosk (IoT Integration): 
+Terminal fisik berbasis ESP32 dan RFID Reader RC522 di area kampus untuk autentikasi KTM instan dan penyajian rekomendasi proyek secara cepat di layar kiosk.
+Visualisasi Data Interaktif & Gamified Multimedia: 
+Grafik segi lima/segi enam interaktif (jaring laba-laba/radar chart) bergaya status hero game yang dapat disentuh/diklik (drill-down tooltip) serta ditumpuk otomatis (overlay matching) untuk analisis kecocokan proyek.
+Dasbor Analitik & System Notification: 
+Dasbor peringkat kandidat bagi mitra industri serta notifikasi real-time skor kecocokan proyek bagi mahasiswa.
+4. SPESIFIKASI DESAIN MULTIMEDIA INTERAKTIF (HERO STATUS RADAR CHART)
+Guna mengatasi masalah antarmuka yang kaku dan membosankan, ProjectMatch AI menerapkan pendekatan visualisasi data interaktif yang terinspirasi dari antarmuka status karakter/hero pada game populer (seperti Mobile Legends atau game RPG).
+4.1 Komparasi Pendekatan Visualisasi Data
+Visualisasi Tradisional (Konvensional)
+Visualisasi Interaktif ProjectMatch AI (Gamified)
+Daftar Teks / Angka Hitam-Putih
+Menyajikan daftar nilai numerik kaku di kertas/layar (contoh: Koding: 90, Desain: 40, Kerja Tim: 85). Cenderung sulit dicerna secara cepat, monoton, dan membosankan bagi pengguna.
+Grafik Segi Multi-Dimensi Warna-Warni (Spider/Radar Chart)
+Menampilkan atribut kemampuan dalam bentuk jaring laba-laba dinamis bergaya status hero game RPG. Memberikan impresi visual instan mengenai profil keahlian mahasiswa.
+Gambar Statis (Gambar Mati)
+Hanya berupa grafik berupa format gambar (PNG/JPEG) atau tabel pasif yang tidak merespons tindakan pengguna sama sekali.
+Elemen Data Responsif & Interaktif (Dapat Dipencet & Digeser)
+Grafik 'hidup' yang bereaksi terhadap sentuhan/klik, dapat ditumpuk, di-zoom, dan memberikan respons balik secara langsung (micro-interactions).
+4.2 Tiga Pilar Interaktivitas Grafik Kompetensi
+Antarmuka grafik status pada ProjectMatch AI dirancang dengan tiga mekanisme interaksi utama:
+1. Touch/Click Interactive Drill-down (Tooltips Bukti Portofolio): 
+Saat pengguna menyeleksi atau men-tap titik simpul kemampuan tertentu (misalnya bagian 'Koding'), grafik akan melakukan efek fokus/zoom dinamis dan menampilkan kartu informasi pop-up (tooltip context). Sistem tidak hanya menunjukkan angka, tetapi juga alasan di balik nilai tersebut (contoh penjelasan: 'Nilai Koding: 90 — Didasarkan pada repositori GitHub web toko online & proyek sistem informasi').
+2. Automatic Overlay Skill-to-Project Matching (Visualisasi Penumpukan Grafik): 
+Saat mahasiswa memilih atau melihat detail sebuah lowongan proyek, grafik kemampuan diri mahasiswa (berwarna terang/kontras) akan secara otomatis ditumpuk (*overlaid*) di atas grafik kualifikasi ideal yang diminta oleh proyek mitra (berwarna semi-transparan). Mahasiswa dapat mengevaluasi kesesuaian secara instan secara visual: jika bentuk kedua grafik saling berhimpitan secara presisi, maka tingkat kecocokan proyek sangat tinggi.
+3. Dynamic Micro-interactions & Direct Touch Feedback: 
+Grafik memberikan umpan balik langsung (haptic/visual feedback) seperti efek glowing pada area yang cocok, pergeseran sudut secara halus, dan animasi pergerakan area saat kriteria dipilh atau disaring.
+5. ARSITEKTUR STACK TEKNOLOGI DAN ESTIMASI BIAYA
+Seluruh komponen perangkat lunak dikembangkan menggunakan teknologi open-source dengan estimasi biaya lisensi Rp0:
+Komponen / Modul
+Pilihan Teknologi
+Peran & Fungsi Utama
+Estimasi Biaya
+Frontend Framework
+Next.js + Recharts/Chart.js
+Antarmuka web responsive, rendering grafik hero status interaktif & animasi overlay
+Rp0
+Backend Framework
+FastAPI (Python)
+Layanan REST API & WebSocket berkecepatan tinggi untuk inferensi AI & logika bisnis
+Rp0
+Relational Database
+PostgreSQL
+Penyimpanan data utama (users, profiles, projects, matches)
+Rp0
+Vector Database
+pgvector (Extension)
+Ekstensi PostgreSQL untuk indeksasi dan pencarian vector embeddings
+Rp0
+Text Embedding
+Sentence Transformers
+Model open-source untuk merubah teks portofolio & proyek menjadi vektor
+Rp0
+LLM Engine
+Ollama
+Engine lokal/self-hosted untuk menjalankan Large Language Model
+Rp0
+Model LLM
+Qwen / Llama (Open-Source)
+Ekstraksi kriteria kompetensi otomatis dari deskripsi proyek
+Rp0
+Matching Mechanism
+Python + Cosine Similarity
+Algoritma perhitungan jarak semantik antar vektor skill dan proyek
+Rp0
+IoT Subsystem Firmware
+C++ / ESP32 Engine
+Pemrograman mikrokontroler ESP32 & RFID Reader RC522 untuk Kiosk
+Rp0
+Version Control
+Git
+Manajemen repositori kode program & kolaborasi pengembangan
+Rp0
+6. INTEGRASI ARTIFICIAL INTELLIGENCE DAN ALGORITMA MATCHING
+6.1 Ekstraksi Kriteria Proyek (LLM via Ollama)
+Sistem memanfaatkan Ollama yang menjalankan model bahasa open-source (Qwen / Llama) secara lokal. Saat mitra industri memasukkan deskripsi proyek, LLM akan melakukan prompt parsing untuk mengekstraksi kualifikasi kunci (seperti 'Python', 'FastAPI', 'UI/UX Design', 'Data Analysis') dan tingkat pengalaman yang dibutuhkan secara terstruktur.
+6.2 Vector Embedding (Sentence Transformers)
+Dokumen portofolio/resume mahasiswa dan deskripsi kebutuhan proyek dikonversi menjadi bentuk vektor numerik menggunakan Sentence Transformers. Representasi vektor ini menyimpan konteks arti kata (semantic context), sehingga kata yang memiliki makna mirip (misal: 'Web Developer' dan 'Frontend Engineer') berada di posisi berdekatan dalam ruang vektor.
+6.3 Perhitungan Skor Kesesuaian (Cosine Similarity)
+Tingkat kecocokan antara vektor portofolio mahasiswa (A) dan vektor proyek (B) dihitung menggunakan rumus Cosine Similarity:
+Similarity Score (A, B) = ( A • B ) / ( ||A|| × ||B|| )
+Hasil perhitungan menghasilkan nilai rentang 0.0 hingga 1.0 (0% - 100%). Nilai skor ini dipetakan secara real-time ke antarmuka pengguna dalam bentuk persentase kecocokan dan grafik radar keahlian (Skill Radar Chart) untuk proses penumpukan (overlay).
+7. SPESIFIKASI API (APPLICATION PROGRAMMING INTERFACE)
+Arsitektur sistem ProjectMatch AI menghubungkan berbagai subsistem melalui tiga jenis antarmuka API:
+FastAPI REST API: 
+Mengelola transaksi data utama antara web frontend dan backend. Endpoint mencakup:
+• POST /api/v1/auth/login : Otentikasi pengguna & pembuatan JWT Token.
+• POST /api/v1/profiles/resume : Pengunggahan berkas PDF CV & ekstraksi portofolio.
+• POST /api/v1/projects : Pembuatan lowongan proyek baru oleh mitra.
+• GET /api/v1/recommendations/{mahasiswa_id} : Pengambilan rekomendasi proyek teratas & data titik koordinat radar chart.
+WebSocket / IoT API: 
+Menyediakan jalur komunikasi duplex real-time antara mikrokontroler ESP32 Smart Kiosk dan server backend. Saat kartu RFID (KTM) di-tap pada kiosk, data UID dikirimkan via endpoint WS /ws/kiosk/{device_id} sehingga sistem langsung menampilkan profil dan grafik radar interaktif di layar Kiosk dalam waktu < 1 detik.
+Ollama Local API: 
+Interface internal backend ke service Ollama melalui endpoint POST http://localhost:11434/api/generate untuk melakukan eksekusi prompt LLM secara terisolasi.
+8. GAMBARAN SPESIFIKASI BASIS DATA (DATABASE DESIGN)
+Sistem menggunakan basis data relasional PostgreSQL yang dilengkapi dengan ekstensi pgvector untuk mendukung pencarian vektor. Berikut adalah rancangan tabel utama basis data ProjectMatch AI:
+Nama Tabel
+Atribut / Kolom Utama
+Keterangan & Tipe Data
+users
+id (PK), email, password_hash, role, created_at
+Penyimpanan data akun pengguna (Mahasiswa, Mitra, Admin).
+mahasiswa_profiles
+id (PK), user_id (FK), nim, rfid_uid, github_url, resume_text
+Profil detail mahasiswa & UID kartu RFID (KTM) untuk Kiosk.
+projects
+id (PK), mitra_id (FK), title, description, extracted_skills, video_url
+Data lowongan proyek industri/dosen & hasil ekstraksi skill.
+embeddings (pgvector)
+id (PK), entity_id (FK), entity_type, embedding_vector (vector)
+Penyimpanan vector embedding portofolio dan kriteria proyek.
+matches
+id (PK), mahasiswa_id (FK), project_id (FK), similarity_score, created_at
+Rekapitulasi riwayat pencocokan & skor kecocokan semantik.

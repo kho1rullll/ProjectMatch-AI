@@ -126,13 +126,13 @@ export default function JobsExploreView() {
   return (
     <div className="space-y-6">
       {/* Header Eksplorasi Lowongan */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-4">
+      <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-[0_4px_25px_rgba(15,23,42,0.04)] space-y-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Eksplorasi Lowongan Freelance & Part-Time (FR-04, FR-08)
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            Eksplorasi Lowongan Freelance & Part-Time
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Agregasi multi-platform terpadu dari LinkedIn, Upwork, dan Fiverr. Diurutkan berdasarkan skor kecocokan semantik AI (Cosine Similarity).
+            Agregasi multi-platform terpadu dari LinkedIn, Upwork, dan Fiverr. Diurutkan berdasarkan skor kecocokan semantik AI.
           </p>
         </div>
 
@@ -140,13 +140,13 @@ export default function JobsExploreView() {
         <div className="flex flex-col md:flex-row gap-3 pt-2">
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Cari posisi, kata kunci teknologi, atau perusahaan..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-slate-200 bg-slate-50 text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+              className="w-full pl-11 pr-4 py-3 rounded-full border border-slate-200 bg-slate-50/60 text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-container transition-all"
             />
           </div>
 
@@ -155,7 +155,7 @@ export default function JobsExploreView() {
             <select
               value={selectedPlatform}
               onChange={(e) => setSelectedPlatform(e.target.value)}
-              className="px-3.5 py-2.5 rounded-2xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="px-4 py-3 rounded-full border border-slate-200 bg-slate-50/60 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary-container"
             >
               <option value="semua">Semua Platform</option>
               <option value="linkedin">LinkedIn</option>
@@ -167,7 +167,7 @@ export default function JobsExploreView() {
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="px-3.5 py-2.5 rounded-2xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="px-4 py-3 rounded-full border border-slate-200 bg-slate-50/60 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary-container"
             >
               <option value="semua">Semua Tipe</option>
               <option value="freelance">Freelance</option>
@@ -176,7 +176,7 @@ export default function JobsExploreView() {
 
             <button
               onClick={fetchJobs}
-              className="p-2.5 rounded-2xl border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
+              className="p-3 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
               title="Refresh Lowongan"
             >
               <RefreshCw className="w-4 h-4" />
@@ -188,17 +188,17 @@ export default function JobsExploreView() {
       {/* Grid Kartu Lowongan */}
       {isLoading ? (
         <div className="text-center py-12 space-y-3">
-          <RefreshCw className="w-6 h-6 animate-spin mx-auto text-blue-600" />
+          <RefreshCw className="w-6 h-6 animate-spin mx-auto text-primary-container" />
           <p className="text-xs font-semibold text-slate-500">Memuat agregasi lowongan pekerjaan...</p>
         </div>
       ) : filteredJobs.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-3">
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-12 text-center border border-slate-200/80 space-y-3">
           <Briefcase className="w-8 h-8 text-slate-400 mx-auto" />
           <h3 className="font-bold text-slate-900 text-sm">Tidak ada lowongan yang sesuai kriteria</h3>
           <p className="text-xs text-slate-500">Coba ubah kata kunci pencarian atau reset filter platform.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
           {filteredJobs.map((job) => {
             const matchScore = job.similarity_score ? Math.round(job.similarity_score * 100) : 85;
             const platformColor =
@@ -212,32 +212,32 @@ export default function JobsExploreView() {
               <div
                 key={job.id}
                 onClick={() => setActiveModalJob(job)}
-                className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs hover:shadow-md hover:border-blue-300 transition-all cursor-pointer flex flex-col justify-between space-y-4 group"
+                className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] hover:shadow-xl hover:border-purple-300 hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between space-y-4 group"
               >
                 <div>
                   {/* Top Bar: Platform & Match Badge */}
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <div className="flex items-center gap-2">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${platformColor}`}>
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${platformColor}`}>
                         {job.platform_source}
                       </span>
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600">
+                      <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600">
                         {job.job_type.replace('_', ' ')}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black">
-                      <Sparkles className="w-3 h-3 text-blue-600" />
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-lime-100 text-lime-900 border border-lime-300 text-xs font-black">
+                      <Sparkles className="w-3.5 h-3.5 text-lime-600" />
                       <span>{matchScore}% Match</span>
                     </div>
                   </div>
 
-                  <h3 className="font-bold text-base text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                  <h3 className="font-extrabold text-base text-slate-900 group-hover:text-primary-container transition-colors line-clamp-2">
                     {job.title}
                   </h3>
 
                   {job.company_or_client && (
-                    <p className="text-xs font-semibold text-slate-500 mt-1 flex items-center gap-1.5">
+                    <p className="text-xs font-semibold text-slate-500 mt-1.5 flex items-center gap-1.5">
                       <Building2 className="w-3.5 h-3.5 text-slate-400" />
                       {job.company_or_client}
                     </p>
@@ -249,7 +249,7 @@ export default function JobsExploreView() {
                 </div>
 
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-                  <div className="text-xs font-bold text-emerald-700">
+                  <div className="text-xs font-extrabold text-slate-900">
                     {job.budget_or_salary || 'Kompetitif'}
                   </div>
 
@@ -258,7 +258,7 @@ export default function JobsExploreView() {
                     <button
                       type="button"
                       onClick={(e) => handleBookmarkToggle(job.id, Boolean(job.is_bookmarked), e)}
-                      className={`p-2 rounded-xl border transition-all cursor-pointer ${
+                      className={`p-2.5 rounded-full border transition-all cursor-pointer ${
                         job.is_bookmarked
                           ? 'bg-amber-100 border-amber-300 text-amber-800'
                           : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'
@@ -273,7 +273,7 @@ export default function JobsExploreView() {
                       href={job.external_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs"
+                      className="px-5 py-2.5 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-purple-500/25"
                     >
                       <span>Lamar</span>
                       <ExternalLink className="w-3.5 h-3.5" />

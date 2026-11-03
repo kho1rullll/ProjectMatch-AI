@@ -1,104 +1,252 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+import { Sparkles, CheckCircle2, GitBranch, Star, Code2, Award, Terminal, Flame, Layers } from 'lucide-react';
+import { GithubIcon } from '@/components/icons/GithubIcon';
 
 export default function ProjectMatchHeroStack() {
+  const [activeTab, setActiveTab] = useState<'project' | 'skills'>('project');
+
   return (
-    <div className="relative mx-auto w-full max-w-md pt-2 pb-6 group">
-      {/* Ambient soft cyan/blue glow behind the stack */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[420px] h-36 bg-gradient-to-r from-blue-400/20 via-cyan-300/30 to-indigo-400/20 rounded-full blur-3xl pointer-events-none -z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+    <div className="relative mx-auto w-full max-w-lg flex items-center justify-center py-6 sm:py-10 select-none">
+      
+      {/* ========================================================================= */}
+      {/* 1. AMBIENT GLOW & DECORATIVE ANIMATED BACKGROUND ELEMENTS                */}
+      {/* ========================================================================= */}
+      
+      {/* Neon Lime Ring (From Reference Design) - Floating Animation */}
+      <div 
+        className="absolute -top-6 -right-2 sm:-top-10 sm:right-2 w-36 h-36 sm:w-44 sm:h-44 rounded-full border-[7px] sm:border-[8px] border-[#a3e635] opacity-80 pointer-events-none -z-10 animate-float-1"
+        aria-hidden="true"
       />
 
-      <div className="relative animate-hero-stack">
+      {/* Pastel Rainbow / Purple Glow Aura */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-72 sm:h-80 bg-gradient-to-tr from-purple-500/20 via-pink-400/15 to-lime-300/20 rounded-full blur-3xl pointer-events-none -z-20 animate-pulse"
+        style={{ animationDuration: '4s' }}
+        aria-hidden="true"
+      />
+
+      {/* Purple Ribbon Wave (Floating below the portfolio cards) */}
+      <div 
+        className="absolute -bottom-6 -left-6 sm:-bottom-8 sm:-left-10 w-52 sm:w-64 h-12 sm:h-14 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-500 rounded-full -rotate-12 opacity-90 shadow-xl shadow-purple-600/30 pointer-events-none z-10 animate-float-2"
+        aria-hidden="true"
+      />
+
+      {/* Circular Stamp Badge */}
+      <div 
+        className="absolute -top-7 right-4 sm:-top-8 sm:right-2 w-20 h-20 sm:w-22 sm:h-22 rounded-full border border-purple-200 bg-white/80 backdrop-blur-md flex items-center justify-center p-1 shadow-md pointer-events-none z-30 -rotate-12 hidden xs:flex animate-float-3"
+        aria-hidden="true"
+      >
+        <div className="w-full h-full rounded-full border border-dashed border-purple-500/80 flex flex-col items-center justify-center text-center p-1">
+          <span className="text-[7px] font-black uppercase tracking-wider text-purple-700">
+            VERIFIED
+          </span>
+          <span className="text-[8px] font-black text-slate-900">
+            PORTOFOLIO
+          </span>
+          <span className="text-[6px] font-bold text-emerald-600">
+            ★ TOP 1% ★
+          </span>
+        </div>
+      </div>
+
+      {/* Micro Animated Sparkles */}
+      <div className="absolute top-2 -left-2 text-purple-500 text-xl font-bold animate-ping pointer-events-none z-20" style={{ animationDuration: '3s' }}>
+        ✦
+      </div>
+      <div className="absolute -bottom-2 right-12 text-[#84cc16] text-xl font-bold animate-pulse pointer-events-none z-20">
+        ✦
+      </div>
+      <div className="absolute top-1/2 -right-6 text-indigo-400 text-sm font-bold pointer-events-none z-20">
+        ✦
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 2. PORTOFOLIO CARD SYSTEM (Animated & Interactive)                       */}
+      {/* ========================================================================= */}
+      <div className="relative w-full max-w-[360px] sm:max-w-[420px] transition-transform duration-500 hover:scale-[1.02]">
         
-        {/* Layer 3 - Bottom Card (Smart Campus Kiosk status) */}
-        <div
-          className="absolute inset-x-4 top-8 bg-white/95 rounded-2xl border border-slate-200/90 shadow-sm p-3 flex items-center justify-between text-left transition-all duration-300 pointer-events-none select-none z-10 translate-y-[16px] scale-[0.94] opacity-75 group-hover:translate-y-[36px] group-hover:scale-[0.96] group-hover:opacity-95"
+        {/* ======================================================================= */}
+        {/* BACK CARD: Secondary Competency & Git Activity Card                    */}
+        {/* ======================================================================= */}
+        <div 
+          className="absolute inset-0 bg-slate-900 text-white rounded-3xl p-5 sm:p-6 shadow-2xl border border-slate-800 flex flex-col justify-between -rotate-6 translate-x-3 translate-y-6 sm:translate-x-5 sm:translate-y-7 transition-all duration-500 pointer-events-none"
+          style={{ zIndex: 10 }}
         >
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-700 text-xs font-bold">
-              📡
+          {/* Top row */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#a3e635] shadow-xs shadow-lime-400/50" />
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-300">
+                Kompetensi Portofolio
+              </span>
             </div>
-            <div>
-              <p className="text-[11px] font-bold text-slate-800">Smart Kiosk RFID #01</p>
-              <p className="text-[10px] text-slate-500">Lobby Riset • Standby Tap KTM</p>
+            <span className="text-[10px] font-bold text-purple-400 bg-purple-950/60 px-2 py-0.5 rounded-full border border-purple-800">
+              Tier S • Level 42
+            </span>
+          </div>
+
+          {/* Mini Skill Meters */}
+          <div className="space-y-1.5 my-2">
+            <div className="flex justify-between text-[10px] text-slate-400 font-medium">
+              <span>Frontend &amp; Arsitektur</span>
+              <span className="text-white font-bold">96%</span>
+            </div>
+            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-full bg-purple-500 rounded-full w-[96%]" />
             </div>
           </div>
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-        </div>
 
-        {/* Layer 2 - Middle Card (Hero RPG Competency) */}
-        <div
-          className="absolute inset-x-2 top-4 bg-white/95 rounded-2xl border border-slate-200/90 shadow-md p-3.5 flex items-center justify-between text-left transition-all duration-300 pointer-events-none select-none z-20 translate-y-[8px] scale-[0.97] opacity-90 group-hover:translate-y-[18px] group-hover:scale-[0.98] group-hover:opacity-100"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-700 text-xs font-bold">
-              🎮
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <p className="text-xs font-bold text-slate-900">Raden Satria</p>
-                <span className="text-[9px] font-black text-indigo-700 bg-indigo-50 px-1.5 py-0.2 rounded border border-indigo-200">
-                  Hero Tier S
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-500">5D Radar: AI & Data (92), Frontend (85)</p>
-            </div>
+          {/* Footer of back card */}
+          <div className="flex items-center justify-between pt-2 border-t border-slate-800 text-[10px] text-slate-400">
+            <span className="flex items-center gap-1">
+              <GithubIcon className="w-3.5 h-3.5 text-white" />
+              <span>1.420+ Verified Commits</span>
+            </span>
+            <span className="text-[#a3e635] font-bold">Aktif Terverifikasi</span>
           </div>
-          <span className="text-[10px] font-bold text-slate-400">Level 42</span>
         </div>
 
-        {/* Layer 1 - Top Card (AI Semantic Match & Project Recommendation) */}
-        <div
-          className="relative bg-white rounded-2xl border border-slate-200/90 shadow-[0_12px_32px_-6px_rgba(15,23,42,0.1)] p-3.5 sm:p-4 text-left transition-all duration-300 cursor-default"
-          style={{ zIndex: 30 }}
+        {/* ======================================================================= */}
+        {/* FRONT CARD: Interactive Glassmorphism Portofolio Showcase Card           */}
+        {/* ======================================================================= */}
+        <div 
+          className="relative rounded-3xl bg-white/95 backdrop-blur-xl border border-purple-200/90 shadow-2xl p-5 sm:p-6 space-y-4 transition-all duration-500 rotate-2 hover:rotate-0"
+          style={{ zIndex: 20 }}
         >
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 min-w-0">
-              {/* Partner Logo / Avatar with verified badge */}
-              <div className="relative shrink-0">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                  BN
+          {/* Student Profile Header */}
+          <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              {/* Avatar with Live Indicator */}
+              <div className="relative">
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-purple-500 text-white flex items-center justify-center font-black text-sm shadow-md shadow-purple-600/30">
+                  RS
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-[7px] text-white font-black">
+                <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-[7px] text-white font-bold">
                   ✓
                 </span>
               </div>
 
-              {/* Title & Info */}
-              <div className="min-w-0">
+              <div>
                 <div className="flex items-center gap-1.5">
-                  <p className="text-xs font-bold text-slate-900 truncate">
-                    BioInformatika Nusantara
-                  </p>
-                  <span className="text-[9px] text-slate-400 shrink-0">baru saja</span>
+                  <h4 className="text-sm font-extrabold text-slate-900 leading-tight">
+                    Raden Satria
+                  </h4>
+                  <span className="text-[9px] font-bold text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded-md border border-purple-200">
+                    Mahasiswa
+                  </span>
                 </div>
-                <p className="text-[11px] text-slate-600 truncate">
-                  NLP &amp; Deep Learning Cancer Genomics
+                <p className="text-[10px] text-slate-500 flex items-center gap-1 mt-0.5">
+                  <GithubIcon className="w-3 h-3 text-slate-600" />
+                  <span>github.com/radensatria</span>
                 </p>
               </div>
             </div>
 
-            {/* Score Pill */}
-            <div className="shrink-0 text-right">
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-black">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                94.2% Match
+            {/* Match Score Badge */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-black shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>98.4% Match</span>
+            </div>
+          </div>
+
+          {/* Featured Portfolio Project */}
+          <div className="p-3.5 rounded-2xl bg-purple-50/50 border border-purple-100/80 space-y-2 text-left">
+            <div className="flex items-center justify-between text-[10px]">
+              <span className="font-bold text-purple-700 uppercase tracking-wider flex items-center gap-1">
+                <Code2 className="w-3 h-3" />
+                <span>Portofolio Unggulan</span>
+              </span>
+              <span className="text-slate-400 font-mono">Repo Publik</span>
+            </div>
+
+            <div>
+              <h5 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                Medical NLP &amp; Diagnostic Platform
+              </h5>
+              <p className="text-[10px] text-slate-600 leading-relaxed mt-0.5">
+                Aplikasi analisis data kesehatan dengan antarmuka interaktif dan pemrosesan otomatis.
+              </p>
+            </div>
+
+            {/* Commit Heatmap Activity Representation */}
+            <div className="pt-1">
+              <p className="text-[9px] font-semibold text-slate-400 mb-1">Aktivitas Kontribusi GitHub:</p>
+              <div className="flex items-center gap-1 overflow-hidden">
+                {[
+                  'bg-emerald-300', 'bg-emerald-500', 'bg-emerald-600', 'bg-emerald-400',
+                  'bg-emerald-600', 'bg-emerald-500', 'bg-emerald-600', 'bg-emerald-700',
+                  'bg-emerald-500', 'bg-emerald-600', 'bg-emerald-700', 'bg-emerald-600',
+                  'bg-emerald-500', 'bg-emerald-400', 'bg-emerald-600', 'bg-emerald-500'
+                ].map((color, i) => (
+                  <span
+                    key={i}
+                    className={`w-3.5 h-3 rounded-xs ${color} transition-transform hover:scale-125 cursor-pointer`}
+                    title={`Aktivitas Commit Minggu #${i + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Skill Badges & Repository Stats */}
+          <div className="pt-1 flex flex-wrap items-center justify-between gap-2 text-left">
+            <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-bold">
+              <span className="px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200">
+                React.js
+              </span>
+              <span className="px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-200">
+                Python
+              </span>
+              <span className="px-2.5 py-1 rounded-full bg-[#ecfccb] text-[#3f6212] border border-[#d9f99d]">
+                FastAPI
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 text-[10px] font-semibold text-slate-500">
+              <span className="flex items-center gap-0.5 text-amber-500">
+                <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                <span>142</span>
+              </span>
+              <span className="flex items-center gap-0.5 text-slate-600">
+                <GitBranch className="w-3 h-3" />
+                <span>38</span>
               </span>
             </div>
           </div>
 
-          {/* Sub-bar tags */}
-          <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
-            <div className="flex items-center gap-1.5">
-              <span className="px-1.5 py-0.5 rounded bg-slate-100 font-medium text-slate-700">Python</span>
-              <span className="px-1.5 py-0.5 rounded bg-slate-100 font-medium text-slate-700">PyTorch</span>
-              <span className="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold">Cosine Vector</span>
-            </div>
-            <span className="text-blue-600 font-semibold hover:underline">Detail →</span>
+          {/* Floating Micro Status Pill */}
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
+            <span className="text-emerald-700 font-bold flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Portofolio Otomatis Tersinkron</span>
+            </span>
+            <span className="text-purple-600 font-bold hover:underline cursor-pointer">
+              Detail Profil →
+            </span>
+          </div>
+
+        </div>
+
+        {/* Floating Accent Mini Badge (Animated Top-Left) */}
+        <div className="absolute -top-3 -left-3 sm:-left-6 z-30 animate-float-1 pointer-events-none">
+          <div className="glass-card rounded-2xl px-3 py-1.5 shadow-lg border border-purple-200/90 flex items-center gap-1.5 bg-white/90">
+            <span className="text-xs">🚀</span>
+            <span className="text-[10px] font-extrabold text-slate-800">Siap Magang &amp; Proyek</span>
+          </div>
+        </div>
+
+        {/* Floating Accent Mini Badge (Animated Bottom-Right) */}
+        <div className="absolute -bottom-3 -right-2 sm:-right-4 z-30 animate-float-3 pointer-events-none">
+          <div className="glass-card rounded-2xl px-3 py-1.5 shadow-lg border border-emerald-200/90 flex items-center gap-1.5 bg-white/90">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+            <span className="text-[10px] font-extrabold text-emerald-800">Cocok 5 Lowongan Baru</span>
           </div>
         </div>
 
       </div>
+
     </div>
   );
 }

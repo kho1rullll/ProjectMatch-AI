@@ -144,7 +144,11 @@ function MitraDashboardContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/60 flex">
+    <div className="min-h-screen bg-[#FAFAFC] relative overflow-hidden flex">
+      {/* Ambient background glow */}
+      <div className="fixed top-0 right-1/4 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="fixed bottom-10 right-10 w-80 h-80 bg-lime-200/20 rounded-full blur-3xl pointer-events-none -z-10" />
+
       {/* Sidebar Navigation */}
       <MitraSidebar
         activeTab={activeTab}
@@ -157,12 +161,12 @@ function MitraDashboardContent() {
       {/* Main Content Area */}
       <div className="flex-1 lg:pl-64 flex flex-col min-w-0">
         {/* Top Header */}
-        <header className="h-16 sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 flex items-center justify-between shadow-2xs">
+        <header className="h-20 sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setMobileSidebarOpen(true)}
-              className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl cursor-pointer"
+              className="lg:hidden p-2.5 text-slate-600 hover:bg-slate-100 rounded-full cursor-pointer"
               aria-label="Buka menu navigasi"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,31 +174,32 @@ function MitraDashboardContent() {
               </svg>
             </button>
             <div>
-              <h1 className="text-sm sm:text-base font-bold text-slate-900 leading-none">
+              <h1 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight leading-none">
                 {getTabTitle()}
               </h1>
-              <p className="text-[10px] text-slate-400 font-medium hidden sm:block mt-1">
-                ProjectMatch AI • {user?.organization || 'BioInformatika Nusantara & RS Cipto'}
+              <p className="text-[10px] text-slate-400 font-medium hidden sm:flex items-center gap-1 mt-1">
+                <span>Project</span><span className="text-purple-600 font-bold">Match</span><span className="bg-[#84CC16] text-slate-950 font-black text-[8px] px-1 py-0.5 rounded ml-0.5">AI</span>
+                <span className="ml-1">• {user?.organization || 'BioInformatika Nusantara & RS Cipto'}</span>
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 px-2.5 py-1 bg-cyan-50 border border-cyan-200 rounded-lg text-[11px] font-bold text-cyan-800">
-              <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
-              <span>AI Cosine Matching Aktif</span>
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-lime-100 border border-lime-300 rounded-full text-[11px] font-black text-lime-900">
+              <span className="w-2 h-2 rounded-full bg-accent-lime-glow animate-pulse" />
+              <span>AI Matching Aktif</span>
             </div>
 
-            <div className="flex items-center gap-2.5 pl-3 border-l border-slate-200">
+            <div className="flex items-center gap-3 pl-3 border-l border-slate-200">
               <div className="text-right hidden sm:block">
-                <span className="text-xs font-bold text-slate-800 block leading-tight">
+                <span className="text-xs font-bold text-slate-900 block leading-tight">
                   {user?.name || 'Dr. Hendra Gunawan'}
                 </span>
-                <span className="text-[10px] text-blue-600 block font-semibold truncate max-w-[130px]">
+                <span className="text-[10px] text-primary-container block font-extrabold truncate max-w-[130px]">
                   {user?.organization || 'Mitra Industri'}
                 </span>
               </div>
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-container to-indigo-700 text-white flex items-center justify-center font-black text-xs shadow-md shadow-purple-500/20 cursor-pointer">
                 {(user?.name || 'HG')
                   .split(' ')
                   .map((n) => n[0])
@@ -209,7 +214,7 @@ function MitraDashboardContent() {
         {/* Dynamic Toast Feedback Messages */}
         <div className="px-4 sm:px-8 pt-4 space-y-2">
           {feedbackMsg && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl shadow-xs flex items-center gap-2 animate-in fade-in">
+            <div className="p-3.5 bg-lime-100 border border-lime-300 text-lime-900 text-xs font-bold rounded-2xl shadow-sm flex items-center gap-2 animate-in fade-in">
               <span>✓</span>
               <span>{feedbackMsg}</span>
             </div>

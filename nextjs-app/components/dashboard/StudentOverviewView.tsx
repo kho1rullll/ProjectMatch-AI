@@ -37,33 +37,37 @@ export default function StudentOverviewView({ onNavigateTab }: StudentOverviewVi
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-900 rounded-3xl p-6 sm:p-8 text-white shadow-sm relative overflow-hidden">
+      <div className="bg-[#0B0F19] rounded-3xl p-6 sm:p-8 text-white border border-white/10 shadow-xl relative overflow-hidden">
+        {/* Ambient glow inside banner */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/25 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/3 w-64 h-64 bg-lime-400/15 rounded-full blur-2xl pointer-events-none" />
+
         <div className="max-w-2xl relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-xs font-semibold text-blue-200">
-            <Sparkles className="w-3.5 h-3.5 text-blue-300" />
-            <span>AI Career Automation Platform (SKPL V12)</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold text-accent-lime-glow border border-white/10">
+            <Sparkles className="w-3.5 h-3.5 text-accent-lime-glow" />
+            <span>AI Career Automation Platform</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
             Selamat Datang, {studentName}
           </h1>
-          <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
             NIM: <span className="font-mono font-bold text-white">{nim}</span> • Akun GitHub:{' '}
-            <span className="font-mono font-bold text-blue-200">@{githubUser}</span>
+            <span className="font-mono font-bold text-accent-lime-glow">@{githubUser}</span>
             <br />
             Keahlian coding Anda disintesis otomatis dari repositori publik GitHub dan dicocokkan secara semantik dengan lowongan freelance dan part-time.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-3">
             <button
               onClick={() => onNavigateTab('github')}
-              className="px-4 py-2 rounded-xl bg-white text-blue-900 font-bold text-xs hover:bg-blue-50 transition-colors flex items-center gap-2 shadow-xs cursor-pointer"
+              className="px-5 py-2.5 rounded-full bg-primary-container text-white font-bold text-xs hover:bg-primary-hover transition-all flex items-center gap-2 shadow-lg shadow-purple-500/25 cursor-pointer"
             >
               <Github className="w-3.5 h-3.5" />
               <span>Kelola Akun GitHub</span>
             </button>
             <button
               onClick={() => onNavigateTab('jobs')}
-              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-colors flex items-center gap-2 backdrop-blur-xs cursor-pointer"
+              className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all flex items-center gap-2 backdrop-blur-md border border-white/10 cursor-pointer"
             >
               <span>Jelajahi Lowongan</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -72,33 +76,33 @@ export default function StudentOverviewView({ onNavigateTab }: StudentOverviewVi
         </div>
       </div>
 
-      {/* Recharts Radar Chart Kompetensi (FR-07) */}
+      {/* Recharts Radar Chart Kompetensi */}
       <div className="space-y-4">
         <CompetencyRadarChart
           studentData={profile?.extracted_skills?.radar_competencies}
         />
       </div>
 
-      {/* Top Recommendations (FR-06) */}
+      {/* Top Recommendations */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base sm:text-lg font-bold text-slate-900">
-              Rekomendasi Lowongan Tertinggi (FR-06)
+            <h3 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+              Rekomendasi Lowongan Tertinggi
             </h3>
             <p className="text-xs text-slate-500">
-              Dihitung menggunakan Cosine Similarity antara embedding portofolio GitHub dan deskripsi pekerjaan
+              Rekomendasi presisi berdasarkan sintesis portofolio GitHub dan kebutuhan lowongan
             </p>
           </div>
           <button
             onClick={() => onNavigateTab('jobs')}
-            className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
+            className="text-xs font-bold text-primary-container hover:text-purple-700 flex items-center gap-1 cursor-pointer transition-colors"
           >
             Lihat Semua Lowongan <ArrowRight className="w-3 h-3" />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {(recommendations.length > 0 ? recommendations.slice(0, 3) : [
             {
               job: {
@@ -155,32 +159,32 @@ export default function StudentOverviewView({ onNavigateTab }: StudentOverviewVi
             <div
               key={item.job.id}
               onClick={() => setActiveModalJob(item.job)}
-              className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between space-y-3 group"
+              className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] hover:shadow-xl hover:border-purple-300 hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between space-y-4 group"
             >
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700">
                     {item.job.platform_source}
                   </span>
-                  <span className="flex items-center gap-1 text-xs font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">
-                    <Sparkles className="w-3 h-3 text-blue-600" />
-                    {item.match_percentage || Math.round(item.similarity_score * 100)}%
+                  <span className="flex items-center gap-1.5 text-xs font-black text-lime-900 bg-lime-100 border border-lime-300/80 px-3 py-1 rounded-full">
+                    <Sparkles className="w-3.5 h-3.5 text-lime-600" />
+                    {item.match_percentage || Math.round(item.similarity_score * 100)}% Match
                   </span>
                 </div>
-                <h4 className="font-bold text-sm text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                <h4 className="font-bold text-sm text-slate-900 group-hover:text-primary-container transition-colors line-clamp-2">
                   {item.job.title}
                 </h4>
-                <p className="text-[11px] text-slate-500 font-medium mt-1">
+                <p className="text-xs text-slate-500 font-medium mt-1">
                   {item.job.company_or_client || 'Mitra Industri'}
                 </p>
               </div>
 
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="font-bold text-emerald-700 text-[11px]">
+                <span className="font-extrabold text-slate-900 text-xs">
                   {item.job.budget_or_salary || 'Kompetitif'}
                 </span>
-                <span className="text-blue-600 font-bold text-[11px] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  Detail <ExternalLink className="w-3 h-3" />
+                <span className="text-primary-container font-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  Detail <ExternalLink className="w-3.5 h-3.5" />
                 </span>
               </div>
             </div>

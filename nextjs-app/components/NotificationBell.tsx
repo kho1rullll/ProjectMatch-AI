@@ -110,12 +110,12 @@ export default function NotificationBell() {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+        className="relative p-2.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
         aria-label="Notifikasi Real-time"
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-600 text-white text-[10px] font-black rounded-full flex items-center justify-center animate-pulse">
+          <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-primary-container text-white text-[10px] font-black rounded-full flex items-center justify-center animate-pulse shadow-sm shadow-purple-500/50">
             {unreadCount}
           </span>
         )}
@@ -123,11 +123,11 @@ export default function NotificationBell() {
 
       {/* Dropdown Panel */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-3xl border border-slate-200 shadow-2xl z-50 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_rgba(15,23,42,0.12)] z-50 overflow-hidden">
           <div className="p-4 border-b border-slate-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <h4 className="font-bold text-sm text-slate-900">Notifikasi Real-Time (FR-09)</h4>
+              <span className="w-2 h-2 rounded-full bg-accent-lime-glow animate-ping" />
+              <h4 className="font-bold text-sm text-slate-900">Notifikasi Real-Time</h4>
             </div>
             <span className="text-[11px] font-bold text-slate-400">
               {unreadCount} Belum Dibaca
@@ -144,13 +144,13 @@ export default function NotificationBell() {
                 <div
                   key={n.id}
                   className={`p-4 text-xs transition-colors flex items-start justify-between gap-3 ${
-                    n.is_read ? 'bg-white opacity-70' : 'bg-blue-50/60'
+                    n.is_read ? 'bg-white opacity-75' : 'bg-purple-50/70 border-l-2 border-primary-container'
                   }`}
                 >
                   <div className="space-y-1 flex-1">
                     <div className="flex items-center gap-1.5">
                       {n.type === 'match_result' ? (
-                        <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                        <Sparkles className="w-3.5 h-3.5 text-primary-container shrink-0" />
                       ) : (
                         <AlertCircle className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                       )}
@@ -166,7 +166,7 @@ export default function NotificationBell() {
                     <button
                       type="button"
                       onClick={(e) => handleMarkAsRead(n.id, e)}
-                      className="p-1 rounded-md text-blue-600 hover:bg-blue-100 transition-colors cursor-pointer shrink-0"
+                      className="p-1 rounded-full text-primary-container hover:bg-purple-100 transition-colors cursor-pointer shrink-0"
                       title="Tandai Sudah Dibaca"
                     >
                       <CheckCheck className="w-4 h-4" />

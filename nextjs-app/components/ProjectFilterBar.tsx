@@ -22,7 +22,7 @@ export default function ProjectFilterBar({
   onMinMatchScoreChange,
 }: ProjectFilterBarProps) {
   return (
-    <div className="glass-card rounded-3xl p-6 border border-blue-100 shadow-md space-y-5">
+    <div className="bg-surface-white/95 backdrop-blur-xl rounded-3xl p-6 border border-border-light shadow-[0_10px_30px_rgba(15,23,42,0.04)] space-y-5">
       {/* Search Input & Minimum Match Slider */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
         {/* Search Bar */}
@@ -32,10 +32,10 @@ export default function ProjectFilterBar({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Cari judul proyek, kata kunci, atau nama mitra industri..."
-            className="w-full px-4 py-3 pl-11 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+            className="w-full px-5 py-3.5 pl-12 rounded-full bg-surface-container-low/60 border border-border-light text-xs font-semibold text-text-heading placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container focus:bg-white transition-all"
           />
           <svg
-            className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+            className="w-4 h-4 absolute left-4.5 top-1/2 -translate-y-1/2 text-text-muted"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -50,12 +50,13 @@ export default function ProjectFilterBar({
         </div>
 
         {/* Cosine Similarity Threshold Slider */}
-        <div className="md:col-span-5 bg-blue-50/60 p-3 rounded-2xl border border-blue-100/80 space-y-1.5">
-          <div className="flex justify-between text-xs font-bold text-slate-700">
-            <span className="flex items-center gap-1">
-              <span>🎯 Min. AI Match Score:</span>
+        <div className="md:col-span-5 bg-primary-light/40 p-3.5 rounded-2xl border border-primary/15 space-y-2">
+          <div className="flex justify-between text-xs font-bold text-text-heading">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+              <span>Min. AI Match Score:</span>
             </span>
-            <span className="text-blue-700 font-black">{minMatchScore}%</span>
+            <span className="text-primary font-extrabold">{minMatchScore}%</span>
           </div>
           <input
             type="range"
@@ -64,23 +65,23 @@ export default function ProjectFilterBar({
             step="5"
             value={minMatchScore}
             onChange={(e) => onMinMatchScoreChange(Number(e.target.value))}
-            className="w-full accent-blue-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+            className="w-full accent-primary-container h-1.5 bg-surface-container-high rounded-lg cursor-pointer"
           />
         </div>
       </div>
 
       {/* Category Pills */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-        <span className="text-slate-400 font-bold mr-1 shrink-0">Kategori:</span>
+        <span className="text-text-muted font-bold mr-1 shrink-0">Kategori:</span>
         {categories.map((cat) => (
           <button
             key={cat}
             type="button"
             onClick={() => onSelectCategory(cat)}
-            className={`px-3.5 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-full font-bold whitespace-nowrap transition-all cursor-pointer ${
               selectedCategory === cat
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'bg-slate-100/80 text-slate-600 hover:bg-slate-200/80'
+                ? 'bg-primary-container text-white shadow-md shadow-purple-500/20'
+                : 'bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
             }`}
           >
             {cat}

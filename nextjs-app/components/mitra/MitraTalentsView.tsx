@@ -25,10 +25,10 @@ export default function MitraTalentsView({
   return (
     <div className="space-y-6">
       {/* Header Info */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+      <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_25px_rgba(15,23,42,0.04)] space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
               <span>🎯</span>
               <span>Eksplorasi Talent Pool Mahasiswa</span>
             </h2>
@@ -37,7 +37,7 @@ export default function MitraTalentsView({
             </p>
           </div>
 
-          <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200">
+          <span className="text-xs font-bold px-3.5 py-1.5 rounded-full bg-purple-50 text-primary-container border border-purple-200">
             Total Talenta: <strong>{students.length} Mahasiswa</strong>
           </span>
         </div>
@@ -52,7 +52,7 @@ export default function MitraTalentsView({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari talenta berdasarkan nama, NIM, atau program studi..."
-            className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            className="w-full pl-9 pr-4 py-2.5 bg-slate-50/60 border border-slate-200 rounded-full text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-container transition-all"
           />
         </div>
       </div>
@@ -60,7 +60,7 @@ export default function MitraTalentsView({
       {/* Talents Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredStudents.length === 0 ? (
-          <div className="col-span-full bg-white rounded-3xl p-12 text-center border border-slate-200 text-slate-400">
+          <div className="col-span-full bg-white/95 backdrop-blur-xl rounded-3xl p-12 text-center border border-slate-200 text-slate-400">
             <div className="text-4xl mb-2">🔍</div>
             <p className="font-bold text-slate-700 text-sm">Talenta Tidak Ditemukan</p>
             <p className="text-xs text-slate-400 mt-1">Coba gunakan kata kunci pencarian yang berbeda.</p>
@@ -69,28 +69,28 @@ export default function MitraTalentsView({
           filteredStudents.map((stud) => (
             <div
               key={stud.id}
-              className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs hover:border-blue-200 transition-all flex flex-col justify-between space-y-4"
+              className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] hover:shadow-xl hover:border-purple-300 hover:-translate-y-1 transition-all flex flex-col justify-between space-y-4 group"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 font-black text-xs flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-2xl bg-purple-100 text-primary-container font-black text-xs flex items-center justify-center shrink-0 border border-purple-200/50">
                       {stud.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-sm">{stud.name}</h3>
-                      <p className="text-[11px] text-blue-600 font-mono font-medium">
+                      <h3 className="font-extrabold text-slate-900 text-sm group-hover:text-primary-container transition-colors">{stud.name}</h3>
+                      <p className="text-[11px] text-primary-container font-mono font-bold">
                         {stud.nim || 'NIM: V3925028'}
                       </p>
                     </div>
                   </div>
 
-                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
+                  <span className="text-[10px] font-bold text-lime-900 bg-lime-100 px-3 py-1 rounded-full border border-lime-300 shrink-0">
                     ✓ Valid
                   </span>
                 </div>
 
-                <div className="p-3 bg-slate-50 rounded-2xl text-[11px] text-slate-600 space-y-1.5">
+                <div className="p-3.5 bg-slate-50/70 rounded-2xl text-[11px] text-slate-600 space-y-1.5">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Prodi:</span>
                     <span className="font-medium text-slate-800 truncate max-w-[170px] text-right">
@@ -106,14 +106,14 @@ export default function MitraTalentsView({
                 </div>
 
                 {/* Skills tags preview */}
-                <div className="flex flex-wrap gap-1 text-[10px] font-semibold text-slate-600">
-                  <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md border border-blue-100">
+                <div className="flex flex-wrap gap-1.5 text-[10px] font-bold text-slate-600">
+                  <span className="bg-purple-50 text-primary-container px-2.5 py-0.5 rounded-full border border-purple-200">
                     AI/ML 92%
                   </span>
-                  <span className="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-md border border-indigo-100">
+                  <span className="bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full border border-indigo-200">
                     Backend 90%
                   </span>
-                  <span className="bg-cyan-50 text-cyan-700 px-2 py-0.5 rounded-md border border-cyan-100">
+                  <span className="bg-lime-50 text-lime-800 px-2.5 py-0.5 rounded-full border border-lime-200">
                     Frontend 85%
                   </span>
                 </div>
@@ -123,7 +123,7 @@ export default function MitraTalentsView({
               <button
                 type="button"
                 onClick={() => onScoutStudent?.(stud.name)}
-                className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-xs transition-all shadow-md shadow-purple-500/25 cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <span>🎯</span>
                 <span>Tawarkan Proyek</span>

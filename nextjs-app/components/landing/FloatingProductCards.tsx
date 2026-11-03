@@ -42,7 +42,7 @@ export default function FloatingProductCards() {
           </div>
 
           <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500">
-            <span>Cosine Vector: 1536 dim</span>
+            <span>AI Match Engine: Active</span>
             <span className="text-blue-600 font-bold">Kecocokan Tinggi</span>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function FloatingProductCards() {
           </div>
 
           <div className="flex items-center justify-between text-[10px] pt-1 border-t border-slate-100">
-            <span className="text-slate-600 font-medium">Raden Satria (Lv 42)</span>
+            <span className="text-slate-600 font-medium">Raden Satria</span>
             <span className="font-bold text-slate-900">Skor: 91%</span>
           </div>
         </div>

@@ -16,15 +16,19 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full glass-card rounded-3xl p-8 border border-red-200 shadow-xl text-center space-y-4">
-        <div className="w-14 h-14 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-2xl mx-auto font-bold">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 relative">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary-light/40 rounded-full blur-3xl opacity-50" />
+      </div>
+
+      <div className="max-w-md w-full bg-white/95 backdrop-blur-xl rounded-3xl p-8 border border-border-light shadow-[0_20px_50px_rgba(15,23,42,0.08)] text-center space-y-5 relative z-10">
+        <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200/60 flex items-center justify-center text-3xl mx-auto shadow-sm">
           ⚠️
         </div>
-        <h2 className="text-xl font-black text-slate-900 font-display">
+        <h2 className="text-xl font-headline-md font-extrabold text-text-heading tracking-tight">
           Terjadi Gangguan pada Sistem
         </h2>
-        <p className="text-xs text-slate-600">
+        <p className="text-xs sm:text-sm text-text-body leading-relaxed">
           {error.message || 'Aplikasi mengalami kesalahan tak terduga. Silakan coba muat ulang halaman.'}
         </p>
         <Button

@@ -11,5 +11,10 @@
     "module8:build": "npm run build --prefix module-8-vite",
     "module8:lint": "npm run lint --prefix module-8-vite",
     "module8:check": "npm run check --prefix module-8-vite"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "framer-motion": "^14.4.0",
+    "lucide-react": "^1.60.0"
   }
 }

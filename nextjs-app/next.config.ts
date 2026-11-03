@@ -5,7 +5,7 @@ const cspHeader = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com data:;
-  img-src 'self' data: blob: https://images.unsplash.com https://avatars.githubusercontent.com;
+  img-src 'self' data: blob: https://images.unsplash.com https://avatars.githubusercontent.com https://lh3.googleusercontent.com;
   connect-src 'self' ws: wss: http://localhost:8000 ws://localhost:8000;
   frame-ancestors 'none';
   base-uri 'self';

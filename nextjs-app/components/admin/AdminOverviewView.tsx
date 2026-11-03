@@ -63,62 +63,66 @@ export default function AdminOverviewView() {
   return (
     <div className="space-y-8">
       {/* Header & Sync Action */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="max-w-xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>FR-12: Monitoring & Statistik Agregasi</span>
+      <div className="bg-[#0B0F19] text-white rounded-3xl p-6 sm:p-8 border border-white/10 shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+        {/* Ambient glow inside banner */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/25 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/3 w-64 h-64 bg-lime-400/15 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="max-w-xl relative z-10 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-accent-lime-glow text-xs font-bold">
+            <Sparkles className="w-3.5 h-3.5 text-accent-lime-glow" />
+            <span>Monitoring &amp; Statistik Agregasi</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Dasbor Monitoring Agregasi Lowongan & Talenta
+          <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+            Dasbor Monitoring Agregasi Lowongan &amp; Talenta
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
             Pantau sebaran lowongan pekerjaan freelance dan part-time dari platform LinkedIn, Upwork, dan Fiverr serta interaksi rekomendasi semantik mahasiswa.
           </p>
         </div>
 
         {/* Trigger Sync API (FR-10) */}
-        <div>
+        <div className="relative z-10 shrink-0">
           <button
             type="button"
             onClick={handleManualSync}
             disabled={isSyncing}
-            className="w-full md:w-auto px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer disabled:opacity-50"
+            className="w-full md:w-auto px-6 py-3 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md shadow-purple-500/25 cursor-pointer disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'Menyinkronkan API...' : 'Sinkronkan Job Feed (FR-10)'}</span>
+            <span>{isSyncing ? 'Menyinkronkan API...' : 'Sinkronkan Job Feed'}</span>
           </button>
         </div>
       </div>
 
       {syncFeedback && (
-        <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-semibold flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0" />
+        <div className="p-4 rounded-2xl bg-lime-100 border border-lime-300 text-lime-900 text-xs font-bold flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-lime-700 shrink-0" />
           <span>{syncFeedback}</span>
         </div>
       )}
 
       {/* Grid Kartu Metrik Utama */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-2">
+        <div className="bg-white/95 backdrop-blur-xl p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-2">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Total Mahasiswa</span>
-            <Users className="w-4 h-4 text-blue-600" />
+            <Users className="w-4 h-4 text-primary-container" />
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-slate-900">
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
             {stats?.total_mahasiswa ?? 0}
           </p>
-          <p className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+          <p className="text-[11px] text-lime-700 font-bold flex items-center gap-1">
             <span>{stats?.active_users ?? 0} Akun Aktif Terdaftar</span>
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-2">
+        <div className="bg-white/95 backdrop-blur-xl p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-2">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Lowongan Teragregasi</span>
-            <Briefcase className="w-4 h-4 text-emerald-600" />
+            <Briefcase className="w-4 h-4 text-lime-600" />
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-slate-900">
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
             {stats?.total_jobs ?? 0}
           </p>
           <p className="text-[11px] text-slate-500 font-semibold">
@@ -126,25 +130,25 @@ export default function AdminOverviewView() {
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-2">
+        <div className="bg-white/95 backdrop-blur-xl p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-2">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Pencocokan Dihitung</span>
-            <Sparkles className="w-4 h-4 text-indigo-600" />
+            <Sparkles className="w-4 h-4 text-primary-container" />
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-slate-900">
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
             {stats?.total_matches_computed ?? 0}
           </p>
-          <p className="text-[11px] text-indigo-600 font-semibold">
+          <p className="text-[11px] text-primary-container font-bold">
             Rata-rata Skor: {Math.round((stats?.average_similarity_score ?? 0.8) * 100)}%
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-2">
+        <div className="bg-white/95 backdrop-blur-xl p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-2">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Lowongan Dibookmark</span>
             <Bookmark className="w-4 h-4 text-amber-600" />
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-slate-900">
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
             {stats?.total_bookmarks ?? 0}
           </p>
           <p className="text-[11px] text-amber-700 font-semibold">
@@ -155,9 +159,9 @@ export default function AdminOverviewView() {
 
       {/* Rincian Agregasi Multi-Platform (LinkedIn, Fiverr, Upwork) */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <div className="md:col-span-7 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xs space-y-4">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
-            Sebaran Lowongan per Platform Eksternal (FR-12)
+        <div className="md:col-span-7 bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-4">
+          <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900">
+            Sebaran Lowongan per Platform Eksternal
           </h3>
           <p className="text-xs text-slate-500">
             Distribusi jumlah lowongan aktif yang berhasil ditarik dari API masing-masing platform.
@@ -170,11 +174,11 @@ export default function AdminOverviewView() {
                 <span className="flex items-center gap-2 text-slate-800">
                   <span className="w-2.5 h-2.5 rounded-full bg-blue-600" /> LinkedIn Jobs API
                 </span>
-                <span className="font-mono text-blue-700">{stats?.jobs_by_platform.linkedin ?? 0} Lowongan</span>
+                <span className="font-mono text-primary-container font-bold">{stats?.jobs_by_platform.linkedin ?? 0} Lowongan</span>
               </div>
               <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-blue-600 rounded-full"
+                  className="h-full bg-primary-container rounded-full"
                   style={{
                     width: `${((stats?.jobs_by_platform.linkedin ?? 1) / (stats?.total_jobs || 1)) * 100}%`,
                   }}
@@ -186,13 +190,13 @@ export default function AdminOverviewView() {
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs font-bold">
                 <span className="flex items-center gap-2 text-slate-800">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" /> Upwork GraphQL API
+                  <span className="w-2.5 h-2.5 rounded-full bg-lime-600" /> Upwork GraphQL API
                 </span>
-                <span className="font-mono text-emerald-700">{stats?.jobs_by_platform.upwork ?? 0} Lowongan</span>
+                <span className="font-mono text-lime-700 font-bold">{stats?.jobs_by_platform.upwork ?? 0} Lowongan</span>
               </div>
               <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-emerald-600 rounded-full"
+                  className="h-full bg-lime-600 rounded-full"
                   style={{
                     width: `${((stats?.jobs_by_platform.upwork ?? 1) / (stats?.total_jobs || 1)) * 100}%`,
                   }}
@@ -204,13 +208,13 @@ export default function AdminOverviewView() {
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs font-bold">
                 <span className="flex items-center gap-2 text-slate-800">
-                  <span className="w-2.5 h-2.5 rounded-full bg-green-600" /> Fiverr Buyer Requests
+                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-600" /> Fiverr Buyer Requests
                 </span>
-                <span className="font-mono text-green-700">{stats?.jobs_by_platform.fiverr ?? 0} Lowongan</span>
+                <span className="font-mono text-indigo-700 font-bold">{stats?.jobs_by_platform.fiverr ?? 0} Lowongan</span>
               </div>
               <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-green-600 rounded-full"
+                  className="h-full bg-indigo-600 rounded-full"
                   style={{
                     width: `${((stats?.jobs_by_platform.fiverr ?? 1) / (stats?.total_jobs || 1)) * 100}%`,
                   }}
@@ -221,32 +225,32 @@ export default function AdminOverviewView() {
         </div>
 
         {/* Tipe Kontrak */}
-        <div className="md:col-span-5 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xs space-y-4 flex flex-col justify-between">
+        <div className="md:col-span-5 bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-4 flex flex-col justify-between">
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+            <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900">
               Kategori Tipe Pekerjaan
             </h3>
             <p className="text-xs text-slate-500 mt-1">
-              Sesuai SKPL: Khusus lowongan Freelance dan Part-Time untuk mahasiswa vokasi.
+              Distribusi lowongan Freelance dan Part-Time untuk mahasiswa vokasi.
             </p>
 
             <div className="mt-6 space-y-4">
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-bold text-slate-900">Freelance (Milestone / Project)</p>
                   <p className="text-[11px] text-slate-500">Fleksibel berbasis hasil akhir</p>
                 </div>
-                <span className="text-lg font-black text-indigo-600 font-mono">
+                <span className="text-lg font-black text-primary-container font-mono">
                   {stats?.jobs_by_type.freelance ?? 0}
                 </span>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-bold text-slate-900">Part-Time (Waktu Paruh)</p>
                   <p className="text-[11px] text-slate-500">Jam kerja terstruktur per minggu</p>
                 </div>
-                <span className="text-lg font-black text-blue-600 font-mono">
+                <span className="text-lg font-black text-lime-700 font-mono">
                   {stats?.jobs_by_type.part_time ?? 0}
                 </span>
               </div>
@@ -255,7 +259,7 @@ export default function AdminOverviewView() {
 
           <div className="pt-4 border-t border-slate-100 text-center">
             <span className="text-[11px] font-bold text-slate-400">
-              Infrastruktur: FastAPI + Sentence Transformers 384d + Groq Cloud API Llama 3.1
+              Infrastruktur Cloud &amp; AI Engine Berkinerja Tinggi
             </span>
           </div>
         </div>

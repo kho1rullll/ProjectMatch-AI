@@ -37,7 +37,7 @@ export default function GitHubSyncView() {
             },
             {
               name: 'fastapi-pgvector-microservices',
-              description: 'REST API berkinerja tinggi dengan Sentence Transformers dan Cosine Retrieval',
+              description: 'REST API berkinerja tinggi dengan Sentence Transformers dan Semantic Search',
               language: 'Python',
               stars: 9,
             },
@@ -97,26 +97,25 @@ export default function GitHubSyncView() {
   return (
     <div className="space-y-6">
       {/* Header Info */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs relative overflow-hidden">
+      <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-[0_4px_25px_rgba(15,23,42,0.04)] relative overflow-hidden">
         <div className="max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-semibold mb-4">
-            <Github className="w-3.5 h-3.5" />
-            <span>FR-02 & FR-03: Automated GitHub Portfolio Generator</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B0F19] text-white text-xs font-bold mb-4 border border-white/10">
+            <Github className="w-3.5 h-3.5 text-accent-lime-glow" />
+            <span>Automated GitHub Portfolio Generator</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
             Penautan Akun GitHub & Portofolio Riil
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
             ProjectMatch AI mengevaluasi keahlian coding riil Anda langsung dari repositori publik GitHub,
-            bahasa pemrograman yang digunakan, commit history, dan README proyek menggunakan AI Groq (Llama 3.1).
-            Sesuai batasan sistem SKPL, tidak ada pengunggahan berkas CV PDF manual.
+            bahasa pemrograman yang digunakan, commit history, dan dokumentasi proyek secara otomatis.
           </p>
         </div>
 
         {/* Form Sinkronisasi */}
         <form onSubmit={handleSync} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl">
           <div className="relative flex-1">
-            <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-mono text-sm">
+            <span className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 font-mono text-sm">
               github.com/
             </span>
             <input
@@ -124,14 +123,14 @@ export default function GitHubSyncView() {
               value={usernameInput}
               onChange={(e) => setUsernameInput(e.target.value)}
               placeholder="username_github_anda"
-              className="w-full pl-28 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-slate-900 font-medium text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+              className="w-full pl-28 pr-4 py-3 rounded-full border border-slate-200 bg-slate-50/60 text-slate-900 font-medium text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-container transition-all"
               required
             />
           </div>
           <button
             type="submit"
             disabled={isSyncing}
-            className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer disabled:opacity-50"
+            className="px-6 py-3 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-purple-500/25 cursor-pointer disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
             <span>{isSyncing ? 'Menyinkronkan...' : 'Simpan & Sinkronkan'}</span>
@@ -160,22 +159,22 @@ export default function GitHubSyncView() {
         <div className="mt-6 pt-6 border-t border-slate-100 flex items-center gap-3 text-xs">
           <span className="font-semibold text-slate-500">Status Pemrosesan AI:</span>
           {status === 'done' && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Selesai Disintesis
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lime-100 text-lime-900 border border-lime-300 font-bold">
+              <CheckCircle2 className="w-3.5 h-3.5 text-lime-700" /> Selesai Disintesis
             </span>
           )}
           {status === 'processing' && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-800 font-bold">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-100 text-primary-container border border-purple-200 font-bold">
               <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Sedang Diproses LLM
             </span>
           )}
           {status === 'pending' && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-bold">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-200 font-bold">
               <Clock className="w-3.5 h-3.5" /> Menunggu Antrean
             </span>
           )}
           {status === 'failed' && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-800 font-bold">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200 font-bold">
               <AlertCircle className="w-3.5 h-3.5" /> Gagal (Dapat Dicoba Ulang)
             </span>
           )}
@@ -187,9 +186,9 @@ export default function GitHubSyncView() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* Kolom Kiri: Breakdown Bahasa & Statistik */}
           <div className="md:col-span-5 space-y-6">
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
+            <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
               <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                <Code2 className="w-4 h-4 text-blue-600" />
+                <Code2 className="w-4 h-4 text-primary-container" />
                 Bahasa Pemrograman (Breakdown)
               </h3>
               <div className="space-y-3">
@@ -197,22 +196,22 @@ export default function GitHubSyncView() {
                   <div key={lang} className="space-y-1">
                     <div className="flex justify-between text-xs font-semibold">
                       <span className="text-slate-700">{lang}</span>
-                      <span className="text-blue-600 font-mono">{pct}%</span>
+                      <span className="text-primary-container font-mono font-bold">{pct}%</span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-600 rounded-full" style={{ width: `${pct}%` }} />
+                      <div className="h-full bg-primary-container rounded-full" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
                 ))}
               </div>
 
               <div className="pt-4 border-t border-slate-100 grid grid-cols-2 gap-3 text-center">
-                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                  <p className="text-lg font-black text-slate-900">{profile.github_data.total_repositories || 0}</p>
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100">
+                  <p className="text-xl font-black text-slate-900">{profile.github_data.total_repositories || 0}</p>
                   <p className="text-[11px] font-semibold text-slate-500">Repositori Publik</p>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                  <p className="text-lg font-black text-blue-600">{profile.github_data.total_commits || 0}+</p>
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100">
+                  <p className="text-xl font-black text-primary-container">{profile.github_data.total_commits || 0}+</p>
                   <p className="text-[11px] font-semibold text-slate-500">Aktivitas Commit</p>
                 </div>
               </div>
@@ -220,16 +219,18 @@ export default function GitHubSyncView() {
 
             {/* Headline Hasil AI */}
             {profile.extracted_skills && (
-              <div className="bg-gradient-to-br from-blue-900 to-indigo-950 text-white rounded-3xl p-6 shadow-sm space-y-3">
-                <div className="text-blue-300 text-xs font-bold uppercase tracking-wider">
-                  AI Career Synthesis (Llama 3.1)
+              <div className="bg-[#0B0F19] text-white border border-white/10 rounded-3xl p-6 shadow-xl space-y-3 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/20 rounded-full blur-2xl pointer-events-none" />
+                <div className="text-accent-lime-glow text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent-lime-glow animate-pulse" />
+                  AI Career Synthesis
                 </div>
-                <p className="text-sm font-semibold leading-relaxed">
+                <p className="text-sm font-semibold leading-relaxed text-slate-200">
                   "{profile.extracted_skills.headline}"
                 </p>
                 <div className="flex flex-wrap gap-1.5 pt-2">
                   {(profile.extracted_skills.primary_domains || []).map((dom: string) => (
-                    <span key={dom} className="px-2.5 py-1 rounded-lg bg-white/10 text-[11px] font-medium backdrop-blur-xs">
+                    <span key={dom} className="px-3 py-1 rounded-full bg-white/10 text-[11px] font-medium backdrop-blur-md border border-white/10">
                       {dom}
                     </span>
                   ))}
@@ -239,14 +240,14 @@ export default function GitHubSyncView() {
           </div>
 
           {/* Kolom Kanan: Daftar Repositori Utama */}
-          <div className="md:col-span-7 bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
+          <div className="md:col-span-7 bg-white/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center justify-between">
               <span>Repositori Publik Teratas</span>
               <a
                 href={`https://github.com/${profile.github_username}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                className="text-xs font-semibold text-primary-container hover:text-purple-700 flex items-center gap-1 transition-colors"
               >
                 Kunjungi GitHub <ExternalLink className="w-3 h-3" />
               </a>
@@ -256,10 +257,10 @@ export default function GitHubSyncView() {
               {(profile.github_data.top_repositories || []).map((repo: any) => (
                 <div
                   key={repo.name}
-                  className="p-4 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-slate-50 transition-all space-y-2"
+                  className="p-4 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-white hover:border-purple-200 transition-all space-y-2 group"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-sm text-slate-900 font-mono">
+                    <span className="font-bold text-sm text-slate-900 font-mono group-hover:text-primary-container transition-colors">
                       {repo.name}
                     </span>
                     <div className="flex items-center gap-3 text-xs text-slate-500">
@@ -267,12 +268,12 @@ export default function GitHubSyncView() {
                         <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                         {repo.stars || 0}
                       </span>
-                      <span className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 font-semibold text-[10px]">
+                      <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-primary-container font-bold text-[10px]">
                         {repo.language || 'General'}
                       </span>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-600 line-clamp-2">
+                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                     {repo.description || 'Tidak ada ringkasan deskripsi'}
                   </p>
                 </div>

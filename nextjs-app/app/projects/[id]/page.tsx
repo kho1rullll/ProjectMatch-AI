@@ -63,18 +63,20 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     : (project.skillsRequired as string).split(',').map((s) => s.trim());
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 relative">
+      {/* Background ambient glow */}
+      <div className="pointer-events-none absolute -top-20 -left-20 w-96 h-96 bg-primary-light/50 rounded-full blur-3xl opacity-50" aria-hidden="true" />
+
       {/* Back Button */}
       <Link
         href="/projects"
-        className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-blue-600 transition-colors"
+        className="inline-flex items-center gap-2 text-xs font-bold text-text-muted hover:text-primary-container transition-colors relative z-10"
       >
         <span>← Kembali ke Eksplorasi Proyek</span>
       </Link>
 
       {/* Main Detail Card */}
-      <div className="glass-card rounded-3xl p-6 sm:p-10 border border-blue-100 shadow-xl space-y-8">
+      <div className="bg-surface-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-border-light shadow-[0_20px_50px_rgba(15,23,42,0.08)] space-y-8 relative z-10">
         
         {/* Header (Extracted Server Component) */}
         <ProjectDetailHeader
@@ -97,13 +99,13 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         <ProjectAiBreakdown breakdown={breakdown} />
 
         {/* Action Button */}
-        <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-xs text-slate-500">
+        <div className="pt-4 border-t border-border-light flex flex-wrap items-center justify-between gap-4">
+          <p className="text-xs text-text-muted">
             Diposting {project.postedAt} • Mitra Riset Terverifikasi
           </p>
           <button
             type="button"
-            className="px-6 py-3 rounded-xl text-xs font-bold text-white btn-primary-shimmer shadow-lg hover:opacity-95 transition-all cursor-pointer"
+            className="px-8 py-3.5 rounded-full text-xs font-bold text-white bg-primary-container hover:bg-primary-hover shadow-lg shadow-purple-500/25 hover:scale-105 transition-all cursor-pointer"
           >
             Kirim Portofolio Hero Sekarang
           </button>

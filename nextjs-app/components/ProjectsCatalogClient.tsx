@@ -100,12 +100,12 @@ export default function ProjectsCatalogClient() {
       {/* Dynamic Status Counter Bar */}
       <div className="flex items-center justify-end gap-2">
         {isLoading && (
-          <span className="text-xs font-semibold text-blue-600 animate-pulse bg-blue-50 px-3 py-1.5 rounded-xl border border-blue-100">
+          <span className="text-xs font-bold text-primary animate-pulse bg-primary-light px-3.5 py-1.5 rounded-full border border-primary/20">
             Sinkronisasi data server...
           </span>
         )}
-        <span className="text-xs font-bold text-slate-600 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-xs">
-          Ditemukan: <strong className="text-blue-600">{filteredProjects.length} Lowongan</strong>
+        <span className="text-xs font-bold text-text-heading bg-white px-4 py-2 rounded-full border border-border-light shadow-sm">
+          Ditemukan: <strong className="text-primary-container font-extrabold">{filteredProjects.length} Lowongan</strong>
         </span>
       </div>
 
@@ -146,10 +146,12 @@ export default function ProjectsCatalogClient() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 bg-white/80 rounded-3xl border border-slate-200 space-y-3">
-          <div className="text-4xl">🔍</div>
-          <h3 className="text-base font-bold text-slate-800">Tidak ada proyek yang cocok</h3>
-          <p className="text-xs text-slate-500 max-w-md mx-auto">
+        <div className="text-center py-16 bg-white/80 backdrop-blur-md rounded-3xl border border-border-light space-y-4 p-8">
+          <div className="w-16 h-16 rounded-2xl bg-surface-container-high text-primary flex items-center justify-center text-3xl mx-auto">
+            🔍
+          </div>
+          <h3 className="text-lg font-bold text-text-heading">Tidak ada proyek yang cocok</h3>
+          <p className="text-xs text-text-muted max-w-md mx-auto">
             Coba turunkan batas minimum Match Score atau ubah kata kunci pencarian.
           </p>
           <button
@@ -159,7 +161,7 @@ export default function ProjectsCatalogClient() {
               setSearchQuery('');
               setMinMatchScore(50);
             }}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 border border-blue-100 hover:bg-blue-100 cursor-pointer"
+            className="px-5 py-2.5 rounded-full text-xs font-bold text-white bg-primary-container hover:bg-primary-hover shadow-md shadow-purple-500/20 cursor-pointer"
           >
             Reset Seluruh Filter
           </button>

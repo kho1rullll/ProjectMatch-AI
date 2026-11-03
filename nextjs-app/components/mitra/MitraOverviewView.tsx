@@ -27,26 +27,30 @@ export default function MitraOverviewView({
   return (
     <div className="space-y-6">
       {/* 1. Clean Welcome Banner */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold">
-            <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+      <div className="bg-[#0B0F19] rounded-3xl p-6 sm:p-8 text-white border border-white/10 shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+        {/* Ambient glow inside banner */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/25 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/3 w-64 h-64 bg-lime-400/15 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="space-y-2 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-accent-lime-glow text-xs font-bold">
+            <span className="w-2 h-2 rounded-full bg-accent-lime-glow animate-pulse" />
             <span>Portal Kemitraan Industri &amp; Riset Terverifikasi</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
             Selamat Datang di Dasbor Rekrutmen Mitra
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-            Kelola lowongan proyek, tinjau skor kecocokan mahasiswa dengan algoritma Cosine Similarity, dan pilih kandidat terbaik untuk proyek Anda.
+          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+            Kelola lowongan proyek, tinjau skor kecocokan mahasiswa dengan kecerdasan buatan, dan pilih kandidat terbaik untuk proyek Anda.
           </p>
         </div>
 
         {/* Quick Actions */}
-        <div className="flex flex-wrap sm:flex-nowrap gap-2.5 shrink-0">
+        <div className="flex flex-wrap sm:flex-nowrap gap-3 shrink-0 relative z-10">
           <button
             type="button"
             onClick={() => onNavigateTab('post-project')}
-            className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-bold text-white shadow-xs transition-all flex items-center gap-2 cursor-pointer"
+            className="px-5 py-2.5 rounded-full bg-primary-container hover:bg-primary-hover text-xs font-bold text-white shadow-md shadow-purple-500/25 transition-all flex items-center gap-2 cursor-pointer"
           >
             <span>➕</span>
             <span>Pasang Lowongan Baru</span>
@@ -54,7 +58,7 @@ export default function MitraOverviewView({
           <button
             type="button"
             onClick={() => onNavigateTab('applicants')}
-            className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 border border-slate-200 transition-all flex items-center gap-2 cursor-pointer"
+            className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold text-white border border-white/10 backdrop-blur-md transition-all flex items-center gap-2 cursor-pointer"
           >
             <span>👥</span>
             <span>Tinjau Pelamar ({pendingApps.length})</span>
@@ -63,40 +67,40 @@ export default function MitraOverviewView({
       </div>
 
       {/* 2. 4 Clean Metric Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="bg-white/95 backdrop-blur-xl p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Total Lowongan</span>
-            <span className="text-base p-2 bg-blue-50 text-blue-700 rounded-xl">💼</span>
+            <span className="text-xs font-bold text-slate-500">Total Lowongan</span>
+            <span className="text-base p-2 bg-purple-50 text-primary-container rounded-2xl">💼</span>
           </div>
-          <p className="text-2xl font-black text-slate-900 mt-2">{stats.totalProjects}</p>
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">{stats.totalProjects}</p>
           <p className="text-[11px] text-slate-400 mt-0.5">Lowongan terdaftar</p>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
+        <div className="bg-white/95 backdrop-blur-xl p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Lowongan Aktif</span>
-            <span className="text-base p-2 bg-emerald-50 text-emerald-700 rounded-xl">●</span>
+            <span className="text-xs font-bold text-slate-500">Lowongan Aktif</span>
+            <span className="text-base p-2 bg-lime-100 text-lime-900 rounded-2xl">●</span>
           </div>
-          <p className="text-2xl font-black text-emerald-600 mt-2">{stats.activeProjects}</p>
+          <p className="text-2xl sm:text-3xl font-extrabold text-lime-700 mt-2">{stats.activeProjects}</p>
           <p className="text-[11px] text-slate-400 mt-0.5">Sedang membuka pendaftaran</p>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
+        <div className="bg-white/95 backdrop-blur-xl p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Pelamar Masuk</span>
-            <span className="text-base p-2 bg-amber-50 text-amber-700 rounded-xl">👥</span>
+            <span className="text-xs font-bold text-slate-500">Pelamar Masuk</span>
+            <span className="text-base p-2 bg-amber-50 text-amber-700 rounded-2xl">👥</span>
           </div>
-          <p className="text-2xl font-black text-amber-600 mt-2">{stats.totalApplicants}</p>
+          <p className="text-2xl sm:text-3xl font-extrabold text-amber-600 mt-2">{stats.totalApplicants}</p>
           <p className="text-[11px] text-slate-400 mt-0.5">{pendingApps.length} perlu ditinjau</p>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
+        <div className="bg-white/95 backdrop-blur-xl p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Lamaran Diterima</span>
-            <span className="text-base p-2 bg-indigo-50 text-indigo-700 rounded-xl">✓</span>
+            <span className="text-xs font-bold text-slate-500">Lamaran Diterima</span>
+            <span className="text-base p-2 bg-purple-50 text-primary-container rounded-2xl">✓</span>
           </div>
-          <p className="text-2xl font-black text-indigo-600 mt-2">{acceptedApps.length}</p>
+          <p className="text-2xl sm:text-3xl font-extrabold text-primary-container mt-2">{acceptedApps.length}</p>
           <p className="text-[11px] text-slate-400 mt-0.5">Kandidat lolos seleksi</p>
         </div>
       </div>
@@ -104,10 +108,10 @@ export default function MitraOverviewView({
       {/* 3. Side-by-Side: Recent Applicants & My Active Projects */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Applicants */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
                 <span>👥</span>
                 <span>Pelamar Masuk Terbaru</span>
               </h3>
@@ -116,7 +120,7 @@ export default function MitraOverviewView({
             <button
               type="button"
               onClick={() => onNavigateTab('applicants')}
-              className="text-xs font-bold text-blue-600 hover:text-blue-700 hover:underline cursor-pointer"
+              className="text-xs font-bold text-primary-container hover:text-purple-700 cursor-pointer transition-colors"
             >
               Lihat Semua →
             </button>
@@ -126,10 +130,10 @@ export default function MitraOverviewView({
             {applications.slice(0, 3).map((app) => (
               <div
                 key={app.id}
-                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between gap-3 hover:bg-slate-100/70 transition-colors"
+                className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-center justify-between gap-3 hover:bg-white hover:border-purple-200 transition-all"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 font-black text-xs flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-2xl bg-purple-100 text-primary-container font-black text-xs flex items-center justify-center shrink-0 border border-purple-200/60">
                     {(app.studentName || 'RS')
                       .split(' ')
                       .map((n) => n[0])
@@ -144,7 +148,7 @@ export default function MitraOverviewView({
                 </div>
 
                 <div className="shrink-0 text-right">
-                  <span className="text-[11px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 block">
+                  <span className="text-[11px] font-black text-lime-900 bg-lime-100 px-3 py-1 rounded-full border border-lime-300 block">
                     {app.matchScore}% Match
                   </span>
                 </div>
@@ -154,10 +158,10 @@ export default function MitraOverviewView({
         </div>
 
         {/* My Active Projects */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
                 <span>💼</span>
                 <span>Lowongan Proyek Anda</span>
               </h3>
@@ -166,7 +170,7 @@ export default function MitraOverviewView({
             <button
               type="button"
               onClick={() => onNavigateTab('my-projects')}
-              className="text-xs font-bold text-blue-600 hover:text-blue-700 hover:underline cursor-pointer"
+              className="text-xs font-bold text-primary-container hover:text-purple-700 cursor-pointer transition-colors"
             >
               Kelola Lowongan →
             </button>
@@ -176,7 +180,7 @@ export default function MitraOverviewView({
             {projects.slice(0, 3).map((proj) => (
               <div
                 key={proj.id}
-                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between gap-3 hover:bg-slate-100/70 transition-colors"
+                className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-center justify-between gap-3 hover:bg-white hover:border-purple-200 transition-all"
               >
                 <div className="min-w-0">
                   <p className="text-xs font-bold text-slate-900 truncate">{proj.title}</p>
@@ -186,7 +190,7 @@ export default function MitraOverviewView({
                 </div>
 
                 <div className="shrink-0">
-                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                  <span className="text-[10px] font-bold text-lime-900 bg-lime-100 px-2.5 py-0.5 rounded-full border border-lime-300">
                     Aktif
                   </span>
                 </div>
@@ -197,10 +201,10 @@ export default function MitraOverviewView({
       </div>
 
       {/* 4. Clean Talents Preview */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+      <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
               <span>🎯</span>
               <span>Talenta Mahasiswa Unggulan</span>
             </h3>
@@ -209,7 +213,7 @@ export default function MitraOverviewView({
           <button
             type="button"
             onClick={() => onNavigateTab('talents')}
-            className="text-xs font-bold text-blue-600 hover:text-blue-700 hover:underline cursor-pointer"
+            className="text-xs font-bold text-primary-container hover:text-purple-700 cursor-pointer transition-colors"
           >
             Lihat Semua Talenta →
           </button>
@@ -219,10 +223,10 @@ export default function MitraOverviewView({
           {students.slice(0, 3).map((stud) => (
             <div
               key={stud.id}
-              className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2 hover:border-blue-200 transition-colors"
+              className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 space-y-2 hover:border-purple-200 transition-colors"
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-primary-container to-indigo-700 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm shadow-purple-500/20">
                   {stud.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
                 </div>
                 <div className="min-w-0">
@@ -233,7 +237,7 @@ export default function MitraOverviewView({
 
               <div className="flex items-center justify-between text-[11px] pt-1 text-slate-600 border-t border-slate-200/60">
                 <span>IPK: <strong className="text-slate-900">{stud.gpa || '3.88'}</strong></span>
-                <span className="text-emerald-700 font-bold text-[10px]">✓ Terverifikasi</span>
+                <span className="text-lime-700 font-bold text-[10px]">✓ Terverifikasi</span>
               </div>
             </div>
           ))}

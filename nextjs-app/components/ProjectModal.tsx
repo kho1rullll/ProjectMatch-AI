@@ -24,19 +24,19 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-surface-dark/70 backdrop-blur-md animate-in fade-in duration-200">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-project-title"
-        className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-blue-100 space-y-6 relative"
+        className="bg-surface-white/95 backdrop-blur-xl rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-border-light space-y-6 relative"
       >
         
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+          className="absolute top-5 right-5 p-2 rounded-full text-text-muted hover:text-text-heading hover:bg-surface-container-low transition-colors cursor-pointer"
           aria-label="Tutup modal"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,47 +47,49 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         {/* Modal Header */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+            <span className="text-xs font-bold text-primary bg-primary-light/70 px-3 py-1 rounded-full border border-primary/20">
               {project.category}
             </span>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+            <span className="text-xs font-bold text-surface-dark bg-secondary-fixed/40 px-3 py-1 rounded-full border border-secondary-fixed flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
               {project.matchScore}% Match Relevansi
             </span>
           </div>
 
-          <h2 id="modal-project-title" className="text-xl sm:text-2xl font-black text-slate-900 font-display">
+          <h2 id="modal-project-title" className="text-xl sm:text-2xl font-extrabold text-text-heading font-display tracking-tight">
             {project.title}
           </h2>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600">
-            <span className="font-bold text-slate-800">🏢 {project.company}</span>
+          <div className="flex flex-wrap items-center gap-4 text-xs text-text-body font-semibold">
+            <span className="text-text-heading">🏢 {project.company}</span>
             <span>📍 {project.workType}</span>
             <span>⏱️ {project.duration}</span>
-            <span className="font-bold text-blue-600">💰 {project.stipend}</span>
+            <span className="font-extrabold text-primary-container">💰 {project.stipend}</span>
           </div>
         </div>
 
         {/* Description */}
-        <div className="space-y-2 border-t border-slate-100 pt-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Deskripsi Proyek & Tanggung Jawab
+        <div className="space-y-2 border-t border-border-light pt-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-text-muted">
+            Deskripsi Proyek &amp; Tanggung Jawab
           </h3>
-          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+          <p className="text-xs sm:text-sm text-text-body leading-relaxed">
             {project.description}
           </p>
         </div>
 
         {/* Skill Requirements */}
-        <div className="space-y-2 border-t border-slate-100 pt-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Kebutuhan Skill & Teknologi
+        <div className="space-y-2 border-t border-border-light pt-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-text-muted">
+            Kebutuhan Skill &amp; Teknologi
           </h3>
           <div className="flex flex-wrap gap-2">
             {project.skillsRequired.map((skill, idx) => (
               <span
                 key={idx}
-                className="text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100"
+                className="text-xs font-semibold text-on-surface bg-surface-container-high px-3 py-1.5 rounded-full border border-border-light flex items-center gap-1.5"
               >
+                <span className="material-symbols-outlined text-[14px] text-secondary">check_circle</span>
                 {skill}
               </span>
             ))}
@@ -95,38 +97,38 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         </div>
 
         {/* AI Skill Breakdown Analysis */}
-        <div className="space-y-3 border-t border-slate-100 pt-4 bg-slate-50/70 p-4 rounded-2xl border border-slate-100">
-          <h3 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+        <div className="space-y-3 border-t border-border-light pt-4 bg-surface-container-low/70 p-4 rounded-2xl border border-border-light">
+          <h3 className="text-xs font-bold text-text-heading flex items-center gap-1.5">
             <span>🤖 Analisis Kecocokan AI per Dimensi</span>
           </h3>
-          <div className="space-y-2 text-xs">
+          <div className="space-y-2.5 text-xs">
             <div>
-              <div className="flex justify-between text-slate-600 mb-1">
+              <div className="flex justify-between text-text-body mb-1 font-semibold">
                 <span>Kesesuaian AI / ML:</span>
-                <span className="font-bold text-slate-900">{project.requirementsBreakdown.aiml}%</span>
+                <span className="font-bold text-text-heading">{project.requirementsBreakdown.aiml}%</span>
               </div>
-              <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-600 rounded-full" style={{ width: `${project.requirementsBreakdown.aiml}%` }} />
+              <div className="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+                <div className="h-full bg-primary-container rounded-full" style={{ width: `${project.requirementsBreakdown.aiml}%` }} />
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-slate-600 mb-1">
+              <div className="flex justify-between text-text-body mb-1 font-semibold">
                 <span>Kesesuaian Backend / Cloud:</span>
-                <span className="font-bold text-slate-900">{project.requirementsBreakdown.backend}%</span>
+                <span className="font-bold text-text-heading">{project.requirementsBreakdown.backend}%</span>
               </div>
-              <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                <div className="h-full bg-indigo-600 rounded-full" style={{ width: `${project.requirementsBreakdown.backend}%` }} />
+              <div className="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+                <div className="h-full bg-secondary-fixed-dim rounded-full" style={{ width: `${project.requirementsBreakdown.backend}%` }} />
               </div>
             </div>
           </div>
         </div>
 
         {/* Modal Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-light">
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+            className="px-5 py-2.5 rounded-full text-xs font-bold text-text-body hover:bg-surface-container-low transition-colors cursor-pointer"
           >
             Tutup
           </button>
@@ -134,8 +136,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             type="button"
             onClick={() => setApplied(true)}
             disabled={applied}
-            className={`px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-all shadow-md ${
-              applied ? 'bg-emerald-600' : 'bg-blue-600 hover:bg-blue-700'
+            className={`px-6 py-2.5 rounded-full text-xs font-bold text-white transition-all shadow-md cursor-pointer ${
+              applied ? 'bg-secondary text-surface-white' : 'bg-primary-container hover:bg-primary-hover shadow-purple-500/25'
             }`}
           >
             {applied ? '✓ Lamaran Terkirim!' : 'Kirim Portofolio Hero'}

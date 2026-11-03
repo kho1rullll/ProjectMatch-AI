@@ -6,11 +6,17 @@ import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api-client';
 import { Lock, Mail, User, BookOpen, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { Github } from '@/components/icons/GithubIcon';
+import Link from 'next/link';
+import { BrandLogo, BrandTitle } from '@/components/BrandLogo';
+import { useTheme } from '@/lib/theme-context';
 
 function AuthForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuth();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const isDim = theme === 'dim';
 
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
@@ -80,19 +86,30 @@ function AuthForm() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 relative">
-      <div className="max-w-md w-full bg-white rounded-3xl p-6 sm:p-9 border border-slate-200 shadow-xl space-y-6 relative z-10">
+    <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 relative overflow-hidden">
+      {/* Ambient background glows */}
+      <div className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 bg-primary-light/60 rounded-full blur-3xl opacity-60" aria-hidden="true" />
+      <div className="pointer-events-none absolute bottom-12 -right-20 w-[28rem] h-[28rem] bg-secondary-container/25 rounded-full blur-3xl opacity-50" aria-hidden="true" />
+
+      <div className={`max-w-md w-full backdrop-blur-xl rounded-3xl p-6 sm:p-9 border space-y-6 relative z-10 transition-all duration-300 ${
+    isDark
+      ? 'bg-[#0F172A]/90 border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5)]'
+      : isDim
+      ? 'bg-[#1A1030]/90 border-purple-500/25 text-purple-50 shadow-[0_20px_50px_rgba(88,28,135,0.25)]'
+      : 'bg-white/95 border-border-light text-slate-900 shadow-[0_20px_50px_rgba(15,23,42,0.08)]'
+  }`}>
         
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white flex items-center justify-center font-black text-2xl mx-auto shadow-md shadow-blue-500/20">
-            P
-          </div>
+          <Link href="/" className="inline-flex items-center justify-center gap-2.5 mb-2 group">
+            <BrandLogo size="md" />
+            <BrandTitle variant={theme === 'light' ? 'light' : 'dark'} size="lg" />
+          </Link>
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-              {isRegister ? 'Registrasi Mahasiswa (FR-01)' : 'Masuk ke Akun'}
+            <h1 className={`text-2xl font-headline-md font-extrabold tracking-tight ${isDark ? 'text-white' : isDim ? 'text-purple-50' : 'text-slate-900'}`}>
+              {isRegister ? 'Registrasi Mahasiswa' : 'Masuk ke Akun'}
             </h1>
-            <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
+            <p className={`text-xs mt-1 max-w-xs mx-auto leading-relaxed ${isDark ? 'text-slate-400' : isDim ? 'text-purple-300' : 'text-slate-500'}`}>
               {isRegister
                 ? 'Daftar dengan username GitHub publik untuk analisis kompetensi riil'
                 : 'ProjectMatch AI: Otomatisasi Karier Digital Berbasis Repositori'}
@@ -125,50 +142,68 @@ function AuthForm() {
           {isRegister && (
             <>
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-700 block">Nama Lengkap Mahasiswa</label>
+                <label className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Nama Lengkap Mahasiswa</label>
                 <div className="relative">
-                  <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <User className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Contoh: Raden Satria"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+                    className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all ${
+      isDark
+        ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
+        : isDim
+        ? 'bg-[#251545]/80 border-purple-500/30 text-purple-50 placeholder:text-purple-300/40 focus:bg-[#2c1854] focus:border-purple-400'
+        : 'bg-slate-50/80 border-border-light text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-primary-container'
+    }`}
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-700 block">Nomor Induk Mahasiswa (NIM)</label>
+                <label className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Nomor Induk Mahasiswa (NIM)</label>
                 <div className="relative">
-                  <BookOpen className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <BookOpen className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     required
                     value={nim}
                     onChange={(e) => setNim(e.target.value)}
                     placeholder="Contoh: V3925028"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all uppercase"
+                    className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all font-mono uppercase ${
+      isDark
+        ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
+        : isDim
+        ? 'bg-[#251545]/80 border-purple-500/30 text-purple-50 placeholder:text-purple-300/40 focus:bg-[#2c1854] focus:border-purple-400'
+        : 'bg-slate-50/80 border-border-light text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-primary-container'
+    }`}
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-700 block">Username GitHub Publik (Portofolio)</label>
+                <label className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Username GitHub Publik (Portofolio)</label>
                 <div className="relative">
-                  <Github className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Github className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     required
                     value={githubUsername}
                     onChange={(e) => setGithubUsername(e.target.value)}
                     placeholder="Contoh: kho1rullll"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+                    className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all font-mono ${
+      isDark
+        ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
+        : isDim
+        ? 'bg-[#251545]/80 border-purple-500/30 text-purple-50 placeholder:text-purple-300/40 focus:bg-[#2c1854] focus:border-purple-400'
+        : 'bg-slate-50/80 border-border-light text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-primary-container'
+    }`}
                   />
                 </div>
-                <p className="text-[10px] text-slate-400">
-                  Sesuai batasan SKPL, sistem mengambil repositori publik untuk sintesis keahlian (tanpa CV PDF).
+                <p className="text-[10px] text-text-muted">
+                  Sistem mengambil repositori publik untuk sintesis keahlian (tanpa CV PDF).
                 </p>
               </div>
             </>
@@ -176,32 +211,44 @@ function AuthForm() {
 
           {/* Email Field */}
           <div className="space-y-1.5">
-            <label className="font-bold text-slate-700 block">Alamat Email</label>
+            <label className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Alamat Email</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="nama@student.itb.ac.id atau admin@projectmatch.ac.id"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+                className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all ${
+      isDark
+        ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
+        : isDim
+        ? 'bg-[#251545]/80 border-purple-500/30 text-purple-50 placeholder:text-purple-300/40 focus:bg-[#2c1854] focus:border-purple-400'
+        : 'bg-slate-50/80 border-border-light text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-primary-container'
+    }`}
               />
             </div>
           </div>
 
           {/* Password Field */}
           <div className="space-y-1.5">
-            <label className="font-bold text-slate-700 block">Kata Sandi (Argon2id)</label>
+            <label className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Kata Sandi (Argon2id)</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Lock className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+                className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all ${
+      isDark
+        ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
+        : isDim
+        ? 'bg-[#251545]/80 border-purple-500/30 text-purple-50 placeholder:text-purple-300/40 focus:bg-[#2c1854] focus:border-purple-400'
+        : 'bg-slate-50/80 border-border-light text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-primary-container'
+    }`}
               />
             </div>
           </div>
@@ -210,7 +257,7 @@ function AuthForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-2xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-all mt-3 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full py-3.5 rounded-full font-bold text-white bg-primary-container hover:bg-primary-hover shadow-lg shadow-purple-500/25 transition-all mt-4 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? (
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -222,35 +269,47 @@ function AuthForm() {
           </button>
         </form>
 
-        {/* Preset Akun Demo Cepat (Dari Panduan Sistem) */}
+        {/* Preset Akun Demo Cepat */}
         {!isRegister && (
-          <div className="pt-3 border-t border-slate-100 space-y-2 text-xs">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 text-center">
+          <div className="pt-3 border-t border-border-light/60 space-y-2 text-xs">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-text-muted text-center">
               Pilihan Akun Cepat (Panduan Sistem):
             </p>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => handleQuickPreset('satria@student.itb.ac.id')}
-                className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 text-slate-700 text-left transition-all cursor-pointer"
+                className={`p-2.5 rounded-2xl border text-left transition-all cursor-pointer ${
+    isDark
+      ? 'bg-slate-800/60 border-slate-700 hover:bg-slate-700/60 hover:border-purple-500/40 text-white'
+      : isDim
+      ? 'bg-[#251545]/60 border-purple-500/30 hover:bg-[#321c5d]/60 hover:border-purple-400/50 text-purple-100'
+      : 'bg-slate-50/70 border-border-light hover:bg-purple-50/50 hover:border-primary-container/40 text-slate-900'
+  }`}
               >
-                <p className="font-bold text-[11px] text-slate-900">🎓 Mahasiswa</p>
-                <p className="text-[10px] text-slate-500 font-mono truncate">satria@student.itb.ac.id</p>
+                <p className="font-bold text-[11px] text-text-heading">🎓 Mahasiswa</p>
+                <p className="text-[10px] text-text-muted font-mono truncate">satria@student.itb.ac.id</p>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickPreset('admin@projectmatch.ac.id')}
-                className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 text-left transition-all cursor-pointer"
+                className={`p-2.5 rounded-2xl border text-left transition-all cursor-pointer ${
+    isDark
+      ? 'bg-slate-800/60 border-slate-700 hover:bg-slate-700/60 hover:border-purple-500/40 text-white'
+      : isDim
+      ? 'bg-[#251545]/60 border-purple-500/30 hover:bg-[#321c5d]/60 hover:border-purple-400/50 text-purple-100'
+      : 'bg-slate-50/70 border-border-light hover:bg-purple-50/50 hover:border-primary-container/40 text-slate-900'
+  }`}
               >
-                <p className="font-bold text-[11px] text-slate-900">🛡️ Admin Kampus</p>
-                <p className="text-[10px] text-slate-500 font-mono truncate">admin@projectmatch.ac.id</p>
+                <p className="font-bold text-[11px] text-text-heading">🛡️ Admin Kampus</p>
+                <p className="text-[10px] text-text-muted font-mono truncate">admin@projectmatch.ac.id</p>
               </button>
             </div>
           </div>
         )}
 
         {/* Toggle Login/Register */}
-        <div className="text-center pt-2 text-xs text-slate-500">
+        <div className="text-center pt-2 text-xs text-text-body">
           {isRegister ? (
             <p>
               Sudah memiliki akun?{' '}
@@ -260,7 +319,7 @@ function AuthForm() {
                   router.push('/auth');
                   setFeedback(null);
                 }}
-                className="font-bold text-blue-600 hover:underline cursor-pointer ml-1"
+                className="font-bold text-primary-container hover:underline cursor-pointer ml-1"
               >
                 Masuk di sini
               </button>
@@ -274,7 +333,7 @@ function AuthForm() {
                   router.push('/auth?register=true');
                   setFeedback(null);
                 }}
-                className="font-bold text-blue-600 hover:underline cursor-pointer ml-1"
+                className="font-bold text-primary-container hover:underline cursor-pointer ml-1"
               >
                 Daftar akun di sini
               </button>
@@ -289,7 +348,7 @@ function AuthForm() {
 
 export default function AuthPage() {
   return (
-    <Suspense fallback={<div className="min-h-[85vh] flex items-center justify-center"><div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin" /></div>}>
+    <Suspense fallback={<div className="min-h-[85vh] flex items-center justify-center"><div className="w-8 h-8 border-3 border-primary-container border-t-transparent rounded-full animate-spin" /></div>}>
       <AuthForm />
     </Suspense>
   );

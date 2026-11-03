@@ -3,14 +3,15 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 export const cardVariants = cva(
-  "rounded-2xl transition-all duration-200 border",
+  "rounded-3xl transition-all duration-300 border",
   {
     variants: {
       variant: {
-        default: "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100",
-        elevated: "bg-white dark:bg-slate-900 border-slate-200/60 dark:border-slate-800/80 shadow-md shadow-slate-200/40 dark:shadow-none text-slate-900 dark:text-slate-100",
-        interactive: "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/5 transition-all text-slate-900 dark:text-slate-100 cursor-pointer",
-        ghost: "bg-transparent border-transparent text-slate-900 dark:text-slate-100",
+        default: "bg-white border-slate-200/80 shadow-[0_10px_30px_rgba(15,23,42,0.03)] text-slate-900",
+        elevated: "bg-white/95 backdrop-blur-xl border-slate-200/80 shadow-[0_20px_50px_rgba(15,23,42,0.08)] text-slate-900",
+        interactive: "bg-white border-slate-200/80 hover:border-primary-container hover:shadow-xl hover:shadow-purple-500/10 hover:-translate-y-1 transition-all text-slate-900 cursor-pointer",
+        ghost: "bg-transparent border-transparent text-slate-900",
+        dark: "bg-surface-dark border-border-glass-dark text-surface-white shadow-2xl",
       },
       padding: {
         none: "p-0",

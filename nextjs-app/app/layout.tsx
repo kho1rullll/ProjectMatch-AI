@@ -15,7 +15,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'ProjectMatch AI — Platform Link & Match Mahasiswa dan Industri',
   description:
-    'Platform inferensi kecocokan portofolio mahasiswa dan lowongan riset/industri berbasis Semantic Cosine Similarity & RPG Stats.',
+    'Platform inferensi kecocokan portofolio mahasiswa dan lowongan riset/industri berbasis AI Matching.',
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
@@ -24,8 +29,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={plusJakartaSans.variable}>
-      <body className="min-h-screen flex flex-col antialiased text-slate-800 selection:bg-blue-600 selection:text-white relative">
+    <html lang="id" className={plusJakartaSans.variable} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var t = localStorage.getItem('projectmatch_theme') || 'light';
+                  document.documentElement.setAttribute('data-theme', t);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+      </head>
+      <body
+        className="min-h-screen flex flex-col antialiased text-slate-800 selection:bg-purple-600 selection:text-white relative"
+        suppressHydrationWarning
+      >
         <Providers>
           <div className="mesh-bg" aria-hidden="true" />
           <Navbar />

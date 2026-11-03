@@ -856,7 +856,7 @@ export default function HeroRpg3DChart() {
 
             <div className="space-y-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold">
-                <span>SKPL Pilar 1: Interactive Drill-Down Tooltip</span>
+                <span>Interactive Drill-Down</span>
               </div>
               <h3 className="text-xl font-black text-slate-900 font-display">
                 {activeDrilldown.name}
@@ -869,7 +869,7 @@ export default function HeroRpg3DChart() {
             {/* Evidence details */}
             <div className="space-y-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
               <div>
-                <span className="font-bold text-slate-700 block">📌 Dasar Penilaian AI (Evidence):</span>
+                <span className="font-bold text-slate-700 block">📌 Dasar Penilaian AI:</span>
                 <p className="text-slate-600 mt-0.5 leading-relaxed">{activeDrilldown.evidence}</p>
               </div>
 

@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { Home, Briefcase, Bookmark, LogOut, ArrowLeft } from 'lucide-react';
 import { Github } from '@/components/icons/GithubIcon';
+import BrandHeaderLink from '@/components/BrandLogo';
+import { useTheme } from '@/lib/theme-context';
 
 export type DashboardTab = 'overview' | 'github' | 'jobs' | 'bookmarks';
 
@@ -24,6 +26,9 @@ export default function StudentSidebar({
 }: StudentSidebarProps) {
   const router = useRouter();
   const { user, logout } = useAuth();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const isDim = theme === 'dim';
 
   const studentName = user?.name || user?.full_name || 'Raden Satria';
   const nim = user?.nim || 'V3925028';
@@ -62,31 +67,24 @@ export default function StudentSidebar({
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-50 w-64 backdrop-blur-xl border-r flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 ${isDark ? 'bg-[#0F172A]/95 border-white/10 text-white' : isDim ? 'bg-[#1E1038]/95 border-purple-500/20 text-purple-50' : 'bg-white/95 border-slate-200/80 text-slate-800'} ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div>
           {/* Header Brand */}
-          <div className="h-16 px-6 border-b border-slate-100 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
-                P
-              </div>
-              <div>
-                <span className="font-bold text-slate-900 text-sm tracking-tight block">
-                  ProjectMatch <span className="text-blue-600">AI</span>
-                </span>
-                <span className="text-[11px] text-slate-500 font-medium -mt-0.5 block">
-                  Portal Mahasiswa
-                </span>
-              </div>
-            </Link>
+          <div className={`h-20 px-6 border-b flex items-center justify-between ${isDark ? 'border-white/10' : isDim ? 'border-purple-500/20' : 'border-slate-100'}`}>
+            <BrandHeaderLink
+              href="/"
+              variant={theme === 'light' ? 'light' : 'dark'}
+              size="md"
+              subtitle={<span className="text-[11px] text-slate-400 font-medium block">Portal Mahasiswa</span>}
+            />
 
             <button
               type="button"
               onClick={onCloseMobile}
-              className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 rounded-lg cursor-pointer"
+              className="lg:hidden p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 cursor-pointer"
               aria-label="Tutup menu"
             >
               ✕
@@ -94,9 +92,9 @@ export default function StudentSidebar({
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-4 space-y-1">
+          <nav className="p-4 space-y-1.5">
             <p className="px-3 pb-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              Menu Mahasiswa (SKPL V12)
+              Menu Mahasiswa
             </p>
 
             {navItems.map((item) => {
@@ -106,10 +104,10 @@ export default function StudentSidebar({
                   key={item.id}
                   type="button"
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      ? 'bg-primary-container text-white shadow-md shadow-purple-500/25'
+                      : isDark ? 'text-slate-300 hover:text-white hover:bg-white/10' : isDim ? 'text-purple-200 hover:text-white hover:bg-purple-900/40' : 'text-slate-600 hover:text-slate-900 hover:bg-purple-50/60'
                   }`}
                 >
                   <span className="leading-none">{item.icon}</span>
@@ -121,33 +119,42 @@ export default function StudentSidebar({
         </div>
 
         {/* Bottom User Info & Logout */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/80 space-y-3">
+        <div className={`p-4 space-y-3 ${
+    isDark
+      ? 'border-t border-white/10 bg-slate-900/60 text-white'
+      : isDim
+      ? 'border-t border-purple-500/20 bg-[#160c2b]/80 text-purple-50'
+      : 'border-t border-slate-100 bg-slate-50/70 text-slate-900'
+  }`}>
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-purple-100 text-primary-container flex items-center justify-center font-black text-xs shrink-0 border border-purple-200/50">
               {studentName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold text-slate-900 truncate">
+              <p className={`text-xs font-bold truncate ${isDark ? 'text-white' : isDim ? 'text-purple-50' : 'text-slate-900'}`}>
+
                 {studentName}
               </p>
-              <p className="text-[11px] text-slate-500 font-mono truncate">
+              <p className={`text-[11px] font-mono truncate ${isDark ? 'text-slate-400' : isDim ? 'text-purple-300' : 'text-slate-500'}`}>
+
                 NIM: {nim}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60 font-medium">
+          <div className={`flex items-center justify-between text-xs pt-2 border-t font-semibold ${isDark ? 'border-white/10' : isDim ? 'border-purple-500/20' : 'border-slate-200/60'}`}>
+
             <Link
               href="/"
-              className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1"
+              className={`transition-colors flex items-center gap-1.5 ${isDark ? 'text-slate-300 hover:text-white' : isDim ? 'text-purple-200 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-3.5 h-3.5 text-primary-container" />
               <span>Beranda</span>
             </Link>
             <button
               type="button"
               onClick={handleLogout}
-              className="text-rose-600 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1"
+              className="text-rose-600 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1.5"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Keluar</span>
