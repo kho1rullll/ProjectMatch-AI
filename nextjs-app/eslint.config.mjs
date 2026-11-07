@@ -10,8 +10,10 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": "warn",
       "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/refs": "warn",
       "react-hooks/exhaustive-deps": "warn",
       "react/no-unescaped-entities": "warn",
+      "react/jsx-no-comment-textnodes": "warn",
     },
   },
   // Override default ignores of eslint-config-next.

@@ -447,7 +447,7 @@ export default function DraggableHeroSection({ theme = 'light' }: DraggableHeroS
                     <span>telemetry.vector_engine</span>
                   </span>
                   <span className="text-accent-lime-glow font-bold">
-                    {(matchScore / 100).toFixed(4)} // HIGH_CONVERGENCE
+                    {`${(matchScore / 100).toFixed(4)} // HIGH_CONVERGENCE`}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-800">
