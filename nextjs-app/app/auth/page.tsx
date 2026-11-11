@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api-client';
-import { Lock, Mail, User, BookOpen, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Lock, Mail, User, BookOpen, AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import { Github } from '@/components/icons/GithubIcon';
 import Link from 'next/link';
 import { BrandLogo, BrandTitle } from '@/components/BrandLogo';
@@ -18,23 +18,43 @@ function AuthForm() {
   const isDark = theme === 'dark';
   const isDim = theme === 'dim';
 
-  const [isRegister, setIsRegister] = useState(false);
+  const isRegister = searchParams.get('register') === 'true';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fullName, setFullName] = useState('');
   const [nim, setNim] = useState('');
   const [githubUsername, setGithubUsername] = useState('');
   const [loading, setLoading] = useState(false);
-  const [feedback, setFeedback] = useState<{ message: string; isError: boolean } | null>(null);
+  const [feedback, setFeedback] = useState<{ message: string; isError: boolean; suggestLogin?: boolean } | null>(null);
 
-  useEffect(() => {
-    setIsRegister(searchParams.get('register') === 'true');
-  }, [searchParams]);
+  const switchAuthMode = (registerMode: boolean) => {
+    setPassword('');
+    setConfirmPassword('');
+    setShowPassword(false);
+    setShowConfirmPassword(false);
+    setFeedback(null);
+    router.push(registerMode ? '/auth?register=true' : '/auth');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setFeedback(null);
+
+    if (isRegister) {
+      if (password.length < 6) {
+        setFeedback({ message: 'Kata sandi minimal terdiri dari 6 karakter.', isError: true });
+        return;
+      }
+      if (password !== confirmPassword) {
+        setFeedback({ message: 'Konfirmasi kata sandi tidak sama dengan kata sandi.', isError: true });
+        return;
+      }
+    }
+
+    setLoading(true);
 
     try {
       if (isRegister) {
@@ -72,12 +92,18 @@ function AuthForm() {
       }
     } catch (err: any) {
       let rawMsg = err.message || (isRegister ? 'Registrasi gagal. Pastikan email/NIM belum terdaftar.' : 'Email atau kata sandi tidak valid.');
+      let suggestLogin = false;
       if (rawMsg === 'Failed to fetch' || rawMsg.includes('Failed to fetch')) {
         rawMsg = 'Gagal terhubung ke server backend FastAPI (Port 8000). Pastikan backend aktif.';
+      } else if (isRegister && rawMsg.toLowerCase().includes('sudah terdaftar')) {
+        suggestLogin = true;
+      } else if (!isRegister && (err?.status === 401 || rawMsg.toLowerCase().includes('tidak valid'))) {
+        rawMsg = 'Email atau kata sandi tidak valid. Periksa kembali ejaan sandi lewat ikon mata, atau hubungi Administrator untuk reset sandi jika lupa.';
       }
       setFeedback({
         message: rawMsg,
         isError: true,
+        suggestLogin,
       });
     } finally {
       setLoading(false);
@@ -119,23 +145,34 @@ function AuthForm() {
         {/* Feedback Alert */}
         {feedback && (
           <div
-            className={`p-3.5 rounded-2xl text-xs font-semibold flex items-center gap-2.5 ${
+            className={`p-3.5 rounded-2xl text-xs font-semibold flex flex-col gap-2 ${
               feedback.isError
                 ? 'bg-rose-50 border border-rose-200 text-rose-700'
                 : 'bg-emerald-50 border border-emerald-200 text-emerald-700'
             }`}
           >
-            {feedback.isError ? (
-              <AlertCircle className="w-4 h-4 shrink-0" />
-            ) : (
-              <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <div className="flex items-start gap-2.5">
+              {feedback.isError ? (
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              ) : (
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+              )}
+              <span>{feedback.message}</span>
+            </div>
+            {feedback.suggestLogin && (
+              <button
+                type="button"
+                onClick={() => switchAuthMode(false)}
+                className="self-start ml-6 text-[11px] font-bold text-primary-container hover:underline cursor-pointer"
+              >
+                Lanjut ke halaman Masuk ke Akun →
+              </button>
             )}
-            <span>{feedback.message}</span>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+        <form key={isRegister ? 'register-form' : 'login-form'} onSubmit={handleSubmit} className="space-y-4 text-xs">
           
           {/* Register-only Fields (SKPL FR-01 & FR-02) */}
           {isRegister && (
@@ -210,11 +247,14 @@ function AuthForm() {
 
           {/* Email Field */}
           <div className="space-y-1.5">
-            <label className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Alamat Email</label>
+            <label htmlFor="auth-email" className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Alamat Email</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
+                id="auth-email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -232,16 +272,20 @@ function AuthForm() {
 
           {/* Password Field */}
           <div className="space-y-1.5">
-            <label className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Kata Sandi (Argon2id)</label>
+            <label htmlFor={isRegister ? 'register-password' : 'login-password'} className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Kata Sandi (Argon2id)</label>
             <div className="relative">
               <Lock className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
-                type="password"
+                id={isRegister ? 'register-password' : 'login-password'}
+                name={isRegister ? 'new-password' : 'password'}
+                type={showPassword ? 'text' : 'password'}
+                autoComplete={isRegister ? 'new-password' : 'current-password'}
+                minLength={isRegister ? 6 : undefined}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all ${
+                className={`w-full pl-10 pr-10 py-2.5 rounded-2xl border transition-all ${
       isDark
         ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
         : isDim
@@ -249,8 +293,51 @@ function AuthForm() {
         : 'bg-slate-50/80 border-border-light text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-primary-container'
     }`}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Lihat kata sandi'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
+
+          {isRegister && (
+            <div className="space-y-1.5">
+              <label htmlFor="register-confirm-password" className={`font-bold block ${isDark ? 'text-slate-200' : isDim ? 'text-purple-200' : 'text-slate-900'}`}>Konfirmasi Kata Sandi</label>
+              <div className="relative">
+                <Lock className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  id="register-confirm-password"
+                  name="confirm-password"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  minLength={6}
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className={`w-full pl-10 pr-10 py-2.5 rounded-2xl border transition-all ${
+      isDark
+        ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
+        : isDim
+        ? 'bg-[#251545]/80 border-purple-500/30 text-purple-50 placeholder:text-purple-300/40 focus:bg-[#2c1854] focus:border-purple-400'
+        : 'bg-slate-50/80 border-border-light text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-primary-container'
+    }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  aria-label={showConfirmPassword ? 'Sembunyikan konfirmasi kata sandi' : 'Lihat konfirmasi kata sandi'}
+                >
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Submit Button */}
           <button
@@ -275,10 +362,7 @@ function AuthForm() {
               Sudah memiliki akun?{' '}
               <button
                 type="button"
-                onClick={() => {
-                  router.push('/auth');
-                  setFeedback(null);
-                }}
+                onClick={() => switchAuthMode(false)}
                 className="font-bold text-primary-container hover:underline cursor-pointer ml-1"
               >
                 Masuk di sini
@@ -289,10 +373,7 @@ function AuthForm() {
               Mahasiswa baru?{' '}
               <button
                 type="button"
-                onClick={() => {
-                  router.push('/auth?register=true');
-                  setFeedback(null);
-                }}
+                onClick={() => switchAuthMode(true)}
                 className="font-bold text-primary-container hover:underline cursor-pointer ml-1"
               >
                 Daftar akun di sini

@@ -148,6 +148,46 @@ def run_all_tests():
                 assert "_102" not in url and "_105" not in url, f"Invalid mock Upwork URL: {url}"
             print(f"[OK] Test Real Platform Job URLs & Live Sync Passed ({len(jobs_after)} active jobs verified)")
 
+            # 9. Admin Reset Password & Delete Account + Normalisasi Email + Proteksi Admin Paten
+            login_ws_res = client.post("/api/v1/auth/login", json={
+                "email": f"  {temp_student_email.upper()}  ",
+                "password": "TestPassword2026!"
+            })
+            assert login_ws_res.status_code == 200, login_ws_res.text
+
+            reset_adm_res = client.post(
+                f"/api/v1/admin/users/{adm_entry['id']}/reset-password",
+                json={"new_password": "ShouldFail2026!"},
+                headers=headers_adm,
+            )
+            assert reset_adm_res.status_code == 403, reset_adm_res.text
+
+            del_adm_res = client.delete(f"/api/v1/admin/users/{adm_entry['id']}", headers=headers_adm)
+            assert del_adm_res.status_code == 403, del_adm_res.text
+
+            reset_stu_res = client.post(
+                f"/api/v1/admin/users/{student_entry['id']}/reset-password",
+                json={"new_password": "NewStudentPassword2026!"},
+                headers=headers_adm,
+            )
+            assert reset_stu_res.status_code == 200, reset_stu_res.text
+
+            login_new_pw = client.post("/api/v1/auth/login", json={
+                "email": temp_student_email,
+                "password": "NewStudentPassword2026!"
+            })
+            assert login_new_pw.status_code == 200, login_new_pw.text
+
+            del_stu_res = client.delete(f"/api/v1/admin/users/{student_entry['id']}", headers=headers_adm)
+            assert del_stu_res.status_code == 200, del_stu_res.text
+
+            login_deleted = client.post("/api/v1/auth/login", json={
+                "email": temp_student_email,
+                "password": "NewStudentPassword2026!"
+            })
+            assert login_deleted.status_code == 401
+            print("[OK] Test Admin Password Reset, User Deletion & Email Normalization Passed")
+
             print("\nALL BACKEND TESTS PASSED SUCCESSFULLY!")
     finally:
         _cleanup_test_user(temp_student_email)

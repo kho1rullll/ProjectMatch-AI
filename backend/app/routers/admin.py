@@ -5,8 +5,14 @@ from sqlalchemy import func
 from app.core.config import settings
 from app.core.database import get_db
 from app.core.deps import RBACGuard
-from app.models.models import User, MahasiswaProfile, JobVacancy, Match, JobBookmark
-from app.schemas.schemas import AdminUserItem, UserUpdateStatusRole, AdminStatisticsResponse
+from app.core.security import get_password_hash
+from app.models.models import User, MahasiswaProfile, JobVacancy, Match, JobBookmark, Embedding, Notification
+from app.schemas.schemas import (
+    AdminUserItem,
+    UserUpdateStatusRole,
+    AdminResetPasswordRequest,
+    AdminStatisticsResponse,
+)
 
 router = APIRouter(prefix="/admin", tags=["Administrasi Sistem (FR-11, FR-12)"])
 
@@ -94,6 +100,65 @@ def update_user_status_or_role(
     db.refresh(user)
 
     return _serialize_admin_user(user, db)
+
+
+def _ensure_mutable_target_user(user: User, admin: User, action_label: str) -> None:
+    if user.id == admin.id or _is_permanent_admin_user(user):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Akun administrator utama/sendiri bersifat paten dan tidak dapat {action_label}.",
+        )
+
+
+@router.post("/users/{user_id}/reset-password", response_model=AdminUserItem)
+def reset_user_password(
+    user_id: str,
+    req: AdminResetPasswordRequest,
+    db: Session = Depends(get_db),
+    admin: User = Depends(RBACGuard(["admin"]))
+):
+    """FR-11: Admin mereset kata sandi akun pengguna non-paten."""
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Pengguna tidak ditemukan."
+        )
+
+    _ensure_mutable_target_user(user, admin, "direset kata sandinya melalui manajemen pengguna")
+    user.password_hash = get_password_hash(req.new_password)
+    db.commit()
+    db.refresh(user)
+    return _serialize_admin_user(user, db)
+
+
+@router.delete("/users/{user_id}")
+def delete_user_account(
+    user_id: str,
+    db: Session = Depends(get_db),
+    admin: User = Depends(RBACGuard(["admin"]))
+):
+    """FR-11: Admin menghapus akun pengguna non-paten beserta seluruh data profil dan kecocokannya."""
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Pengguna tidak ditemukan."
+        )
+
+    _ensure_mutable_target_user(user, admin, "dihapus")
+
+    profile = db.query(MahasiswaProfile).filter(MahasiswaProfile.user_id == user.id).first()
+    if profile:
+        db.query(Match).filter(Match.mahasiswa_id == profile.id).delete()
+        db.query(JobBookmark).filter(JobBookmark.mahasiswa_id == profile.id).delete()
+        db.query(Embedding).filter(Embedding.mahasiswa_id == profile.id).delete()
+        db.delete(profile)
+
+    db.query(Notification).filter(Notification.user_id == user.id).delete()
+    db.delete(user)
+    db.commit()
+    return {"status": "deleted", "user_id": user_id, "email": user.email}
 
 @router.get("/statistics", response_model=AdminStatisticsResponse)
 def get_system_statistics(

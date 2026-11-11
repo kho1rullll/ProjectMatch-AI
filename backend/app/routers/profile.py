@@ -34,9 +34,11 @@ async def run_github_portfolio_pipeline(profile_id: str, db: Session):
         portfolio_summary = f"{extracted_skills.get('headline', '')} {' '.join(extracted_skills.get('primary_domains', []))} {extracted_skills.get('strengths_summary', '')}"
         vector = embedding_service.generate_embedding(portfolio_summary)
 
-        # Simpan embedding
-        if profile.embedding:
-            profile.embedding.embedding_vector = vector
+        # Simpan / perbarui embedding secara aman dari race condition
+        existing_emb = db.query(Embedding).filter(Embedding.mahasiswa_id == profile.id).first()
+        if existing_emb:
+            existing_emb.embedding_vector = vector
+            existing_emb.model_name = embedding_service.model_name
         else:
             emb = Embedding(
                 mahasiswa_id=profile.id,

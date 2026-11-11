@@ -7,11 +7,15 @@ Penggunaan:
     python view_db.py profiles     # Tampilkan data tabel mahasiswa_profiles
     python view_db.py matches      # Tampilkan data tabel matches
 """
+import os
 import sys
 import sqlite3
 import json
 
-DB_PATH = "backend/projectmatch_ai.db"
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DB = os.path.join(ROOT_DIR, "projectmatch_ai.db")
+BACKEND_DB = os.path.join(ROOT_DIR, "backend", "projectmatch_ai.db")
+DB_PATH = ROOT_DB if os.path.exists(ROOT_DB) else BACKEND_DB
 
 def get_connection():
     return sqlite3.connect(DB_PATH)

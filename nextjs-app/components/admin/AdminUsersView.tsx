@@ -4,13 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { api } from '@/lib/api-client';
 import { useAuth } from '@/lib/auth-context';
 import { AdminUserItem } from '@/types/admin';
-import { Users, RefreshCw, AlertCircle, CheckCircle2, Lock } from 'lucide-react';
+import { Users, RefreshCw, AlertCircle, CheckCircle2, Lock, KeyRound, Trash2 } from 'lucide-react';
 
 export default function AdminUsersView() {
   const { user: currentUser } = useAuth();
   const [users, setUsers] = useState<AdminUserItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [resetTarget, setResetTarget] = useState<AdminUserItem | null>(null);
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [isActionSubmitting, setIsActionSubmitting] = useState(false);
 
   const isLockedAdminAccount = (target: AdminUserItem): boolean => {
     const isSelf = Boolean(
@@ -91,6 +95,58 @@ export default function AdminUsersView() {
       });
     } catch (e: any) {
       setFeedback({ type: 'error', text: e.message || 'Gagal mengubah role pengguna.' });
+    }
+  };
+
+  const handleResetPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetTarget) return;
+    if (isLockedAdminAccount(resetTarget)) {
+      setFeedback({ type: 'error', text: 'Akun administrator paten tidak dapat direset melalui daftar pengguna.' });
+      return;
+    }
+    if (newPasswordInput.length < 6) {
+      setFeedback({ type: 'error', text: 'Kata sandi baru minimal 6 karakter.' });
+      return;
+    }
+
+    setIsActionSubmitting(true);
+    setFeedback(null);
+    try {
+      await api.admin.resetUserPassword(resetTarget.id, newPasswordInput);
+      setFeedback({
+        type: 'success',
+        text: `Kata sandi untuk ${resetTarget.email} berhasil direset.`,
+      });
+      setResetTarget(null);
+      setNewPasswordInput('');
+    } catch (e: any) {
+      setFeedback({ type: 'error', text: e.message || 'Gagal mereset kata sandi pengguna.' });
+    } finally {
+      setIsActionSubmitting(false);
+    }
+  };
+
+  const handleDeleteUser = async (target: AdminUserItem) => {
+    if (isLockedAdminAccount(target)) {
+      setFeedback({ type: 'error', text: 'Akun administrator utama/sendiri bersifat paten dan tidak dapat dihapus.' });
+      return;
+    }
+
+    setIsActionSubmitting(true);
+    setFeedback(null);
+    try {
+      await api.admin.deleteUser(target.id);
+      setUsers((prev) => prev.filter((u) => u.id !== target.id));
+      setDeleteConfirmId(null);
+      setFeedback({
+        type: 'success',
+        text: `Akun ${target.email} berhasil dihapus dari sistem.`,
+      });
+    } catch (e: any) {
+      setFeedback({ type: 'error', text: e.message || 'Gagal menghapus akun pengguna.' });
+    } finally {
+      setIsActionSubmitting(false);
     }
   };
 
@@ -248,17 +304,64 @@ export default function AdminUsersView() {
                           <span>Terkunci (Paten)</span>
                         </span>
                       ) : (
-                        <button
-                          type="button"
-                          onClick={() => handleToggleActive(u.id, u.is_active)}
-                          className={`px-4 py-1.5 rounded-full font-bold text-xs transition-all cursor-pointer border ${
-                            u.is_active
-                              ? 'bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100'
-                              : 'bg-purple-600 hover:bg-purple-700 text-white border-transparent shadow-sm shadow-purple-600/25'
-                          }`}
-                        >
-                          {u.is_active ? 'Nonaktifkan' : 'Aktifkan Akun'}
-                        </button>
+                        <div className="inline-flex items-center justify-end gap-2 flex-wrap">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setResetTarget(u);
+                              setNewPasswordInput('');
+                              setDeleteConfirmId(null);
+                            }}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full font-bold text-xs transition-all cursor-pointer border bg-slate-50 border-slate-200 text-slate-700 hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700"
+                            title="Reset Kata Sandi Pengguna"
+                          >
+                            <KeyRound className="w-3.5 h-3.5" />
+                            <span>Reset Sandi</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleToggleActive(u.id, u.is_active)}
+                            className={`px-3.5 py-1.5 rounded-full font-bold text-xs transition-all cursor-pointer border ${
+                              u.is_active
+                                ? 'bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100'
+                                : 'bg-purple-600 hover:bg-purple-700 text-white border-transparent shadow-sm shadow-purple-600/25'
+                            }`}
+                          >
+                            {u.is_active ? 'Nonaktifkan' : 'Aktifkan Akun'}
+                          </button>
+
+                          {deleteConfirmId === u.id ? (
+                            <div className="inline-flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                disabled={isActionSubmitting}
+                                onClick={() => handleDeleteUser(u)}
+                                className="px-3 py-1.5 rounded-full font-bold text-xs bg-rose-600 hover:bg-rose-700 text-white cursor-pointer disabled:opacity-50"
+                              >
+                                Konfirmasi Hapus
+                              </button>
+                              <button
+                                type="button"
+                                disabled={isActionSubmitting}
+                                onClick={() => setDeleteConfirmId(null)}
+                                className="px-2.5 py-1.5 rounded-full font-semibold text-xs border border-slate-200 text-slate-600 hover:bg-slate-100 cursor-pointer"
+                              >
+                                Batal
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => setDeleteConfirmId(u.id)}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full font-bold text-xs transition-all cursor-pointer border bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100"
+                              title="Hapus Akun Pengguna"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span>Hapus</span>
+                            </button>
+                          )}
+                        </div>
                       )}
                     </td>
                   </tr>
@@ -269,6 +372,50 @@ export default function AdminUsersView() {
           </div>
         )}
       </div>
+
+      {/* Inline Reset Password Panel */}
+      {resetTarget && (
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 border border-purple-200 shadow-[0_10px_30px_rgba(124,58,237,0.1)]">
+          <form onSubmit={handleResetPasswordSubmit} className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="space-y-1 flex-1">
+              <div className="text-xs font-bold text-purple-700 uppercase tracking-wider">
+                Reset Kata Sandi Pengguna
+              </div>
+              <p className="text-xs text-slate-600">
+                Tetapkan kata sandi baru untuk <span className="font-mono font-bold text-slate-900">{resetTarget.email}</span> (min. 6 karakter).
+              </p>
+              <input
+                type="text"
+                minLength={6}
+                required
+                value={newPasswordInput}
+                onChange={(e) => setNewPasswordInput(e.target.value)}
+                placeholder="Masukkan kata sandi baru..."
+                className="w-full sm:max-w-sm mt-2 px-4 py-2 rounded-2xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-purple-500"
+              />
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setResetTarget(null);
+                  setNewPasswordInput('');
+                }}
+                className="px-4 py-2 rounded-full border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                disabled={isActionSubmitting}
+                className="px-5 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold cursor-pointer disabled:opacity-50"
+              >
+                Simpan Sandi Baru
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

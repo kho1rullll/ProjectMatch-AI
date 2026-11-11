@@ -1,5 +1,6 @@
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.core.database import get_db
@@ -12,22 +13,26 @@ router = APIRouter(prefix="/auth", tags=["Autentikasi (FR-01)"])
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 def register_user(req: UserRegister, db: Session = Depends(get_db)):
     """FR-01: Registrasi akun baru (khusus mahasiswa sesuai Catatan Penyelarasan SKPL Bab 14)."""
+    normalized_email = req.email.strip().lower()
+    normalized_nim = req.nim.strip().upper()
+    normalized_github = req.github_username.strip()
+
     # D01: Email tidak boleh ganda
-    if db.query(User).filter(User.email == req.email.lower()).first():
+    if db.query(User).filter(func.lower(User.email) == normalized_email).first():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email sudah terdaftar dalam sistem."
         )
 
     # D01: NIM tidak boleh ganda
-    if db.query(MahasiswaProfile).filter(MahasiswaProfile.nim == req.nim.strip()).first():
+    if db.query(MahasiswaProfile).filter(func.upper(MahasiswaProfile.nim) == normalized_nim).first():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Nomor Induk Mahasiswa (NIM) sudah terdaftar."
         )
 
-    # D11: GitHub username unik
-    if db.query(MahasiswaProfile).filter(MahasiswaProfile.github_username == req.github_username.strip()).first():
+    # D11: GitHub username unik (case-insensitive)
+    if db.query(MahasiswaProfile).filter(func.lower(MahasiswaProfile.github_username) == normalized_github.lower()).first():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Username GitHub sudah ditautkan ke akun lain."
@@ -37,7 +42,7 @@ def register_user(req: UserRegister, db: Session = Depends(get_db)):
     password_hash = get_password_hash(req.password)
 
     new_user = User(
-        email=req.email.lower(),
+        email=normalized_email,
         password_hash=password_hash,
         role="mahasiswa",
         is_active=True
@@ -47,11 +52,11 @@ def register_user(req: UserRegister, db: Session = Depends(get_db)):
 
     new_profile = MahasiswaProfile(
         user_id=new_user.id,
-        full_name=req.full_name,
-        nim=req.nim.strip(),
+        full_name=req.full_name.strip(),
+        nim=normalized_nim,
         program_studi=req.program_studi,
         angkatan=req.angkatan,
-        github_username=req.github_username.strip(),
+        github_username=normalized_github,
         processing_status="pending"
     )
     db.add(new_profile)
@@ -75,7 +80,8 @@ def register_user(req: UserRegister, db: Session = Depends(get_db)):
 @router.post("/login", response_model=Token, status_code=status.HTTP_200_OK)
 def login_user(req: UserLogin, db: Session = Depends(get_db)):
     """FR-01: Login dengan email & password ter-hash Argon2id, menerbitkan token JWT."""
-    user = db.query(User).filter(User.email == req.email.lower()).first()
+    normalized_email = req.email.strip().lower()
+    user = db.query(User).filter(func.lower(User.email) == normalized_email).first()
     if not user or not verify_password(req.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

@@ -120,6 +120,9 @@ class UserUpdateStatusRole(BaseModel):
     is_active: Optional[bool] = None
     role: Optional[str] = None
 
+class AdminResetPasswordRequest(BaseModel):
+    new_password: str = Field(min_length=6)
+
 class AdminUserItem(BaseModel):
     id: str
     email: str

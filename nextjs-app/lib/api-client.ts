@@ -54,9 +54,19 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     }
 
     const errData = await res.json().catch(() => ({ detail: 'Terjadi kesalahan sistem.' }));
-    throw new Error(errData.detail || errData.message || `HTTP ${res.status}`);
+    const httpError = new Error(errData.detail || errData.message || `HTTP ${res.status}`) as Error & {
+      isHttpError?: boolean;
+      status?: number;
+    };
+    httpError.isHttpError = true;
+    httpError.status = res.status;
+    throw httpError;
   } catch (backendError: any) {
-    // Jika backend FastAPI tidak aktif, kita fallback ke Next.js internal API route
+    // Jika backend sudah merespons HTTP error (mis. 401/403/409), lempar langsung tanpa fallback
+    if (backendError?.isHttpError) {
+      throw backendError;
+    }
+    // Jika backend FastAPI tidak aktif / unreachable, fallback ke Next.js internal API route
     try {
       const internalRes = await fetch(`/api/v1${endpoint}`, {
         ...options,
@@ -252,6 +262,19 @@ export const api = {
       return request('/admin/users', {
         method: 'PATCH',
         body: JSON.stringify(payload),
+      });
+    },
+
+    async resetUserPassword(userId: string, newPassword: string): Promise<AdminUserItem> {
+      return request(`/admin/users/${userId}/reset-password`, {
+        method: 'POST',
+        body: JSON.stringify({ new_password: newPassword }),
+      });
+    },
+
+    async deleteUser(userId: string): Promise<{ status: string; user_id: string; email: string }> {
+      return request(`/admin/users/${userId}`, {
+        method: 'DELETE',
       });
     },
 
