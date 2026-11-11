@@ -1,0 +1,18 @@
+1. 🎓 Akun Mahasiswa (Hero RPG Talent)
+Email: satria@student.itb.ac.id
+Kata Sandi: password123
+Role: Mahasiswa
+Profil: Raden Satria (NIM: V3925028, D3 Teknik Informatika PSDKU Madiun UNS, IPK 3.88, Hero Tier S)
+
+2. 🏢 Akun Mitra Industri (Pemberi Proyek)
+Email: hr@bioinformatika.co.id
+Kata Sandi: password123
+Role: Mitra Industri
+Profil: Dr. Hendra Gunawan (BioInformatika Nusantara & RS Cipto)
+
+3. 🛡️ Akun Administrator Kampus (Super Admin & IoT Manager)
+Email: admin@projectmatch.ac.id
+Kata Sandi: password123
+Role: Administrator Kampus
+Profil: Biro Kemahasiswaan & Kerjasama Industri UNS
+Fitur: Validasi Akademik Mahasiswa, Monitoring Rekrutmen, Konfigurasi Smart Campus Kiosk (ESP32 + RC522)
