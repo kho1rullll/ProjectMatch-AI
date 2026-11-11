@@ -181,12 +181,26 @@ app.include_router(admin.router, prefix=settings.API_V1_STR)
 # Pasang Endpoint WebSocket
 app.include_router(websocket.router)
 
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
+
+# Pasang Frontend Static Portal untuk Demonstrasi
+static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static")
+if os.path.exists(static_dir):
+    app.mount("/portal", StaticFiles(directory=static_dir, html=True), name="portal")
+
+@app.get("/demo")
+def demo_redirect():
+    return RedirectResponse(url="/portal")
+
 @app.get("/")
 def root():
     return {
         "system": "ProjectMatch AI Backend",
         "architecture": "Three-Tier Architecture (Next.js + FastAPI + PostgreSQL/pgvector)",
         "api_docs": f"{settings.API_V1_STR}/docs",
+        "portal_ui": "/portal",
         "websocket": "/ws/notifications",
         "status": "operational"
     }

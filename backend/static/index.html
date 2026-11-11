@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProjectMatch AI - Portal Demonstrasi Portofolio GitHub & Lowongan Online</title>
+  <meta name="description" content="Platform AI Semantic Matching untuk mengekstrak portofolio dari repositori GitHub mahasiswa dan mencocokkannya dengan lowongan freelance/remote di Upwork, Fiverr, dan LinkedIn.">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Chart.js for Interactive Radar & Distribution Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header>
+    <div class="container nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v1"></path>
+            <path d="M18 8h4a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4"></path>
+            <circle cx="8" cy="12" r="2"></circle>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>ProjectMatch AI</h1>
+          <span>Link-and-Match Portofolio GitHub & Lowongan Industri</span>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <!-- Live WebSocket Indicator -->
+        <div class="ws-status-badge" id="wsStatusBadge" title="Status koneksi real-time WebSocket">
+          <span class="ws-dot" id="wsDot"></span>
+          <span id="wsStatusText">WebSocket Terhubung</span>
+        </div>
+
+        <!-- Quick Persona Switcher for Lecturer Demo -->
+        <div class="persona-selector">
+          <button class="btn-persona active" id="btnPersonaMahasiswa" onclick="switchPersona('mahasiswa')">
+            👨‍🎓 Mahasiswa (Raden Satria)
+          </button>
+          <button class="btn-persona" id="btnPersonaAdmin" onclick="switchPersona('admin')">
+            🛡️ Admin Kampus
+          </button>
+        </div>
+
+        <!-- Notification Bell -->
+        <button class="user-persona-btn" id="btnNotifications" onclick="openNotificationsModal()" title="Notifikasi Sistem & AI Match">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="tab-badge" id="notifBadgeCount" style="background: var(--primary); color: #fff;">0</span>
+        </button>
+
+        <!-- Current User Avatar Chip -->
+        <div class="user-persona-btn" id="userMenuChip" onclick="openLoginModal()">
+          <div class="avatar-chip" id="userAvatarText">RS</div>
+          <span id="navUserName">Raden Satria</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== LECTURER DEMO ANNOUNCEMENT BANNER ==================== -->
+  <section class="lecturer-banner">
+    <div class="container banner-content">
+      <div class="banner-tags">
+        <span class="tag-pill cyan">🎓 Mode Pengujian Dosen</span>
+        <span class="tag-pill indigo">🐙 1. Ekstraksi Repositori GitHub Riil</span>
+        <span class="tag-pill emerald">💼 2. Lowongan Freelance/Remote (Upwork, Fiverr, LinkedIn)</span>
+        <span class="tag-pill cyan">🎯 3. AI Semantic Matching & Radar Chart</span>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary);">
+        API Server: <strong style="color: var(--secondary);" id="activeApiUrl">http://127.0.0.1:8000</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="container">
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" id="tabBtnPortfolio" onclick="switchTab('portfolio')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+        1. Portofolio GitHub & AI Skills
+      </button>
+
+      <button class="tab-btn" id="tabBtnJobs" onclick="switchTab('jobs')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        </svg>
+        2. Lowongan Online (Upwork, Fiverr, LinkedIn)
+        <span class="tab-badge" id="totalJobsBadge">0</span>
+      </button>
+
+      <button class="tab-btn" id="tabBtnRecommendations" onclick="switchTab('recommendations')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+        </svg>
+        3. Rekomendasi AI (Top Matches)
+        <span class="tab-badge" id="recsCountBadge">0</span>
+      </button>
+
+      <button class="tab-btn" id="tabBtnBookmarks" onclick="switchTab('bookmarks')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+        4. Lowongan Tersimpan
+        <span class="tab-badge" id="bookmarksCountBadge">0</span>
+      </button>
+
+      <button class="tab-btn" id="tabBtnAdmin" onclick="switchTab('admin')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        5. Dashboard Admin & Scraper
+      </button>
+    </nav>
+
+    <!-- ==================== TAB 1: PORTOFOLIO GITHUB & AI SKILLS ==================== -->
+    <section class="tab-content active" id="tabContentPortfolio">
+      
+      <!-- Profile Hero & Sync Controls -->
+      <div class="portfolio-hero">
+        <!-- Profile Card -->
+        <div class="card profile-info-card">
+          <div class="profile-top">
+            <div class="profile-avatar-large" id="profileAvatarBig">RS</div>
+            <div class="profile-meta">
+              <h2 id="profileFullName">Raden Satria</h2>
+              <p class="nim-prodi" id="profileNimProdi">NIM: V3925028 • D3 Teknik Informatika PSDKU Madiun UNS (2025)</p>
+              <a href="#" target="_blank" class="github-handle-link" id="profileGithubLink">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                <span id="profileGithubUsernameText">@kho1rullll</span>
+              </a>
+            </div>
+          </div>
+
+          <div style="margin-top: 18px; display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Status Pemrosesan Portofolio:</span>
+              <span class="tag-pill emerald" id="processingStatusPill">done</span>
+            </div>
+            <button class="btn-secondary" onclick="openEditProfileModal()">
+              ✏️ Edit Biodata
+            </button>
+          </div>
+        </div>
+
+        <!-- Sync Action Box (Point of Demonstration) -->
+        <div class="sync-action-box">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.2rem;">⚡</span>
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem;">Tarik & Ekstrak Akun GitHub</h3>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+              Sistem akan memanggil GitHub REST API untuk mengambil repositori publik, commit, topik, dan README, lalu Groq Llama 3.1 menyintesis keahlian & radar kompetensi.
+            </p>
+          </div>
+
+          <div>
+            <div class="sync-input-group">
+              <input type="text" id="inputGithubUsername" class="input-field" placeholder="Username GitHub (cth: kho1rullll)" value="kho1rullll">
+              <button class="btn-primary" id="btnSyncGithub" onclick="triggerGithubSync()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                </svg>
+                <span id="btnSyncGithubText">Tarik Repositori</span>
+              </button>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);" id="syncStatusHint">
+              💡 Klik tombol di atas untuk membuktikan sistem scraping repositori mahasiswa bekerja secara riil.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GitHub Metrics Cards -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-icon-box indigo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <div class="metric-data">
+            <h3 id="metricTotalRepos">0</h3>
+            <p>Repositori Publik GitHub</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box emerald">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="4"></circle>
+              <line x1="1.05" y1="12" x2="7" y2="12"></line>
+              <line x1="17.01" y1="12" x2="22.96" y2="12"></line>
+            </svg>
+          </div>
+          <div class="metric-data">
+            <h3 id="metricTotalCommits">0</h3>
+            <p>Estimasi Total Aktivitas Commit</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          </div>
+          <div class="metric-data">
+            <h3 id="metricTopLanguage">-</h3>
+            <p>Bahasa Pemrograman Terbanyak</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box amber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+            </svg>
+          </div>
+          <div class="metric-data">
+            <h3 id="metricTotalStars">0</h3>
+            <p>Total Bintang (Stars) Diterima</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Languages Breakdown Progress Bar -->
+      <div class="card languages-breakdown-card">
+        <h4 style="font-family: var(--font-heading); font-size: 1rem; margin-bottom: 4px;">
+          Distribusi Bahasa Pemrograman dari Repositori
+        </h4>
+        <div class="multi-progress-bar" id="languagesProgressBar">
+          <!-- Dynamically populated -->
+        </div>
+        <div class="language-tags-list" id="languagesLegend">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Repositories Grid (Daftar Repo yang Dibuat Portofolio) -->
+      <div class="section-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          Repositori Riil dari Akun GitHub Mahasiswa
+        </h3>
+        <span style="font-size: 0.85rem; color: var(--text-secondary);" id="reposCountIndicator">
+          Menampilkan repositori publik terbaru
+        </span>
+      </div>
+
+      <div class="repos-grid" id="reposGridContainer">
+        <!-- Dynamically populated -->
+      </div>
+
+      <!-- AI Skill Extractor & Radar Chart Section -->
+      <div class="section-header" style="margin-top: 32px;">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Sintesis Keahlian Berbasis AI & Radar Kompetensi
+        </h3>
+        <span class="tag-pill indigo">Groq Llama-3.1-8b-instant Synthesizer</span>
+      </div>
+
+      <div class="ai-skills-grid">
+        <!-- Skills List & Levels -->
+        <div class="card skills-list-card">
+          <div class="ai-headline-box">
+            <h4>Headline Profil Profesional</h4>
+            <p id="aiHeadlineText">Memuat sintesis AI...</p>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Domain Keahlian Utama:</div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="primaryDomainsContainer">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <h4 style="font-family: var(--font-heading); font-size: 0.95rem; margin-bottom: 12px;">
+            Keahlian Teknis & Tingkat Penguasaan
+          </h4>
+          <div id="technicalSkillsList">
+            <!-- Dynamically populated -->
+          </div>
+
+          <div style="margin-top: 20px; padding: 14px; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-md);">
+            <div style="font-size: 0.78rem; color: var(--secondary); font-weight: 600; text-transform: uppercase;">
+              Ringkasan Keunggulan Kompetitif
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;" id="aiStrengthsSummaryText">
+              -
+            </p>
+          </div>
+        </div>
+
+        <!-- Radar Chart of Competencies -->
+        <div class="card radar-chart-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h4 style="font-family: var(--font-heading); font-size: 1.1rem;">
+              Radar 5 Dimensi Kompetensi Mahasiswa
+            </h4>
+            <span class="tag-pill cyan">Visualisasi Skill Riil</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 14px;">
+            Pemetaan otomatis dari proyek GitHub ke 5 domain utama: AI/ML, Frontend, Backend, Database/Cloud, dan Arsitektur Perangkat Lunak.
+          </p>
+
+          <div class="radar-canvas-container">
+            <canvas id="studentRadarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 2: EKSPLORASI LOWONGAN ONLINE ==================== -->
+    <section class="tab-content" id="tabContentJobs">
+      
+      <!-- Filter Bar -->
+      <div class="jobs-filter-bar">
+        <!-- Search Keyword -->
+        <div style="flex: 1; min-width: 240px; display: flex; align-items: center; gap: 8px;">
+          <input type="text" id="inputJobSearch" class="input-field" placeholder="Cari posisi (cth: FastAPI, Next.js, AI, Frontend)..." oninput="filterAndRenderJobs()">
+        </div>
+
+        <!-- Filter Platform -->
+        <div>
+          <select id="selectPlatformFilter" class="filter-select" onchange="filterAndRenderJobs()">
+            <option value="semua">🌐 Semua Platform (Upwork, Fiverr, LinkedIn)</option>
+            <option value="upwork">🟢 Upwork (Freelance/Remote)</option>
+            <option value="fiverr">🟢 Fiverr (Freelance/Gig)</option>
+            <option value="linkedin">🔵 LinkedIn (Part-Time/Intern)</option>
+          </select>
+        </div>
+
+        <!-- Filter Type -->
+        <div>
+          <select id="selectTypeFilter" class="filter-select" onchange="filterAndRenderJobs()">
+            <option value="semua">📋 Semua Tipe Pekerjaan</option>
+            <option value="freelance">Freelance / Remote</option>
+            <option value="part_time">Part-Time / Magang</option>
+          </select>
+        </div>
+
+        <!-- Ingest New Jobs Trigger Button -->
+        <button class="btn-primary" id="btnSyncJobs" onclick="triggerJobsSync()" title="Tarik lowongan terbaru dari platform eksternal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+          </svg>
+          <span>Tarik Lowongan Baru</span>
+        </button>
+      </div>
+
+      <!-- Active Count & Indicator -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div style="font-size: 0.9rem; color: var(--text-secondary);">
+          Menampilkan <strong style="color: #fff;" id="filteredJobsCount">0</strong> lowongan pekerjaan aktif
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">
+          *Lowongan diambil dari agregator eksternal dan diekstrak kriteria kompetensinya oleh AI
+        </div>
+      </div>
+
+      <!-- Jobs Grid Container -->
+      <div class="jobs-grid" id="jobsGridContainer">
+        <!-- Dynamically populated -->
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 3: REKOMENDASI AI (TOP MATCHES) ==================== -->
+    <section class="tab-content" id="tabContentRecommendations">
+      
+      <div class="card" style="margin-bottom: 24px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(16, 185, 129, 0.08)); border-color: rgba(99, 102, 241, 0.3);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.3rem;">🎯 Hasil AI Semantic Matching Engine</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+              Dihitung menggunakan Cosine Similarity antara representasi vektor embedding 384 dimensi dari portofolio GitHub Anda dan vektor lowongan pekerjaan.
+            </p>
+          </div>
+          <button class="btn-primary" onclick="loadRecommendations()">
+            🔄 Hitung Ulang Rekomendasi
+          </button>
+        </div>
+      </div>
+
+      <!-- Recommendations Grid Container -->
+      <div class="jobs-grid" id="recommendationsGridContainer">
+        <!-- Dynamically populated -->
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 4: LOWONGAN TERSIMPAN (BOOKMARKS) ==================== -->
+    <section class="tab-content" id="tabContentBookmarks">
+      
+      <div class="section-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Daftar Lowongan Tersimpan (Bookmarks)
+        </h3>
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">
+          Lowongan yang Anda simpan untuk proses lamaran ke platform penyedia
+        </span>
+      </div>
+
+      <div class="jobs-grid" id="bookmarksGridContainer">
+        <!-- Dynamically populated -->
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 5: DASHBOARD ADMIN & SCRAPER ==================== -->
+    <section class="tab-content" id="tabContentAdmin">
+      
+      <div class="section-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          Statistik Platform & Monitoring Lowongan Online
+        </h3>
+        <button class="btn-primary" onclick="triggerJobsSync()">
+          🚀 Jalankan Ingestion Scraper (Admin)
+        </button>
+      </div>
+
+      <!-- Admin Stat Cards -->
+      <div class="metrics-row" style="margin-bottom: 24px;">
+        <div class="metric-card">
+          <div class="metric-icon-box indigo">👥</div>
+          <div class="metric-data">
+            <h3 id="adminStatTotalUsers">0</h3>
+            <p>Total Pengguna Terdaftar</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box emerald">💼</div>
+          <div class="metric-data">
+            <h3 id="adminStatTotalJobs">0</h3>
+            <p>Total Lowongan Terindeks</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box cyan">🎯</div>
+          <div class="metric-data">
+            <h3 id="adminStatMatchesComputed">0</h3>
+            <p>Total Perhitungan Match</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box amber">⭐</div>
+          <div class="metric-data">
+            <h3 id="adminStatTotalBookmarks">0</h3>
+            <p>Total Lowongan Dibookmark</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform Distribution Breakdown -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px;">
+        <div class="card">
+          <h4 style="font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: 14px;">
+            Sebaran Lowongan per Platform Online
+          </h4>
+          <div id="adminPlatformBreakdown">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="card">
+          <h4 style="font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: 14px;">
+            Sebaran Lowongan per Tipe Kontrak
+          </h4>
+          <div id="adminTypeBreakdown">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="card">
+        <h4 style="font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: 12px;">
+          Daftar Pengguna Sistem (Mahasiswa & Admin)
+        </h4>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nama / Email</th>
+                <th>Role</th>
+                <th>NIM</th>
+                <th>GitHub</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="adminUsersTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==================== RADAR CHART & MATCH COMPARISON MODAL ==================== -->
+  <div class="modal-overlay" id="modalRadarOverlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <span class="platform-pill linkedin" id="modalJobPlatform">linkedin</span>
+          <h3 id="modalJobTitle" style="margin-top: 6px;">Detail Analisis Kecocokan AI</h3>
+          <p id="modalJobCompany" style="font-size: 0.85rem; color: var(--text-secondary);">-</p>
+        </div>
+        <button class="btn-close-modal" onclick="closeRadarModal()">&times;</button>
+      </div>
+
+      <!-- Match Score Badge Big -->
+      <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: var(--radius-md); padding: 14px 20px; margin-bottom: 20px;">
+        <div>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Skor Cosine Similarity:</span>
+          <div style="font-size: 1.4rem; font-weight: 700; color: #fff;" id="modalSimilarityScore">0.00</div>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Persentase Kecocokan:</span>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--success);" id="modalMatchPercentage">0%</div>
+        </div>
+      </div>
+
+      <!-- Radar Comparison Grid -->
+      <div class="radar-modal-grid">
+        <!-- Canvas Radar Chart Overlay -->
+        <div>
+          <h4 style="font-family: var(--font-heading); font-size: 0.95rem; margin-bottom: 10px; text-align: center;">
+            Overlay Perbandingan Kompetensi
+          </h4>
+          <div style="width: 100%; aspect-ratio: 1/1; max-width: 360px; margin: 0 auto;">
+            <canvas id="comparisonRadarCanvas"></canvas>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 16px; margin-top: 10px; font-size: 0.8rem;">
+            <span style="display: flex; align-items: center; gap: 6px; color: #818cf8;">
+              <span style="width: 12px; height: 12px; border-radius: 2px; background: rgba(99, 102, 241, 0.6);"></span>
+              Skor Mahasiswa (GitHub)
+            </span>
+            <span style="display: flex; align-items: center; gap: 6px; color: #f43f5e;">
+              <span style="width: 12px; height: 12px; border-radius: 2px; background: rgba(244, 63, 94, 0.6);"></span>
+              Kebutuhan Lowongan
+            </span>
+          </div>
+        </div>
+
+        <!-- Breakdown Details -->
+        <div>
+          <h4 style="font-family: var(--font-heading); font-size: 0.95rem; margin-bottom: 12px;">
+            Rincian Evaluasi 5 Dimensi:
+          </h4>
+          <div id="modalBreakdownList">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Reason Summary -->
+      <div style="margin-top: 24px; padding: 16px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);">
+        <h5 style="color: var(--secondary); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 4px;">
+          Evaluasi Sintesis AI:
+        </h5>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;" id="modalSummaryReason">
+          -
+        </p>
+      </div>
+
+      <!-- Modal Actions -->
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button class="btn-secondary" onclick="closeRadarModal()">Tutup</button>
+        <a href="#" target="_blank" class="btn-primary" id="modalApplyExternalLink">
+          ↗️ Buka Lowongan di Platform Asli
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== EDIT PROFILE MODAL ==================== -->
+  <div class="modal-overlay" id="modalEditProfileOverlay">
+    <div class="modal-content" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3>Edit Biodata Mahasiswa</h3>
+        <button class="btn-close-modal" onclick="closeEditProfileModal()">&times;</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; display: block;">Nama Lengkap:</label>
+          <input type="text" id="editFullName" class="input-field" style="width: 100%;">
+        </div>
+
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; display: block;">NIM:</label>
+          <input type="text" id="editNim" class="input-field" style="width: 100%;">
+        </div>
+
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; display: block;">Program Studi:</label>
+          <input type="text" id="editProgramStudi" class="input-field" style="width: 100%;">
+        </div>
+
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; display: block;">Angkatan:</label>
+          <input type="number" id="editAngkatan" class="input-field" style="width: 100%;">
+        </div>
+
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; display: block;">Username GitHub:</label>
+          <input type="text" id="editGithubUsername" class="input-field" style="width: 100%;">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
+          <button class="btn-secondary" onclick="closeEditProfileModal()">Batal</button>
+          <button class="btn-primary" onclick="saveProfileChanges()">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NOTIFICATIONS MODAL ==================== -->
+  <div class="modal-overlay" id="modalNotificationsOverlay">
+    <div class="modal-content" style="max-width: 560px;">
+      <div class="modal-header">
+        <h3>Notifikasi Sistem & AI Matching</h3>
+        <button class="btn-close-modal" onclick="closeNotificationsModal()">&times;</button>
+      </div>
+
+      <div id="notificationsListContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto;">
+        <!-- Dynamically populated -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+        <button class="btn-secondary" onclick="closeNotificationsModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LOGIN / ACCOUNT MODAL ==================== -->
+  <div class="modal-overlay" id="modalLoginOverlay">
+    <div class="modal-content" style="max-width: 460px;">
+      <div class="modal-header">
+        <h3>Akun Pengguna</h3>
+        <button class="btn-close-modal" onclick="closeLoginModal()">&times;</button>
+      </div>
+
+      <div style="margin-bottom: 18px;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
+          Pilih akun cepat untuk keperluan demonstrasi pengujian:
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="btn-secondary" style="justify-content: flex-start; text-align: left;" onclick="quickLogin('satria@student.itb.ac.id', 'password123'); closeLoginModal();">
+            <div>
+              <strong>👨‍🎓 Raden Satria (Mahasiswa)</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">satria@student.itb.ac.id • Portofolio & Lowongan</div>
+            </div>
+          </button>
+          <button class="btn-secondary" style="justify-content: flex-start; text-align: left;" onclick="quickLogin('admin@projectmatch.ac.id', 'password123'); closeLoginModal();">
+            <div>
+              <strong>🛡️ Admin Kampus</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">admin@projectmatch.ac.id • Panel Statistik & Scraper</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-color); padding-top: 14px;">
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Atur Alamat API Server:</span>
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <input type="text" id="inputApiBaseUrl" class="input-field" value="http://127.0.0.1:8000">
+          <button class="btn-secondary" onclick="saveCustomApiUrl()">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Logic -->
+  <script src="js/app.js"></script>
+</body>
+</html>
