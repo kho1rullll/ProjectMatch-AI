@@ -1,6 +1,7 @@
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from app.core.config import settings
 from app.core.database import get_db
 from app.core.security import get_password_hash, verify_password, create_access_token
 from app.models.models import User, MahasiswaProfile
@@ -64,6 +65,7 @@ def register_user(req: UserRegister, db: Session = Depends(get_db)):
             "id": new_user.id,
             "email": new_user.email,
             "role": new_user.role,
+            "name": new_profile.full_name,
             "full_name": new_profile.full_name,
             "nim": new_profile.nim,
             "github_username": new_profile.github_username
@@ -97,7 +99,8 @@ def login_user(req: UserLogin, db: Session = Depends(get_db)):
             "id": user.id,
             "email": user.email,
             "role": user.role,
-            "full_name": profile.full_name if profile else "Administrator Kampus",
+            "name": profile.full_name if profile else settings.ADMIN_NAME,
+            "full_name": profile.full_name if profile else settings.ADMIN_NAME,
             "nim": profile.nim if profile else None,
             "github_username": profile.github_username if profile else None
         }

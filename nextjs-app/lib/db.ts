@@ -1,6 +1,7 @@
 // lib/db.ts - Persistent Embedded Local Database for ProjectMatch AI
 import fs from 'fs';
 import path from 'path';
+import { randomBytes } from 'crypto';
 import { hashPassword } from './auth-crypto';
 
 export interface UserRecord {
@@ -84,82 +85,20 @@ interface DatabaseSchema {
   kiosks: KioskTerminalRecord[];
 }
 
-// Default Seed Data matching SKPL
+// Default Seed Data (hanya 1 akun administrator pengelola, tanpa akun dummy)
 const defaultData: DatabaseSchema = {
   users: [
     {
-      id: 'usr-student-001',
-      name: 'Raden Satria',
-      nim: 'V3925028',
-      email: 'satria@student.itb.ac.id',
-      password: 'password123',
-      role: 'MAHASISWA',
-      university: 'D3 Teknik Informatika PSDKU Madiun, UNS',
-      semester: 'Semester 6',
-      gpa: '3.88 / 4.00',
-      rfidUid: '0x8F3A29B1',
-      academicVerified: true,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: 'usr-student-002',
-      name: 'Abdullah Abil Abi Yoso',
-      nim: 'V3925001',
-      email: 'abil@student.uns.ac.id',
-      password: 'password123',
-      role: 'MAHASISWA',
-      university: 'D3 Teknik Informatika PSDKU Madiun, UNS',
-      semester: 'Semester 6',
-      gpa: '3.92 / 4.00',
-      rfidUid: '0x4E7B12C9',
-      academicVerified: true,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: 'usr-student-003',
-      name: 'Nabila Putri Azzahra',
-      nim: 'V3925044',
-      email: 'nabila@student.uns.ac.id',
-      password: 'password123',
-      role: 'MAHASISWA',
-      university: 'D3 Teknik Informatika PSDKU Madiun, UNS',
-      semester: 'Semester 4',
-      gpa: '3.75 / 4.00',
-      rfidUid: '0x99A1BC33',
-      academicVerified: false,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: 'usr-partner-001',
-      name: 'Dr. Hendra Gunawan',
-      email: 'hr@bioinformatika.co.id',
-      password: 'password123',
-      role: 'MITRA',
-      companyName: 'BioInformatika Nusantara & RS Cipto',
-      createdAt: new Date().toISOString(),
-    },
-    {
       id: 'usr-admin-001',
-      name: 'Biro Kerjasama & Kemahasiswaan',
-      email: 'admin@projectmatch.ac.id',
-      password: 'password123',
+      name: 'Administrator ProjectMatch AI',
+      email: process.env.ADMIN_EMAIL || 'admin@projectmatch.id',
+      password: hashPassword(process.env.ADMIN_PASSWORD || randomBytes(24).toString('hex')),
       role: 'ADMIN',
-      university: 'Universitas Sebelas Maret (UNS)',
+      university: 'ProjectMatch AI Management',
       createdAt: new Date().toISOString(),
     },
   ],
-  competencyVectors: [
-    {
-      id: 'vec-001',
-      userId: 'usr-student-001',
-      aiml: 92,
-      frontend: 85,
-      uiux: 78,
-      backend: 90,
-      architecture: 84,
-      updatedAt: new Date().toISOString(),
-    },
-  ],
+  competencyVectors: [],
   projects: [
     {
       id: 'proj-001',

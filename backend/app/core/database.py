@@ -1,3 +1,4 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from app.core.config import settings
@@ -10,6 +11,14 @@ if db_url.startswith("postgres://"):
 connect_args = {}
 if db_url.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
+    # Pastikan jalur SQLite selalu konsisten ke file projectmatch_ai.db
+    if "projectmatch_ai.db" in db_url:
+        backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        root_dir = os.path.dirname(backend_dir)
+        target_db = os.path.join(root_dir, "projectmatch_ai.db")
+        if not os.path.exists(target_db):
+            target_db = os.path.join(backend_dir, "projectmatch_ai.db")
+        db_url = f"sqlite:///{target_db.replace(os.sep, '/')}"
 
 engine = create_engine(
     db_url,

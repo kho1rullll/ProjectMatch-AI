@@ -99,12 +99,13 @@ export function ScrollReveal({
 }
 
 export default function RootHomePage() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { theme, setTheme } = useTheme();
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [squadSize, setSquadSize] = useState(4);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const testimonials = [
     {
@@ -150,7 +151,7 @@ export default function RootHomePage() {
     }
   };
 
-  const displayName = user?.name || user?.email || 'User';
+  const displayName = user?.name || user?.full_name || user?.email?.split('@')[0] || 'User';
   const dashboardUrl = user?.role === 'admin' ? '/admin' : '/dashboard';
 
   return (
@@ -194,46 +195,24 @@ export default function RootHomePage() {
 
             {/* Navigation Menu */}
             <nav className="hidden lg:flex items-center gap-1">
-              <Link
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
-                  theme === 'light'
-                    ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                    : 'text-slate-300 hover:text-white hover:bg-white/10'
-                }`}
-                href="/projects"
-              >
-                Projects
-              </Link>
-              <a
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
-                  theme === 'light'
-                    ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                    : 'text-slate-300 hover:text-white hover:bg-white/10'
-                }`}
-                href="#ai-matching"
-              >
-                AI Matching
-              </a>
-              <Link
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
-                  theme === 'light'
-                    ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                    : 'text-slate-300 hover:text-white hover:bg-white/10'
-                }`}
-                href="/talents"
-              >
-                Talents
-              </Link>
-              <a
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
-                  theme === 'light'
-                    ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                    : 'text-slate-300 hover:text-white hover:bg-white/10'
-                }`}
-                href="#comparison"
-              >
-                Comparison
-              </a>
+              {[
+                { label: 'AI Matching', href: '#ai-matching' },
+                { label: 'Playground', href: '#playground' },
+                { label: 'Comparison', href: '#comparison' },
+                { label: 'Testimonials', href: '#testimonials' },
+              ].map((item) => (
+                <a
+                  key={item.href}
+                  className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
+                    theme === 'light'
+                      ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      : 'text-slate-300 hover:text-white hover:bg-white/10'
+                  }`}
+                  href={item.href}
+                >
+                  {item.label}
+                </a>
+              ))}
             </nav>
 
             {/* Theme Switcher & Auth Actions */}
@@ -245,7 +224,7 @@ export default function RootHomePage() {
               </div>
 
               {user ? (
-                <>
+                <div className="relative flex items-center gap-1.5 sm:gap-2">
                   <Link
                     href={dashboardUrl}
                     className={`hidden sm:inline-flex px-4 py-2 rounded-full text-xs font-bold transition-colors ${
@@ -257,17 +236,68 @@ export default function RootHomePage() {
                     Dashboard
                   </Link>
                   <LiquidGlassButton
-                    asChild
+                    type="button"
                     interactive
                     size="sm"
                     tint="#7C3AED"
-                    className="text-white font-semibold shadow-md shadow-purple-500/20"
+                    className="text-white font-semibold shadow-md shadow-purple-500/20 cursor-pointer"
+                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   >
-                    <Link href={dashboardUrl}>
+                    <span className="flex items-center gap-1">
                       {displayName.split(' ')[0]}
-                    </Link>
+                      <span className="text-[10px] opacity-80">▾</span>
+                    </span>
                   </LiquidGlassButton>
-                </>
+
+                  <button
+                    type="button"
+                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ml-0.5 hover:opacity-90 transition-opacity cursor-pointer ${
+                      theme === 'light' ? 'bg-slate-900 text-white' : 'bg-white/15 text-white border border-white/20'
+                    }`}
+                    title={`Akun: ${displayName}`}
+                    aria-label="Menu Akun Pengguna"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">person</span>
+                  </button>
+
+                  {userDropdownOpen && (
+                    <div
+                      className={`absolute right-0 top-12 w-64 rounded-2xl p-3 border shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150 backdrop-blur-xl ${
+                        theme === 'light'
+                          ? 'bg-white/95 border-slate-200 text-slate-800 shadow-slate-300/50'
+                          : 'bg-[#140b27]/95 border-purple-500/30 text-white shadow-black/80'
+                      }`}
+                    >
+                      <div className="p-2 border-b border-white/10 mb-2">
+                        <p className="text-xs font-bold truncate">{user.name || user.full_name || 'Pengguna'}</p>
+                        <p className="text-[10px] opacity-75 truncate">{user.email}</p>
+                        <span className="inline-block mt-1 text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400">
+                          {user.role}
+                        </span>
+                      </div>
+                      <Link
+                        href={dashboardUrl}
+                        onClick={() => setUserDropdownOpen(false)}
+                        className={`block px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
+                          theme === 'light' ? 'hover:bg-slate-100 text-slate-800' : 'hover:bg-white/10 text-white'
+                        }`}
+                      >
+                        Buka Dashboard →
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          logout();
+                          setUserDropdownOpen(false);
+                        }}
+                        className="w-full text-left px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-500 hover:bg-rose-500/10 transition-colors mt-1 cursor-pointer"
+                      >
+                        Keluar (Logout)
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <>
                   <Link
@@ -291,18 +321,18 @@ export default function RootHomePage() {
                       Get Started
                     </Link>
                   </LiquidGlassButton>
+
+                  <Link
+                    href="/auth"
+                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ml-1 hover:opacity-90 transition-opacity ${
+                      theme === 'light' ? 'bg-slate-900 text-white' : 'bg-white/15 text-white border border-white/20'
+                    }`}
+                    title="Login"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">person</span>
+                  </Link>
                 </>
               )}
-
-              <Link
-                href={user ? dashboardUrl : '/auth'}
-                className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ml-1 hover:opacity-90 transition-opacity ${
-                  theme === 'light' ? 'bg-slate-900 text-white' : 'bg-white/15 text-white border border-white/20'
-                }`}
-                title={user ? `Dashboard: ${displayName}` : 'Login'}
-              >
-                <span className="material-symbols-outlined text-[18px]">person</span>
-              </Link>
             </div>
           </LiquidGlass>
         </div>
@@ -416,9 +446,11 @@ export default function RootHomePage() {
         <TactileFeatureCards theme={theme} />
 
         {/* SECTION 4: LIVE AI MATCHING PLAYGROUND (Interactive Simulator Widget) with Bi-Directional Reveal */}
-        <ScrollReveal direction="up" delay={0.1} amount={0.15}>
-          <LiveMatchingPlayground />
-        </ScrollReveal>
+        <div id="playground" className="scroll-mt-24">
+          <ScrollReveal direction="up" delay={0.1} amount={0.15}>
+            <LiveMatchingPlayground />
+          </ScrollReveal>
+        </div>
 
         {/* SECTION 5: SHOWCASE COMPARISON SLIDER (Cara Lama vs ProjectMatch AI) with Bi-Directional Reveal */}
         <div id="comparison" className="scroll-mt-24">
@@ -446,7 +478,7 @@ export default function RootHomePage() {
               </p>
               <div className="pt-2">
                 <MagneticButton
-                  href="/projects"
+                  href={user ? dashboardUrl : '/auth'}
                   className="px-6 py-3 rounded-full bg-slate-900 text-white text-xs font-bold hover:bg-slate-800"
                 >
                   Jelajahi Dashboard Talenta →
@@ -589,7 +621,7 @@ export default function RootHomePage() {
         </section>
 
         {/* SECTION 7: TESTIMONIALS CAROUSEL with Bi-Directional Reveal */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <section id="testimonials" className="scroll-mt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <ScrollReveal direction="up" delay={0.1} amount={0.15}>
             <div
               className={`rounded-3xl p-6 sm:p-10 border shadow-xl space-y-8 transition-colors duration-300 ${
@@ -687,12 +719,12 @@ export default function RootHomePage() {
                     </Link>
                   </LiquidGlassButton>
 
-                  <Link
-                    href="/talents"
+                  <a
+                    href="#ai-matching"
                     className="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 text-sm font-bold backdrop-blur-md transition-colors"
                   >
-                    Jelajahi Direktori Talenta
-                  </Link>
+                    Pelajari Cara Kerja AI
+                  </a>
                 </div>
 
                 <p className="text-xs text-purple-200/80 pt-2">
@@ -730,10 +762,10 @@ export default function RootHomePage() {
             <div className="space-y-3">
               <h4 className="text-xs font-bold text-white uppercase tracking-wider">Eksplorasi</h4>
               <ul className="space-y-2 text-xs text-slate-400">
-                <li><Link href="/projects" className="hover:text-white transition-colors">Katalog Proyek</Link></li>
-                <li><Link href="/dashboard" className="hover:text-white transition-colors">Dasbor Mahasiswa</Link></li>
-                <li><Link href="/talents" className="hover:text-white transition-colors">Direktori Talenta</Link></li>
-                <li><Link href="/mitra" className="hover:text-white transition-colors">Portal Mitra</Link></li>
+                <li><a href="#ai-matching" className="hover:text-white transition-colors">AI Matching</a></li>
+                <li><a href="#playground" className="hover:text-white transition-colors">Live Playground</a></li>
+                <li><a href="#comparison" className="hover:text-white transition-colors">Perbandingan Sistem</a></li>
+                <li><a href="#testimonials" className="hover:text-white transition-colors">Testimoni Pengguna</a></li>
               </ul>
             </div>
 

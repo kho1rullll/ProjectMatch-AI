@@ -22,7 +22,7 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
-    CREATE TYPE platform_source_enum AS ENUM ('linkedin', 'fiverr', 'upwork', 'manual');
+    CREATE TYPE platform_source_enum AS ENUM ('linkedin', 'freelancer', 'kalibrr', 'remotive', 'fiverr', 'upwork', 'manual');
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;

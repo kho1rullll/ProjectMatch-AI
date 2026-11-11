@@ -1,4 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import fs from 'fs';
+import path from 'path';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import {
   getAllProjects,
   getProjectById,
@@ -8,6 +10,23 @@ import {
   verifyStudent,
   updateKioskStatus,
 } from '@/lib/db';
+
+const dbFilePath = path.join(process.cwd(), 'projectmatch-db.json');
+let originalDbSnapshot: string | null = null;
+
+beforeAll(() => {
+  originalDbSnapshot = fs.existsSync(dbFilePath)
+    ? fs.readFileSync(dbFilePath, 'utf-8')
+    : null;
+});
+
+afterAll(() => {
+  if (originalDbSnapshot !== null) {
+    fs.writeFileSync(dbFilePath, originalDbSnapshot, 'utf-8');
+  } else if (fs.existsSync(dbFilePath)) {
+    fs.unlinkSync(dbFilePath);
+  }
+});
 
 describe('Local Database & Persistence Layer (lib/db.ts)', () => {
   it('should retrieve seeded projects from SQLite / fallback storage', () => {
@@ -33,14 +52,24 @@ describe('Local Database & Persistence Layer (lib/db.ts)', () => {
     }
   });
 
-  it('should retrieve existing users by email', () => {
-    const studentUser = getUserByEmail('satria@student.itb.ac.id');
-    expect(studentUser).toBeDefined();
-    expect(studentUser?.role).toBe('MAHASISWA');
+  it('should retrieve existing admin user by email', () => {
+    const adminUser = getUserByEmail('admin@projectmatch.id');
+    expect(adminUser).toBeDefined();
+    expect(adminUser?.role).toBe('ADMIN');
   });
 
-  it('should update student verification state', () => {
-    const students = getAllStudents();
+  it('should update student verification state', async () => {
+    const { createUser } = await import('@/lib/db');
+    let students = getAllStudents();
+    if (students.length === 0) {
+      createUser({
+        name: 'Verify Test Student',
+        email: `verify-${Date.now()}@student.uns.ac.id`,
+        password: 'SecretPassword2026!',
+        role: 'MAHASISWA',
+      });
+      students = getAllStudents();
+    }
     const target = students[0];
     if (target) {
       const updated = verifyStudent(target.id, true);

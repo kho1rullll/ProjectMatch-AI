@@ -3,89 +3,45 @@
 import React, { useState, useEffect } from 'react';
 import { JobVacancy } from '@/types/job';
 import { api } from '@/lib/api-client';
+import { getValidExternalJobUrl, getPlatformBadgeStyle, getPlatformDisplayName } from '@/lib/job-utils';
 import JobDetailModal from './JobDetailModal';
-import { Search, Filter, ExternalLink, Bookmark, Sparkles, Building2, Briefcase, RefreshCw } from 'lucide-react';
+import { Search, Filter, ExternalLink, Bookmark, Sparkles, Building2, Briefcase, RefreshCw, AlertCircle } from 'lucide-react';
 
 export default function JobsExploreView() {
   const [jobs, setJobs] = useState<JobVacancy[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('semua');
   const [selectedType, setSelectedType] = useState('semua');
   const [activeModalJob, setActiveModalJob] = useState<JobVacancy | null>(null);
 
+  const handleLiveRefresh = async () => {
+    setIsSyncing(true);
+    setFetchError(null);
+    try {
+      await api.jobs.refreshLiveJobs();
+    } catch {
+      // Tetap lanjutkan memuat daftar lowongan terbaru jika sync sementara sibuk
+    } finally {
+      await fetchJobs();
+      setIsSyncing(false);
+    }
+  };
+
   const fetchJobs = async () => {
     setIsLoading(true);
+    setFetchError(null);
     try {
       const data = await api.jobs.getJobs({
         platform: selectedPlatform !== 'semua' ? selectedPlatform : undefined,
         job_type: selectedType !== 'semua' ? selectedType : undefined,
       });
       setJobs(data);
-    } catch {
-      // Mock fallback lowongan multi-platform
-      setJobs([
-        {
-          id: 'job-1',
-          platform_source: 'linkedin',
-          job_type: 'part_time',
-          title: 'Junior AI & Python Backend Engineer (Part-Time)',
-          company_or_client: 'BioInformatika Nusantara & RS Cipto',
-          description: 'Membangun endpoint REST API berbasis FastAPI dan pipeline embedding Sentence Transformers untuk klasifikasi data riil medis. Membutuhkan penguasaan Python, PostgreSQL, dan integrasi LLM.',
-          external_url: 'https://www.linkedin.com/jobs/view/bioinformatika-ai-backend-2026',
-          budget_or_salary: 'Rp 6.000.000 / bulan',
-          status: 'open',
-          processing_status: 'done',
-          created_at: new Date().toISOString(),
-          similarity_score: 0.92,
-          is_bookmarked: false,
-        },
-        {
-          id: 'job-2',
-          platform_source: 'upwork',
-          job_type: 'freelance',
-          title: 'FastAPI & pgvector Semantic Search Integration',
-          company_or_client: 'CloudScale Global Solutions Inc.',
-          description: 'Looking for a talented developer to integrate pgvector HNSW indexing and cosine distance semantic retrieval in an existing FastAPI codebase. High quality GitHub repos preferred.',
-          external_url: 'https://www.upwork.com/jobs/fastapi-pgvector-semantic-search_102',
-          budget_or_salary: '$800 - $1,500 (Fixed Price)',
-          status: 'open',
-          processing_status: 'done',
-          created_at: new Date().toISOString(),
-          similarity_score: 0.88,
-          is_bookmarked: true,
-        },
-        {
-          id: 'job-3',
-          platform_source: 'fiverr',
-          job_type: 'freelance',
-          title: 'Fullstack Next.js 15 & Recharts Interactive Radar Dashboard',
-          company_or_client: 'EduTech Creative Studio',
-          description: 'Need a responsive Next.js frontend with modern Recharts radar visualization and WebSocket live notification alerts. Clean TypeScript code and Tailwind styling required.',
-          external_url: 'https://www.fiverr.com/buyer-requests/nextjs-recharts-radar-dashboard-554',
-          budget_or_salary: '$450 / Project',
-          status: 'open',
-          processing_status: 'done',
-          created_at: new Date().toISOString(),
-          similarity_score: 0.85,
-          is_bookmarked: false,
-        },
-        {
-          id: 'job-4',
-          platform_source: 'linkedin',
-          job_type: 'part_time',
-          title: 'Frontend Developer Intern (React / Next.js)',
-          company_or_client: 'PT Inovasi Digital Mahasiswa',
-          description: 'Membantu pengembangan antarmuka dashboard pengguna, optimasi performa web, dan integrasi API RESTful dengan Next.js App Router.',
-          external_url: 'https://www.linkedin.com/jobs/view/frontend-developer-intern-idm-2026',
-          budget_or_salary: 'Rp 4.500.000 / bulan',
-          status: 'open',
-          processing_status: 'done',
-          created_at: new Date().toISOString(),
-          similarity_score: 0.81,
-          is_bookmarked: false,
-        },
-      ]);
+    } catch (err: any) {
+      setJobs([]);
+      setFetchError(err?.message || 'Gagal mengambil data lowongan riil dari server backend.');
     } finally {
       setIsLoading(false);
     }
@@ -132,7 +88,7 @@ export default function JobsExploreView() {
             Eksplorasi Lowongan Freelance & Part-Time
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Agregasi multi-platform terpadu dari LinkedIn, Upwork, dan Fiverr. Diurutkan berdasarkan skor kecocokan semantik AI.
+            Agregasi multi-platform riil terpadu dari LinkedIn, Freelancer.com, Kalibrr, dan Remotive. Diurutkan berdasarkan skor kecocokan semantik AI.
           </p>
         </div>
 
@@ -159,8 +115,9 @@ export default function JobsExploreView() {
             >
               <option value="semua">Semua Platform</option>
               <option value="linkedin">LinkedIn</option>
-              <option value="upwork">Upwork</option>
-              <option value="fiverr">Fiverr</option>
+              <option value="freelancer">Freelancer.com</option>
+              <option value="kalibrr">Kalibrr</option>
+              <option value="remotive">Remotive</option>
             </select>
 
             {/* Type Filter */}
@@ -175,38 +132,40 @@ export default function JobsExploreView() {
             </select>
 
             <button
-              onClick={fetchJobs}
-              className="p-3 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-              title="Refresh Lowongan"
+              onClick={handleLiveRefresh}
+              disabled={isSyncing}
+              className="p-3 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer disabled:opacity-60"
+              title="Tarik Lowongan Riil Terbaru (LinkedIn, Freelancer.com, Kalibrr, Remotive)"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin text-primary-container' : ''}`} />
             </button>
           </div>
         </div>
       </div>
 
+      {fetchError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-2xl px-4 py-3 text-xs font-medium">
+          {fetchError}
+        </div>
+      )}
+
       {/* Grid Kartu Lowongan */}
       {isLoading ? (
         <div className="text-center py-12 space-y-3">
           <RefreshCw className="w-6 h-6 animate-spin mx-auto text-primary-container" />
-          <p className="text-xs font-semibold text-slate-500">Memuat agregasi lowongan pekerjaan...</p>
+          <p className="text-xs font-semibold text-slate-500">Memuat agregasi lowongan pekerjaan riil...</p>
         </div>
       ) : filteredJobs.length === 0 ? (
         <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-12 text-center border border-slate-200/80 space-y-3">
           <Briefcase className="w-8 h-8 text-slate-400 mx-auto" />
           <h3 className="font-bold text-slate-900 text-sm">Tidak ada lowongan yang sesuai kriteria</h3>
-          <p className="text-xs text-slate-500">Coba ubah kata kunci pencarian atau reset filter platform.</p>
+          <p className="text-xs text-slate-500">Coba ubah kata kunci pencarian, reset filter platform, atau klik tombol muat ulang untuk menarik data terbaru.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
           {filteredJobs.map((job) => {
             const matchScore = job.similarity_score ? Math.round(job.similarity_score * 100) : 85;
-            const platformColor =
-              job.platform_source === 'linkedin'
-                ? 'bg-blue-50 text-blue-700 border-blue-200'
-                : job.platform_source === 'upwork'
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                : 'bg-green-50 text-green-700 border-green-200';
+            const platformColor = getPlatformBadgeStyle(job.platform_source);
 
             return (
               <div
@@ -219,7 +178,7 @@ export default function JobsExploreView() {
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <div className="flex items-center gap-2">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${platformColor}`}>
-                        {job.platform_source}
+                        {getPlatformDisplayName(job.platform_source)}
                       </span>
                       <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600">
                         {job.job_type.replace('_', ' ')}
@@ -270,9 +229,10 @@ export default function JobsExploreView() {
 
                     {/* Tombol Lamar Redirect ke Platform Asal (FR-08) */}
                     <a
-                      href={job.external_url}
+                      href={getValidExternalJobUrl(job)}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
                       className="px-5 py-2.5 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-purple-500/25"
                     >
                       <span>Lamar</span>

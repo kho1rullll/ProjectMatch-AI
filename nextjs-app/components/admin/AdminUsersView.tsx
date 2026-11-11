@@ -2,13 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/lib/api-client';
+import { useAuth } from '@/lib/auth-context';
 import { AdminUserItem } from '@/types/admin';
-import { Users, Shield, Check, X, RefreshCw, AlertCircle, CheckCircle2, UserCheck, UserX, Sparkles } from 'lucide-react';
+import { Users, RefreshCw, AlertCircle, CheckCircle2, Lock } from 'lucide-react';
 
 export default function AdminUsersView() {
+  const { user: currentUser } = useAuth();
   const [users, setUsers] = useState<AdminUserItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const isLockedAdminAccount = (target: AdminUserItem): boolean => {
+    const isSelf = Boolean(
+      currentUser &&
+        (target.id === currentUser.id ||
+          (currentUser.email && target.email.toLowerCase() === currentUser.email.toLowerCase()))
+    );
+    return Boolean(target.is_permanent_admin || isSelf);
+  };
 
   const fetchUsers = async () => {
     setIsLoading(true);
@@ -16,47 +27,8 @@ export default function AdminUsersView() {
       const data = await api.admin.getUsers();
       setUsers(data);
     } catch {
-      // Mock data akun pengguna
-      setUsers([
-        {
-          id: 'u-1',
-          email: 'satria@student.itb.ac.id',
-          role: 'mahasiswa',
-          is_active: true,
-          created_at: new Date().toISOString(),
-          full_name: 'Raden Satria',
-          nim: 'V3925028',
-          github_username: 'kho1rullll',
-        },
-        {
-          id: 'u-2',
-          email: 'admin@projectmatch.ac.id',
-          role: 'admin',
-          is_active: true,
-          created_at: new Date(Date.now() - 86400000).toISOString(),
-          full_name: 'Administrator Kampus UNS',
-        },
-        {
-          id: 'u-3',
-          email: 'budi.santoso@student.uns.ac.id',
-          role: 'mahasiswa',
-          is_active: true,
-          created_at: new Date(Date.now() - 172800000).toISOString(),
-          full_name: 'Budi Santoso',
-          nim: 'V3925012',
-          github_username: 'budisantoso-dev',
-        },
-        {
-          id: 'u-4',
-          email: 'alisa.rahma@student.uns.ac.id',
-          role: 'mahasiswa',
-          is_active: false,
-          created_at: new Date(Date.now() - 259200000).toISOString(),
-          full_name: 'Alisa Rahmawati',
-          nim: 'V3925044',
-          github_username: 'alisarahma',
-        },
-      ]);
+      setUsers([]);
+      setFeedback({ type: 'error', text: 'Gagal memuat daftar akun pengguna dari server backend.' });
     } finally {
       setIsLoading(false);
     }
@@ -67,6 +39,15 @@ export default function AdminUsersView() {
   }, []);
 
   const handleToggleActive = async (userId: string, currentActive: boolean) => {
+    const target = users.find((u) => u.id === userId);
+    if (target && isLockedAdminAccount(target)) {
+      setFeedback({
+        type: 'error',
+        text: 'Akun administrator utama/sendiri bersifat paten dan tidak dapat dinonaktifkan.',
+      });
+      return;
+    }
+
     setFeedback(null);
     try {
       await api.admin.updateUser({
@@ -86,6 +67,15 @@ export default function AdminUsersView() {
   };
 
   const handleRoleChange = async (userId: string, newRole: 'mahasiswa' | 'admin') => {
+    const target = users.find((u) => u.id === userId);
+    if (target && isLockedAdminAccount(target)) {
+      setFeedback({
+        type: 'error',
+        text: 'Status peran administrator bersifat paten dan tidak dapat diubah pada akun sendiri.',
+      });
+      return;
+    }
+
     setFeedback(null);
     try {
       await api.admin.updateUser({
@@ -167,7 +157,9 @@ export default function AdminUsersView() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {users.map((u) => (
+                {users.map((u) => {
+                  const locked = isLockedAdminAccount(u);
+                  return (
                   <tr key={u.id} className="hover:bg-purple-50/20 transition-colors">
                     {/* Nama & Email */}
                     <td className="py-4 px-6">
@@ -204,20 +196,30 @@ export default function AdminUsersView() {
                       )}
                     </td>
 
-                    {/* Role Dropdown */}
+                    {/* Role Dropdown / Paten */}
                     <td className="py-4 px-6">
-                      <select
-                        value={u.role}
-                        onChange={(e) => handleRoleChange(u.id, e.target.value as any)}
-                        className={`px-3 py-1.5 rounded-full font-bold text-[11px] uppercase tracking-wider border cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all ${
-                          u.role === 'admin'
-                            ? 'bg-purple-50 border-purple-200 text-purple-700'
-                            : 'bg-slate-100 border-slate-200 text-slate-700'
-                        }`}
-                      >
-                        <option value="mahasiswa">Mahasiswa</option>
-                        <option value="admin">Admin</option>
-                      </select>
+                      {locked ? (
+                        <span
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-[11px] uppercase tracking-wider border bg-purple-50 border-purple-200 text-purple-700"
+                          title="Status peran administrator utama bersifat paten dan tidak dapat diubah"
+                        >
+                          <Lock className="w-3 h-3 shrink-0" />
+                          <span>{u.role === 'admin' ? 'Admin (Paten)' : 'Mahasiswa (Terkunci)'}</span>
+                        </span>
+                      ) : (
+                        <select
+                          value={u.role}
+                          onChange={(e) => handleRoleChange(u.id, e.target.value as any)}
+                          className={`px-3 py-1.5 rounded-full font-bold text-[11px] uppercase tracking-wider border cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all ${
+                            u.role === 'admin'
+                              ? 'bg-purple-50 border-purple-200 text-purple-700'
+                              : 'bg-slate-100 border-slate-200 text-slate-700'
+                          }`}
+                        >
+                          <option value="mahasiswa">Mahasiswa</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      )}
                     </td>
 
                     {/* Status Aktivasi */}
@@ -237,20 +239,31 @@ export default function AdminUsersView() {
 
                     {/* Tombol Aksi */}
                     <td className="py-4 px-6 text-right">
-                      <button
-                        type="button"
-                        onClick={() => handleToggleActive(u.id, u.is_active)}
-                        className={`px-4 py-1.5 rounded-full font-bold text-xs transition-all cursor-pointer border ${
-                          u.is_active
-                            ? 'bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100'
-                            : 'bg-purple-600 hover:bg-purple-700 text-white border-transparent shadow-sm shadow-purple-600/25'
-                        }`}
-                      >
-                        {u.is_active ? 'Nonaktifkan' : 'Aktifkan Akun'}
-                      </button>
+                      {locked ? (
+                        <span
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-500 font-semibold text-xs"
+                          title="Akun administrator utama/sendiri bersifat paten dan tidak dapat dinonaktifkan"
+                        >
+                          <Lock className="w-3.5 h-3.5 shrink-0" />
+                          <span>Terkunci (Paten)</span>
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleToggleActive(u.id, u.is_active)}
+                          className={`px-4 py-1.5 rounded-full font-bold text-xs transition-all cursor-pointer border ${
+                            u.is_active
+                              ? 'bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100'
+                              : 'bg-purple-600 hover:bg-purple-700 text-white border-transparent shadow-sm shadow-purple-600/25'
+                          }`}
+                        >
+                          {u.is_active ? 'Nonaktifkan' : 'Aktifkan Akun'}
+                        </button>
+                      )}
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

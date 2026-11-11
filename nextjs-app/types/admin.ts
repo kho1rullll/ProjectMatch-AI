@@ -10,6 +10,7 @@ export interface AdminUserItem {
   full_name?: string;
   nim?: string;
   github_username?: string;
+  is_permanent_admin?: boolean;
 }
 
 export interface UserUpdateStatusRoleInput {
@@ -26,8 +27,11 @@ export interface AdminStatistics {
   total_jobs: number;
   jobs_by_platform: {
     linkedin: number;
-    fiverr: number;
-    upwork: number;
+    freelancer?: number;
+    kalibrr?: number;
+    remotive?: number;
+    fiverr?: number;
+    upwork?: number;
     manual?: number;
   };
   jobs_by_type: {

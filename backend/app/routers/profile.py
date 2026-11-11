@@ -129,7 +129,13 @@ def update_my_profile(
     if req.angkatan is not None:
         profile.angkatan = req.angkatan
     if req.github_username is not None and req.github_username.strip() != profile.github_username:
-        # Cek keunikan D11
+        # Aturan: 1 Akun = 1 GitHub permanen
+        if profile.github_username:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Akun GitHub sudah terikat permanen pada akun ini (@{profile.github_username}) dan tidak dapat diubah (Kebijakan 1 Akun = 1 GitHub)."
+            )
+        # Jika belum pernah memiliki username GitHub, pastikan unik secara global
         existing = db.query(MahasiswaProfile).filter(
             MahasiswaProfile.github_username == req.github_username.strip(),
             MahasiswaProfile.id != profile.id
@@ -154,8 +160,32 @@ async def sync_github_profile(
     db: Session = Depends(get_db)
 ):
     """FR-02, FR-03: Memvalidasi akun GitHub dan memicu sintesis portofolio + embedding di latar belakang."""
-    if req and req.github_username:
-        profile.github_username = req.github_username.strip()
+    # Aturan: 1 Akun Mahasiswa Hanya Bisa Menautkan & Menyinkronkan 1 Akun GitHub
+    if profile.github_username:
+        # Jika akun sudah punya GitHub terikat dan request mencoba mengganti ke username lain: TOLAK
+        if req and req.github_username and req.github_username.strip().lower() != profile.github_username.lower():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Satu akun hanya dapat disinkronkan dengan 1 akun GitHub permanen (@{profile.github_username}). Anda tidak dapat mengganti atau menyinkronkan akun GitHub lain."
+            )
+    else:
+        # Jika akun baru dan belum memiliki GitHub terikat, tautkan untuk pertama kali
+        if not req or not req.github_username or not req.github_username.strip():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Username GitHub belum ditentukan. Silakan masukkan username GitHub Anda untuk penautan akun."
+            )
+        target_username = req.github_username.strip()
+        existing = db.query(MahasiswaProfile).filter(
+            MahasiswaProfile.github_username == target_username,
+            MahasiswaProfile.id != profile.id
+        ).first()
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Username GitHub tersebut sudah terikat pada akun mahasiswa lain."
+            )
+        profile.github_username = target_username
 
     profile.processing_status = "pending"
     db.commit()

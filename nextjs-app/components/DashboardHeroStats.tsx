@@ -6,8 +6,8 @@ import { Radio, Sparkles, Briefcase, Award, GraduationCap } from 'lucide-react';
 
 export default function DashboardHeroStats() {
   const { user } = useAuth();
-  const studentName = user?.name || 'Raden Satria';
-  const nim = user?.nim || 'V3925028';
+  const studentName = user?.name || user?.full_name || 'Mahasiswa';
+  const nim = user?.nim || '-';
   const gpa = (user as any)?.gpa || '3.88';
 
   return (

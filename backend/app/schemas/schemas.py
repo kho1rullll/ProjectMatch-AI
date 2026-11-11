@@ -129,6 +129,7 @@ class AdminUserItem(BaseModel):
     full_name: Optional[str] = None
     nim: Optional[str] = None
     github_username: Optional[str] = None
+    is_permanent_admin: bool = False
 
 class AdminStatisticsResponse(BaseModel):
     total_users: int

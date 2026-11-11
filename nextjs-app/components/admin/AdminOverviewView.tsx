@@ -17,26 +17,8 @@ export default function AdminOverviewView() {
       const data = await api.admin.getStatistics();
       setStats(data);
     } catch {
-      // Mock data analitik jika backend offline
-      setStats({
-        total_users: 14,
-        active_users: 13,
-        total_mahasiswa: 12,
-        total_admin: 2,
-        total_jobs: 24,
-        jobs_by_platform: {
-          linkedin: 10,
-          upwork: 8,
-          fiverr: 6,
-        },
-        jobs_by_type: {
-          freelance: 14,
-          part_time: 10,
-        },
-        total_matches_computed: 48,
-        total_bookmarks: 19,
-        average_similarity_score: 0.84,
-      });
+      setStats(null);
+      setSyncFeedback('Gagal memuat statistik langsung dari server backend.');
     } finally {
       setIsLoading(false);
     }
@@ -77,7 +59,7 @@ export default function AdminOverviewView() {
             Dasbor Monitoring Agregasi Lowongan &amp; Talenta
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
-            Pantau sebaran lowongan pekerjaan freelance dan part-time dari platform LinkedIn, Upwork, dan Fiverr serta interaksi rekomendasi semantik mahasiswa.
+            Pantau sebaran lowongan pekerjaan riil dari platform LinkedIn, Freelancer.com, Kalibrr, dan Remotive serta interaksi rekomendasi semantik mahasiswa.
           </p>
         </div>
 
@@ -157,70 +139,42 @@ export default function AdminOverviewView() {
         </div>
       </div>
 
-      {/* Rincian Agregasi Multi-Platform (LinkedIn, Fiverr, Upwork) */}
+      {/* Rincian Agregasi Multi-Platform (LinkedIn, Freelancer.com, Kalibrr, Remotive) */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         <div className="md:col-span-7 bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_rgba(15,23,42,0.04)] space-y-4">
           <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900">
             Sebaran Lowongan per Platform Eksternal
           </h3>
           <p className="text-xs text-slate-500">
-            Distribusi jumlah lowongan aktif yang berhasil ditarik dari API masing-masing platform.
+            Distribusi jumlah lowongan riil aktif yang berhasil ditarik dari API masing-masing platform.
           </p>
 
           <div className="space-y-4 pt-2">
-            {/* LinkedIn */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-xs font-bold">
-                <span className="flex items-center gap-2 text-slate-800">
-                  <span className="w-2.5 h-2.5 rounded-full bg-blue-600" /> LinkedIn Jobs API
-                </span>
-                <span className="font-mono text-primary-container font-bold">{stats?.jobs_by_platform.linkedin ?? 0} Lowongan</span>
-              </div>
-              <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary-container rounded-full"
-                  style={{
-                    width: `${((stats?.jobs_by_platform.linkedin ?? 1) / (stats?.total_jobs || 1)) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Upwork */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-xs font-bold">
-                <span className="flex items-center gap-2 text-slate-800">
-                  <span className="w-2.5 h-2.5 rounded-full bg-lime-600" /> Upwork GraphQL API
-                </span>
-                <span className="font-mono text-lime-700 font-bold">{stats?.jobs_by_platform.upwork ?? 0} Lowongan</span>
-              </div>
-              <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-lime-600 rounded-full"
-                  style={{
-                    width: `${((stats?.jobs_by_platform.upwork ?? 1) / (stats?.total_jobs || 1)) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Fiverr */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-xs font-bold">
-                <span className="flex items-center gap-2 text-slate-800">
-                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-600" /> Fiverr Buyer Requests
-                </span>
-                <span className="font-mono text-indigo-700 font-bold">{stats?.jobs_by_platform.fiverr ?? 0} Lowongan</span>
-              </div>
-              <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-indigo-600 rounded-full"
-                  style={{
-                    width: `${((stats?.jobs_by_platform.fiverr ?? 1) / (stats?.total_jobs || 1)) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
+            {[
+              { key: 'linkedin', label: 'LinkedIn Jobs API', dotClass: 'bg-blue-600', textClass: 'text-blue-700', barClass: 'bg-blue-600' },
+              { key: 'freelancer', label: 'Freelancer.com API', dotClass: 'bg-cyan-600', textClass: 'text-cyan-700', barClass: 'bg-cyan-600' },
+              { key: 'kalibrr', label: 'Kalibrr Jobs API', dotClass: 'bg-amber-500', textClass: 'text-amber-700', barClass: 'bg-amber-500' },
+              { key: 'remotive', label: 'Remotive Remote API', dotClass: 'bg-emerald-600', textClass: 'text-emerald-700', barClass: 'bg-emerald-600' },
+            ].map(({ key, label, dotClass, textClass, barClass }) => {
+              const count = (stats?.jobs_by_platform as Record<string, number> | undefined)?.[key] ?? 0;
+              const pct = stats?.total_jobs ? Math.round((count / stats.total_jobs) * 100) : 0;
+              return (
+                <div key={key} className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-bold">
+                    <span className="flex items-center gap-2 text-slate-800">
+                      <span className={`w-2.5 h-2.5 rounded-full ${dotClass}`} /> {label}
+                    </span>
+                    <span className={`font-mono font-bold ${textClass}`}>{count} Lowongan</span>
+                  </div>
+                  <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${barClass}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 

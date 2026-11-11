@@ -30,8 +30,8 @@ export default function StudentSidebar({
   const isDark = theme === 'dark';
   const isDim = theme === 'dim';
 
-  const studentName = user?.name || user?.full_name || 'Raden Satria';
-  const nim = user?.nim || 'V3925028';
+  const studentName = user?.name || user?.full_name || 'Mahasiswa';
+  const nim = user?.nim || '-';
 
   const navItems: Array<{
     id: DashboardTab;
@@ -128,7 +128,7 @@ export default function StudentSidebar({
   }`}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-purple-100 text-primary-container flex items-center justify-center font-black text-xs shrink-0 border border-purple-200/50">
-              {studentName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
+              {studentName.split(' ').filter(Boolean).map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
               <p className={`text-xs font-bold truncate ${isDark ? 'text-white' : isDim ? 'text-purple-50' : 'text-slate-900'}`}>

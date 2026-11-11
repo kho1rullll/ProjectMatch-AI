@@ -78,27 +78,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const { email, password, role } = parseResult.data;
-    let user = getUserByEmail(email);
-    if (!user) {
-      // Auto-create user if logging in for first time with appropriate role inference
-      const inferredRole: 'MAHASISWA' | 'MITRA' | 'ADMIN' =
-        (role as any) ||
-        (email.toLowerCase().includes('admin')
-          ? 'ADMIN'
-          : email.toLowerCase().includes('mitra') || email.toLowerCase().includes('co.id') || email.toLowerCase().includes('corp')
-          ? 'MITRA'
-          : 'MAHASISWA');
-
-      user = createUser({
-        name: inferredRole === 'ADMIN' ? 'Biro Kemahasiswaan (Admin)' : inferredRole === 'MITRA' ? 'Mitra Industri' : 'Mahasiswa ProjectMatch',
-        email,
-        password: password || 'password123',
-        role: inferredRole,
-      });
-    } else if (user.password && !verifyPassword(password, user.password)) {
+    const { email, password } = parseResult.data;
+    const user = getUserByEmail(email.trim().toLowerCase());
+    if (!user || !user.password || !verifyPassword(password, user.password)) {
       return NextResponse.json(
-        { success: false, error: 'Kredensial tidak valid. Password salah.' },
+        { success: false, error: 'Email atau kata sandi tidak valid.' },
         { status: 401 }
       );
     }

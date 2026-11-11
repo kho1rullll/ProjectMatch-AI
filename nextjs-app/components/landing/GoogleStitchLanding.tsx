@@ -197,10 +197,10 @@ export default function GoogleStitchLanding() {
                   {/* CTA Buttons */}
                   <div className="flex flex-wrap items-center gap-space-md mt-space-xl w-full sm:w-auto">
                     <MagneticButton
-                      href="/projects"
+                      href="/auth"
                       className="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-xl py-3.5 rounded-full bg-primary-container hover:bg-primary-hover text-surface-white font-label-md text-label-md shadow-[0_10px_25px_-5px_rgba(124,58,237,0.35)] font-bold"
                     >
-                      <span>Find Projects</span>
+                      <span>Try it now</span>
                       <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
                     </MagneticButton>
 

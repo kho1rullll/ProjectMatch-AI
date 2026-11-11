@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { api } from '@/lib/api-client';
+import { api, getStoredToken } from '@/lib/api-client';
 import { Bell, CheckCheck, Sparkles, AlertCircle, X } from 'lucide-react';
 
 interface NotificationItem {
@@ -55,7 +55,7 @@ export default function NotificationBell() {
     fetchNotifications();
 
     // Koneksi WebSocket ke backend (FR-09: WSS /ws/notifications)
-    const token = typeof window !== 'undefined' ? localStorage.getItem('projectmatch_token') : null;
+    const token = getStoredToken();
     if (token) {
       try {
         const wsUrl = `ws://localhost:8000/ws/notifications?token=${token}`;

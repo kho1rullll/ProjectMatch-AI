@@ -101,14 +101,15 @@ function DashboardContent() {
 
             <div className="flex items-center gap-2.5">
               <span className="text-xs text-slate-500 hidden sm:inline">
-                <strong className={`font-bold ${isDark ? 'text-white' : isDim ? 'text-purple-50' : 'text-slate-900'}`}>{user?.name || user?.full_name || 'Raden Satria'}</strong>
+                <strong className={`font-bold ${isDark ? 'text-white' : isDim ? 'text-purple-50' : 'text-slate-900'}`}>{user?.name || user?.full_name || 'Mahasiswa'}</strong>
               </span>
               <div
                 className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-container to-indigo-700 text-white flex items-center justify-center text-xs font-black shadow-md shadow-purple-500/20 cursor-pointer"
                 title={user?.email || 'Mahasiswa'}
               >
-                {(user?.name || user?.full_name || 'RS')
+                {(user?.name || user?.full_name || 'M')
                   .split(' ')
+                  .filter(Boolean)
                   .map((n) => n[0])
                   .join('')
                   .slice(0, 2)

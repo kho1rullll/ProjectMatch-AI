@@ -11,7 +11,7 @@ export default function NavClientControls() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, switchAccount, logout } = useAuth();
+  const { user, logout } = useAuth();
   const { theme } = useTheme();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -38,13 +38,6 @@ export default function NavClientControls() {
       return `${first[0]}${second[0]}`.toUpperCase();
     }
     return name.slice(0, 2).toUpperCase();
-  };
-
-  const handleSwitchRole = (role: 'mahasiswa' | 'admin') => {
-    switchAccount(role);
-    setProfileDropdownOpen(false);
-    if (role === 'mahasiswa') router.push('/dashboard');
-    else if (role === 'admin') router.push('/admin');
   };
 
   const handleLogout = () => {
@@ -210,32 +203,6 @@ export default function NavClientControls() {
                     {user.nim && (
                       <p className="text-[10px] text-primary font-mono mt-0.5">NIM: {user.nim}</p>
                     )}
-                  </div>
-
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-text-muted px-2 pt-1">
-                      Pindah Peran (Demo Test)
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => handleSwitchRole('mahasiswa')}
-                      className={`w-full text-left px-3 py-2 rounded-2xl text-xs flex items-center justify-between transition-colors ${
-                        isMahasiswa ? 'bg-primary-light font-bold text-primary' : 'hover:bg-surface-container-low text-text-body'
-                      }`}
-                    >
-                      <span>🎓 Raden Satria (Mahasiswa)</span>
-                      {isMahasiswa && <span className="text-primary font-bold">✓</span>}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleSwitchRole('admin')}
-                      className={`w-full text-left px-3 py-2 rounded-2xl text-xs flex items-center justify-between transition-colors ${
-                        !isMahasiswa ? 'bg-primary-light font-bold text-primary' : 'hover:bg-surface-container-low text-text-body'
-                      }`}
-                    >
-                      <span>🛡️ Biro Kampus (Admin)</span>
-                      {!isMahasiswa && <span className="text-primary font-bold">✓</span>}
-                    </button>
                   </div>
 
                   <div className="pt-2 border-t border-border-light/60 flex items-center justify-between px-1">

@@ -2,12 +2,37 @@ from typing import List, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import func
+from app.core.config import settings
 from app.core.database import get_db
 from app.core.deps import RBACGuard
 from app.models.models import User, MahasiswaProfile, JobVacancy, Match, JobBookmark
 from app.schemas.schemas import AdminUserItem, UserUpdateStatusRole, AdminStatisticsResponse
 
 router = APIRouter(prefix="/admin", tags=["Administrasi Sistem (FR-11, FR-12)"])
+
+
+def _is_permanent_admin_user(user: User) -> bool:
+    return bool(
+        settings.ADMIN_EMAIL
+        and user.email.lower() == settings.ADMIN_EMAIL.strip().lower()
+    )
+
+
+def _serialize_admin_user(user: User, db: Session) -> AdminUserItem:
+    profile = db.query(MahasiswaProfile).filter(MahasiswaProfile.user_id == user.id).first()
+    full_name = profile.full_name if profile else (settings.ADMIN_NAME if user.role == "admin" else None)
+    return AdminUserItem(
+        id=user.id,
+        email=user.email,
+        role=user.role,
+        is_active=user.is_active,
+        created_at=user.created_at,
+        full_name=full_name,
+        nim=profile.nim if profile else None,
+        github_username=profile.github_username if profile else None,
+        is_permanent_admin=_is_permanent_admin_user(user),
+    )
+
 
 @router.get("/users", response_model=List[AdminUserItem])
 def get_all_users(
@@ -16,23 +41,8 @@ def get_all_users(
 ):
     """FR-11: Admin melihat daftar seluruh akun pengguna beserta peran dan status aktivasinya."""
     users = db.query(User).order_by(User.created_at.desc()).all()
-    results = []
+    return [_serialize_admin_user(u, db) for u in users]
 
-    for u in users:
-        profile = db.query(MahasiswaProfile).filter(MahasiswaProfile.user_id == u.id).first()
-        results.append(
-            AdminUserItem(
-                id=u.id,
-                email=u.email,
-                role=u.role,
-                is_active=u.is_active,
-                created_at=u.created_at,
-                full_name=profile.full_name if profile else ("Administrator" if u.role == "admin" else None),
-                nim=profile.nim if profile else None,
-                github_username=profile.github_username if profile else None
-            )
-        )
-    return results
 
 @router.patch("/users", response_model=AdminUserItem)
 def update_user_status_or_role(
@@ -48,15 +58,19 @@ def update_user_status_or_role(
             detail="Pengguna tidak ditemukan."
         )
 
-    # Cegah admin menonaktifkan dirinya sendiri
-    if user.id == admin.id and req.is_active is False:
+    is_self = user.id == admin.id
+    is_perm_admin = _is_permanent_admin_user(user)
+
+    # Validasi seluruh larangan sebelum memodifikasi entitas
+    if req.is_active is False and (is_self or is_perm_admin):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Administrator tidak dapat menonaktifkan akun sendiri."
+            detail=(
+                "Akun administrator utama bersifat paten dan tidak dapat dinonaktifkan."
+                if is_perm_admin
+                else "Administrator tidak dapat menonaktifkan akun sendiri."
+            ),
         )
-
-    if req.is_active is not None:
-        user.is_active = req.is_active
 
     if req.role is not None:
         if req.role not in ["mahasiswa", "admin"]:
@@ -64,29 +78,29 @@ def update_user_status_or_role(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="Role yang diizinkan hanya 'mahasiswa' atau 'admin'."
             )
+        if (is_self or is_perm_admin) and req.role != user.role:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Status peran administrator bersifat paten dan tidak dapat diubah pada akun sendiri."
+            )
+
+    if req.is_active is not None:
+        user.is_active = req.is_active
+
+    if req.role is not None:
         user.role = req.role
 
     db.commit()
     db.refresh(user)
 
-    profile = db.query(MahasiswaProfile).filter(MahasiswaProfile.user_id == user.id).first()
-    return AdminUserItem(
-        id=user.id,
-        email=user.email,
-        role=user.role,
-        is_active=user.is_active,
-        created_at=user.created_at,
-        full_name=profile.full_name if profile else None,
-        nim=profile.nim if profile else None,
-        github_username=profile.github_username if profile else None
-    )
+    return _serialize_admin_user(user, db)
 
 @router.get("/statistics", response_model=AdminStatisticsResponse)
 def get_system_statistics(
     db: Session = Depends(get_db),
     admin: User = Depends(RBACGuard(["admin"]))
 ):
-    """FR-12: Analitik jumlah lowongan per platform (LinkedIn, Fiverr, Upwork), statistik kecocokan, dan interaksi mahasiswa."""
+    """FR-12: Analitik jumlah lowongan per platform (LinkedIn, Freelancer.com, Kalibrr, Remotive), statistik kecocokan, dan interaksi mahasiswa."""
     total_users = db.query(User).count()
     active_users = db.query(User).filter(User.is_active == True).count()
     total_mahasiswa = db.query(User).filter(User.role == "mahasiswa").count()
@@ -94,13 +108,13 @@ def get_system_statistics(
 
     total_jobs = db.query(JobVacancy).count()
 
-    # Agregasi per platform (LinkedIn, Fiverr, Upwork, Manual)
+    # Agregasi per platform (LinkedIn, Freelancer.com, Kalibrr, Remotive)
     platform_rows = (
         db.query(JobVacancy.platform_source, func.count(JobVacancy.id))
         .group_by(JobVacancy.platform_source)
         .all()
     )
-    jobs_by_platform = {"linkedin": 0, "fiverr": 0, "upwork": 0, "manual": 0}
+    jobs_by_platform = {"linkedin": 0, "freelancer": 0, "kalibrr": 0, "remotive": 0}
     for p, count in platform_rows:
         jobs_by_platform[p.lower()] = count
 

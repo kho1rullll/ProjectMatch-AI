@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { JobVacancy } from '@/types/job';
 import { api } from '@/lib/api-client';
+import { getValidExternalJobUrl, getPlatformDisplayName, getPlatformBadgeStyle } from '@/lib/job-utils';
 import CompetencyRadarChart from './CompetencyRadarChart';
 import { ExternalLink, Bookmark, Check, X, Building2, Briefcase, DollarSign, Sparkles } from 'lucide-react';
 
@@ -53,12 +54,7 @@ export default function JobDetailModal({
     }
   };
 
-  const platformBadgeColor =
-    job.platform_source === 'linkedin'
-      ? 'bg-blue-100 text-blue-800 border-blue-200'
-      : job.platform_source === 'upwork'
-      ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
-      : 'bg-green-100 text-green-800 border-green-200';
+  const platformBadgeColor = getPlatformBadgeStyle(job.platform_source);
 
   const matchPct = matchDetail?.match_percentage || (job.similarity_score ? Math.round(job.similarity_score * 100) : 85);
 
@@ -78,7 +74,7 @@ export default function JobDetailModal({
         <div className="p-6 sm:p-8 border-b border-slate-100">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${platformBadgeColor}`}>
-              {job.platform_source}
+              {getPlatformDisplayName(job.platform_source)}
             </span>
             <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-700">
               {job.job_type.replace('_', ' ')}
@@ -182,12 +178,12 @@ export default function JobDetailModal({
           </button>
 
           <a
-            href={job.external_url}
+            href={getValidExternalJobUrl(job)}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto px-6 py-3 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md shadow-purple-500/25 cursor-pointer group"
           >
-            <span>Lamar di {job.platform_source.toUpperCase()}</span>
+            <span>Lamar di {getPlatformDisplayName(job.platform_source)}</span>
             <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>

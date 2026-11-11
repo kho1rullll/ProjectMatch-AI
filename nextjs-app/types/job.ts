@@ -1,7 +1,15 @@
 // types/job.ts — Skema Lowongan Pekerjaan Multi-Platform Sesuai SKPL & Backend Arch
 import { z } from 'zod';
 
-export const PlatformSourceEnum = z.enum(['linkedin', 'fiverr', 'upwork', 'manual']);
+export const PlatformSourceEnum = z.enum([
+  'linkedin',
+  'freelancer',
+  'kalibrr',
+  'remotive',
+  'fiverr',
+  'upwork',
+  'manual',
+]);
 export type PlatformSource = z.infer<typeof PlatformSourceEnum>;
 
 export const JobTypeEnum = z.enum(['freelance', 'part_time']);

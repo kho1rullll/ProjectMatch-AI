@@ -78,7 +78,7 @@ function AdminDashboardContent() {
 
             <div className="flex items-center gap-2.5">
               <span className="text-xs text-slate-500 hidden sm:inline">
-                <strong className={`font-bold ${isDark ? 'text-white' : isDim ? 'text-purple-50' : 'text-slate-900'}`}>{user?.name || user?.full_name || 'Admin Kampus'}</strong>
+                <strong className={`font-bold ${isDark ? 'text-white' : isDim ? 'text-purple-50' : 'text-slate-900'}`}>{user?.name || user?.full_name || 'Administrator ProjectMatch AI'}</strong>
               </span>
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-container to-indigo-700 text-white flex items-center justify-center font-black text-xs shadow-md shadow-purple-500/20 cursor-pointer">
                 ADM

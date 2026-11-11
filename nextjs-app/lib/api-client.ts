@@ -6,22 +6,27 @@ import { AdminUserItem, AdminStatistics } from '@/types/admin';
 
 const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-function getStoredToken(): string | null {
+export function getStoredToken(): string | null {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('projectmatch_token');
+  return sessionStorage.getItem('projectmatch_token');
 }
 
 export function setStoredToken(token: string) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('projectmatch_token', token);
-    document.cookie = `projectmatch_session=${token}; path=/; max-age=86400; SameSite=Lax`;
+    sessionStorage.setItem('projectmatch_token', token);
+    // Gunakan session cookie (tanpa max-age panjang) agar sesi otomatis berakhir saat peramban ditutup
+    document.cookie = `projectmatch_session=${token}; path=/; SameSite=Lax`;
   }
 }
 
 export function removeStoredToken() {
   if (typeof window !== 'undefined') {
+    sessionStorage.removeItem('projectmatch_token');
+    sessionStorage.removeItem('projectmatch_user');
+    sessionStorage.removeItem('projectmatch_role');
     localStorage.removeItem('projectmatch_token');
     localStorage.removeItem('projectmatch_user');
+    localStorage.removeItem('projectmatch_role');
     document.cookie = 'projectmatch_session=; path=/; max-age=0; SameSite=Lax';
   }
 }
@@ -63,6 +68,10 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     } catch {
       // Abaikan internal error dan lempar error utama
     }
+    // Perjelas pesan error jika koneksi ke backend gagal
+    if (backendError?.message === 'Failed to fetch' || backendError?.name === 'TypeError') {
+      throw new Error('Gagal terhubung ke server backend FastAPI (Port 8000). Pastikan backend aktif.');
+    }
     throw backendError;
   }
 }
@@ -75,11 +84,20 @@ export const api = {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
+      const normalizedUser: AuthUser = {
+        ...data.user,
+        name: data.user.name || data.user.full_name || data.user.email?.split('@')[0] || 'Pengguna',
+        role: (data.user.role?.toLowerCase() as 'mahasiswa' | 'admin') || 'mahasiswa',
+      };
       setStoredToken(data.access_token);
       if (typeof window !== 'undefined') {
-        localStorage.setItem('projectmatch_user', JSON.stringify(data.user));
+        sessionStorage.setItem('projectmatch_user', JSON.stringify(normalizedUser));
+        sessionStorage.setItem('projectmatch_role', normalizedUser.role);
+        localStorage.removeItem('projectmatch_token');
+        localStorage.removeItem('projectmatch_user');
+        localStorage.removeItem('projectmatch_role');
       }
-      return data;
+      return { ...data, user: normalizedUser };
     },
 
     async register(payload: {
@@ -95,11 +113,20 @@ export const api = {
         method: 'POST',
         body: JSON.stringify(payload),
       });
+      const normalizedUser: AuthUser = {
+        ...data.user,
+        name: data.user.name || data.user.full_name || data.user.email?.split('@')[0] || 'Pengguna',
+        role: (data.user.role?.toLowerCase() as 'mahasiswa' | 'admin') || 'mahasiswa',
+      };
       setStoredToken(data.access_token);
       if (typeof window !== 'undefined') {
-        localStorage.setItem('projectmatch_user', JSON.stringify(data.user));
+        sessionStorage.setItem('projectmatch_user', JSON.stringify(normalizedUser));
+        sessionStorage.setItem('projectmatch_role', normalizedUser.role);
+        localStorage.removeItem('projectmatch_token');
+        localStorage.removeItem('projectmatch_user');
+        localStorage.removeItem('projectmatch_role');
       }
-      return data;
+      return { ...data, user: normalizedUser };
     },
 
     logout() {
@@ -108,10 +135,14 @@ export const api = {
 
     getCurrentUser(): AuthUser | null {
       if (typeof window === 'undefined') return null;
-      const uStr = localStorage.getItem('projectmatch_user');
+      const uStr = sessionStorage.getItem('projectmatch_user');
       if (!uStr) return null;
       try {
-        return JSON.parse(uStr);
+        const parsed = JSON.parse(uStr);
+        return {
+          ...parsed,
+          name: parsed.name || parsed.full_name || parsed.email?.split('@')[0] || 'Pengguna',
+        };
       } catch {
         return null;
       }
@@ -160,6 +191,12 @@ export const api = {
 
     async syncJobs(): Promise<{ status: string; message: string }> {
       return request('/jobs/sync', {
+        method: 'POST',
+      });
+    },
+
+    async refreshLiveJobs(): Promise<{ status: string; message: string }> {
+      return request('/jobs/refresh-live', {
         method: 'POST',
       });
     },

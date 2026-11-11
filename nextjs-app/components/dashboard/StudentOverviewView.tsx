@@ -5,6 +5,7 @@ import { api } from '@/lib/api-client';
 import { useAuth } from '@/lib/auth-context';
 import { RecommendationItem } from '@/types/matching';
 import { JobVacancy } from '@/types/job';
+import { getPlatformDisplayName, getPlatformBadgeStyle } from '@/lib/job-utils';
 import CompetencyRadarChart from './CompetencyRadarChart';
 import JobDetailModal from './JobDetailModal';
 import { Sparkles, Bookmark, ExternalLink, ArrowRight, Briefcase } from 'lucide-react';
@@ -30,9 +31,9 @@ export default function StudentOverviewView({ onNavigateTab }: StudentOverviewVi
       .catch(() => {});
   }, []);
 
-  const studentName = user?.name || user?.full_name || 'Raden Satria';
-  const nim = user?.nim || 'V3925028';
-  const githubUser = user?.github_username || profile?.github_username || 'kho1rullll';
+  const studentName = profile?.full_name || user?.name || user?.full_name || 'Mahasiswa';
+  const nim = profile?.nim || user?.nim || '-';
+  const githubUser = profile?.github_username || user?.github_username || '-';
 
   return (
     <div className="space-y-8">
@@ -102,60 +103,25 @@ export default function StudentOverviewView({ onNavigateTab }: StudentOverviewVi
           </button>
         </div>
 
+        {recommendations.length === 0 ? (
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 text-center border border-slate-200/80 space-y-3">
+            <Briefcase className="w-8 h-8 text-slate-400 mx-auto" />
+            <h4 className="font-bold text-sm text-slate-900">Belum Ada Rekomendasi Lowongan Terhitung</h4>
+            <p className="text-xs text-slate-500 max-w-md mx-auto">
+              Sinkronkan akun GitHub Anda atau buka tab Eksplorasi Lowongan untuk mengambil data lowongan riil terbaru dan menghitung skor kecocokan AI.
+            </p>
+            <div className="pt-1 flex justify-center gap-2">
+              <button
+                onClick={() => onNavigateTab('jobs')}
+                className="px-5 py-2 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-xs transition-all cursor-pointer"
+              >
+                Jelajahi Lowongan Riil
+              </button>
+            </div>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {(recommendations.length > 0 ? recommendations.slice(0, 3) : [
-            {
-              job: {
-                id: 'mock-1',
-                title: 'Junior AI & Python Backend Engineer (Part-Time)',
-                platform_source: 'linkedin',
-                job_type: 'part_time',
-                company_or_client: 'BioInformatika Nusantara & RS Cipto',
-                description: 'Membangun endpoint REST API berbasis FastAPI dan pipeline embedding Sentence Transformers.',
-                external_url: 'https://www.linkedin.com/jobs/view/bioinformatika-ai-backend-2026',
-                budget_or_salary: 'Rp 6.000.000 / bulan',
-                status: 'open',
-                processing_status: 'done',
-                created_at: new Date().toISOString(),
-              },
-              similarity_score: 0.92,
-              match_percentage: 92,
-            },
-            {
-              job: {
-                id: 'mock-2',
-                title: 'FastAPI & pgvector Semantic Search Integration',
-                platform_source: 'upwork',
-                job_type: 'freelance',
-                company_or_client: 'CloudScale Global Solutions Inc.',
-                description: 'Looking for a developer to integrate pgvector HNSW indexing and cosine distance semantic retrieval.',
-                external_url: 'https://www.upwork.com/jobs/fastapi-pgvector-semantic-search_102',
-                budget_or_salary: '$800 - $1,500',
-                status: 'open',
-                processing_status: 'done',
-                created_at: new Date().toISOString(),
-              },
-              similarity_score: 0.88,
-              match_percentage: 88,
-            },
-            {
-              job: {
-                id: 'mock-3',
-                title: 'Fullstack Next.js 15 & Recharts Interactive Radar Dashboard',
-                platform_source: 'fiverr',
-                job_type: 'freelance',
-                company_or_client: 'EduTech Creative Studio',
-                description: 'Need a responsive Next.js frontend with modern Recharts radar visualization.',
-                external_url: 'https://www.fiverr.com/buyer-requests/nextjs-recharts-radar-dashboard-554',
-                budget_or_salary: '$450 / Project',
-                status: 'open',
-                processing_status: 'done',
-                created_at: new Date().toISOString(),
-              },
-              similarity_score: 0.85,
-              match_percentage: 85,
-            },
-          ]).map((item: any) => (
+          {recommendations.slice(0, 3).map((item: any) => (
             <div
               key={item.job.id}
               onClick={() => setActiveModalJob(item.job)}
@@ -163,8 +129,8 @@ export default function StudentOverviewView({ onNavigateTab }: StudentOverviewVi
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700">
-                    {item.job.platform_source}
+                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${getPlatformBadgeStyle(item.job.platform_source)}`}>
+                    {getPlatformDisplayName(item.job.platform_source)}
                   </span>
                   <span className="flex items-center gap-1.5 text-xs font-black text-lime-900 bg-lime-100 border border-lime-300/80 px-3 py-1 rounded-full">
                     <Sparkles className="w-3.5 h-3.5 text-lime-600" />
@@ -190,6 +156,7 @@ export default function StudentOverviewView({ onNavigateTab }: StudentOverviewVi
             </div>
           ))}
         </div>
+        )}
       </div>
 
       {/* Modal Detail & Radar Overlay */}

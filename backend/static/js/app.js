@@ -8,8 +8,8 @@
  */
 
 // ==================== GLOBAL CONFIG & STATE ====================
-let API_BASE_URL = window.location.origin.includes(':8000') 
-  ? window.location.origin 
+let API_BASE_URL = window.location.origin.includes(':8000')
+  ? window.location.origin
   : 'http://127.0.0.1:8000';
 
 let authToken = localStorage.getItem('projectmatch_token') || null;
@@ -42,19 +42,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const inputApi = document.getElementById('inputApiBaseUrl');
   if (inputApi) inputApi.value = API_BASE_URL;
 
-  // Auto-login default persona jika belum ada token
-  if (!authToken || !currentUser) {
-    await quickLogin('satria@student.itb.ac.id', 'password123', false);
-  } else {
-    updateUserNavUI();
-  }
+    // Tampilkan data pengguna jika sudah pernah login, jika belum biarkan guest
+    if (authToken && currentUser) {
+      updateUserNavUI();
+    }
 
-  // Muat data awal
-  await refreshAllData();
+    // Muat data awal
+    await refreshAllData();
 
-  // Inisialisasi WebSocket real-time
-  initWebSocket();
-});
+    // Inisialisasi WebSocket real-time
+    initWebSocket();
+  });
 
 // ==================== AUTH & PERSONA SWITCHING ====================
 async function quickLogin(email, password, notify = true) {
@@ -197,14 +195,23 @@ function renderProfileView(profile) {
 
   // Basic Info
   document.getElementById('profileFullName').innerText = profile.full_name || 'Raden Satria';
-  document.getElementById('profileNimProdi').innerText = 
+  document.getElementById('profileNimProdi').innerText =
     `NIM: ${profile.nim || '-'} • ${profile.program_studi || 'D3 Teknik Informatika'} (${profile.angkatan || 2025})`;
-  
+
   const githubUser = profile.github_username || 'kho1rullll';
   document.getElementById('profileGithubUsernameText').innerText = `@${githubUser}`;
   document.getElementById('profileGithubLink').href = `https://github.com/${githubUser}`;
-  document.getElementById('inputGithubUsername').value = githubUser;
-  
+  const inputEl = document.getElementById('inputGithubUsername');
+  if (inputEl) {
+    inputEl.value = githubUser;
+    if (profile.github_username) {
+      inputEl.readOnly = true;
+      inputEl.title = 'Terkunci: 1 Akun hanya dapat menyinkronkan 1 akun GitHub permanen';
+      inputEl.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+      inputEl.style.cursor = 'not-allowed';
+    }
+  }
+
   const initials = (profile.full_name || 'RS').split(' ').map(n => n[0]).slice(0, 2).join('');
   document.getElementById('profileAvatarBig').innerText = initials;
 
@@ -219,7 +226,7 @@ function renderProfileView(profile) {
 
   document.getElementById('metricTotalRepos').innerText = ghData.total_repositories || repos.length || 0;
   document.getElementById('metricTotalCommits').innerText = ghData.total_commits || 0;
-  
+
   let topLang = Object.keys(langs)[0] || 'Python';
   document.getElementById('metricTopLanguage').innerText = topLang;
 
@@ -254,7 +261,7 @@ function renderLanguagesBreakdown(langs) {
 
   entries.forEach(([lang, pct]) => {
     const color = LANG_COLORS[lang] || '#6366f1';
-    
+
     // Bar segment
     const seg = document.createElement('div');
     seg.className = 'progress-segment';
@@ -295,8 +302,8 @@ function renderRepositoriesGrid(repos, username) {
     const lang = repo.language || 'General';
     const langColor = LANG_COLORS[lang] || '#818cf8';
     const topicsHtml = (repo.topics || []).map(t => `<span class="topic-tag">${t}</span>`).join('');
-    const readmeSnippet = repo.readme_snippet 
-      ? `<div class="repo-readme-snippet">📄 README: ${escapeHtml(repo.readme_snippet.slice(0, 160))}...</div>` 
+    const readmeSnippet = repo.readme_snippet
+      ? `<div class="repo-readme-snippet">📄 README: ${escapeHtml(repo.readme_snippet.slice(0, 160))}...</div>`
       : '';
 
     const card = document.createElement('div');
@@ -571,7 +578,7 @@ function createJobCardElement(job, highlightMatch = false) {
 
   // Skills Badges
   const reqSkills = job.extracted_skills?.required_skills || [];
-  const skillsHtml = reqSkills.slice(0, 4).map(s => 
+  const skillsHtml = reqSkills.slice(0, 4).map(s =>
     `<span class="job-skill-tag">${escapeHtml(s.skill)}</span>`
   ).join('');
 
@@ -1023,7 +1030,7 @@ function initWebSocket() {
   const wsUrl = `${wsProto}://${host}/ws/notifications?token=${authToken}`;
 
   if (wsConnection) {
-    try { wsConnection.close(); } catch (e) {}
+    try { wsConnection.close(); } catch (e) { }
   }
 
   try {
@@ -1080,7 +1087,7 @@ async function loadNotificationsCount() {
       const badge = document.getElementById('notifBadgeCount');
       if (badge) badge.innerText = unread;
     }
-  } catch (err) {}
+  } catch (err) { }
 }
 
 async function openNotificationsModal() {

@@ -160,8 +160,8 @@ export default function DraggableHeroSection({ theme = 'light' }: DraggableHeroS
               tint="#7C3AED"
               className="w-full sm:w-auto text-white font-bold shadow-xl shadow-purple-500/25"
             >
-              <Link href="/projects" className="flex items-center gap-2">
-                <span>Find Projects</span>
+              <Link href="/auth" className="flex items-center gap-2">
+                <span>Try it now</span>
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </Link>
             </LiquidGlassButton>
@@ -459,13 +459,13 @@ export default function DraggableHeroSection({ theme = 'light' }: DraggableHeroS
               {/* Card Action */}
               <div className="mt-4 pt-2 relative z-20 flex items-center justify-between gap-3">
                 <Link
-                  href="/projects"
+                  href="/auth"
                   className="flex-1 py-3 px-4 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-xs text-center transition-all shadow-md shadow-purple-500/25 active:scale-98"
                 >
                   Tinjau Lowongan Terbuka
                 </Link>
-                <Link
-                  href="/projects"
+                <a
+                  href="#playground"
                   className={`p-3 rounded-full transition-colors flex items-center justify-center cursor-pointer ${
                     theme === 'light'
                       ? 'bg-slate-100 hover:bg-slate-200 text-slate-700'
@@ -474,7 +474,7 @@ export default function DraggableHeroSection({ theme = 'light' }: DraggableHeroS
                   title="Lihat Graf Vektor"
                 >
                   <span className="material-symbols-outlined text-[18px]">hub</span>
-                </Link>
+                </a>
               </div>
             </LiquidGlass>
 

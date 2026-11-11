@@ -55,13 +55,13 @@ function AuthForm() {
         setTimeout(() => router.push('/dashboard'), 600);
       } else {
         // FR-01: Login dengan email & password
-        await login(email.trim().toLowerCase(), password);
+        const loggedUser = await login(email.trim().toLowerCase(), password);
         setFeedback({
           message: 'Login berhasil! Mengalihkan...',
           isError: false,
         });
 
-        const isUserAdmin = email.toLowerCase().includes('admin');
+        const isUserAdmin = loggedUser?.role?.toLowerCase() === 'admin';
         setTimeout(() => {
           if (isUserAdmin) {
             router.push('/admin');
@@ -71,18 +71,17 @@ function AuthForm() {
         }, 500);
       }
     } catch (err: any) {
+      let rawMsg = err.message || (isRegister ? 'Registrasi gagal. Pastikan email/NIM belum terdaftar.' : 'Email atau kata sandi tidak valid.');
+      if (rawMsg === 'Failed to fetch' || rawMsg.includes('Failed to fetch')) {
+        rawMsg = 'Gagal terhubung ke server backend FastAPI (Port 8000). Pastikan backend aktif.';
+      }
       setFeedback({
-        message: err.message || (isRegister ? 'Registrasi gagal. Pastikan email/NIM belum terdaftar.' : 'Email atau kata sandi tidak valid.'),
+        message: rawMsg,
         isError: true,
       });
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickPreset = (presetEmail: string) => {
-    setEmail(presetEmail);
-    setPassword('password123');
   };
 
   return (
@@ -150,7 +149,7 @@ function AuthForm() {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Contoh: Raden Satria"
+                    placeholder="Contoh: Nama Mahasiswa"
                     className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all ${
       isDark
         ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
@@ -171,7 +170,7 @@ function AuthForm() {
                     required
                     value={nim}
                     onChange={(e) => setNim(e.target.value)}
-                    placeholder="Contoh: V3925028"
+                    placeholder="Contoh: V3925001"
                     className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all font-mono uppercase ${
       isDark
         ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
@@ -192,7 +191,7 @@ function AuthForm() {
                     required
                     value={githubUsername}
                     onChange={(e) => setGithubUsername(e.target.value)}
-                    placeholder="Contoh: kho1rullll"
+                    placeholder="Contoh: username-github"
                     className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all font-mono ${
       isDark
         ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
@@ -219,7 +218,7 @@ function AuthForm() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="nama@student.itb.ac.id atau admin@projectmatch.ac.id"
+                placeholder="nama@email.com"
                 className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border transition-all ${
       isDark
         ? 'bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-500 focus:bg-slate-800 focus:border-purple-500'
@@ -268,45 +267,6 @@ function AuthForm() {
             )}
           </button>
         </form>
-
-        {/* Preset Akun Demo Cepat */}
-        {!isRegister && (
-          <div className="pt-3 border-t border-border-light/60 space-y-2 text-xs">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-text-muted text-center">
-              Pilihan Akun Cepat (Panduan Sistem):
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => handleQuickPreset('satria@student.itb.ac.id')}
-                className={`p-2.5 rounded-2xl border text-left transition-all cursor-pointer ${
-    isDark
-      ? 'bg-slate-800/60 border-slate-700 hover:bg-slate-700/60 hover:border-purple-500/40 text-white'
-      : isDim
-      ? 'bg-[#251545]/60 border-purple-500/30 hover:bg-[#321c5d]/60 hover:border-purple-400/50 text-purple-100'
-      : 'bg-slate-50/70 border-border-light hover:bg-purple-50/50 hover:border-primary-container/40 text-slate-900'
-  }`}
-              >
-                <p className="font-bold text-[11px] text-text-heading">🎓 Mahasiswa</p>
-                <p className="text-[10px] text-text-muted font-mono truncate">satria@student.itb.ac.id</p>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickPreset('admin@projectmatch.ac.id')}
-                className={`p-2.5 rounded-2xl border text-left transition-all cursor-pointer ${
-    isDark
-      ? 'bg-slate-800/60 border-slate-700 hover:bg-slate-700/60 hover:border-purple-500/40 text-white'
-      : isDim
-      ? 'bg-[#251545]/60 border-purple-500/30 hover:bg-[#321c5d]/60 hover:border-purple-400/50 text-purple-100'
-      : 'bg-slate-50/70 border-border-light hover:bg-purple-50/50 hover:border-primary-container/40 text-slate-900'
-  }`}
-              >
-                <p className="font-bold text-[11px] text-text-heading">🛡️ Admin Kampus</p>
-                <p className="text-[10px] text-text-muted font-mono truncate">admin@projectmatch.ac.id</p>
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Toggle Login/Register */}
         <div className="text-center pt-2 text-xs text-text-body">

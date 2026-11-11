@@ -12,7 +12,7 @@ router = APIRouter(tags=["Lowongan & Bookmarks (FR-04, FR-08, FR-10)"])
 
 @router.get("/jobs", response_model=List[JobResponse])
 def get_jobs(
-    platform: Optional[str] = Query(None, description="Filter: linkedin, fiverr, upwork"),
+    platform: Optional[str] = Query(None, description="Filter: linkedin, freelancer, kalibrr, remotive"),
     job_type: Optional[str] = Query(None, description="Filter: freelance, part_time"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -86,11 +86,24 @@ async def sync_external_jobs(
     db: Session = Depends(get_db),
     current_user: User = Depends(RBACGuard(["admin"]))
 ):
-    """FR-04, FR-10: Memicu penarikan data lowongan dari LinkedIn, Fiverr, dan Upwork (Admin / Scheduler)."""
+    """FR-04, FR-10: Memicu penarikan data lowongan riil dari LinkedIn, Freelancer.com, Kalibrr, dan Remotive (Admin)."""
     result = await job_ingestion_service.ingest_jobs(db)
     return {
         "status": "success",
         "message": f"Agregasi lowongan berhasil disinkronkan. {result['added']} lowongan baru ditambahkan, {result['updated']} diperbarui.",
+        "details": result
+    }
+
+@router.post("/jobs/refresh-live", status_code=status.HTTP_200_OK)
+async def refresh_live_jobs_for_user(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """FR-04: Memungkinkan mahasiswa menarik lowongan terbaru riil dari LinkedIn, Freelancer.com, Kalibrr, dan Remotive."""
+    result = await job_ingestion_service.ingest_jobs(db)
+    return {
+        "status": "success",
+        "message": f"Lowongan riil berhasil diperbarui. {result['added']} lowongan baru ditemukan.",
         "details": result
     }
 

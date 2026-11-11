@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/lib/api-client';
-import { RefreshCw, CheckCircle2, AlertCircle, Clock, ExternalLink, Code2, GitCommit, Star } from 'lucide-react';
+import { useAuth } from '@/lib/auth-context';
+import { RefreshCw, CheckCircle2, AlertCircle, Clock, ExternalLink, Code2, GitCommit, Star, Lock, ShieldCheck } from 'lucide-react';
 import { Github } from '@/components/icons/GithubIcon';
 
 export default function GitHubSyncView() {
+  const { user } = useAuth();
   const [profile, setProfile] = useState<any>(null);
   const [usernameInput, setUsernameInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +23,7 @@ export default function GitHubSyncView() {
     } catch (e: any) {
       // Mock data jika backend belum terisi
       const mockProfile = {
-        github_username: 'kho1rullll',
+        github_username: user?.github_username || '',
         processing_status: 'done',
         github_data: {
           username: 'kho1rullll',
@@ -112,8 +114,26 @@ export default function GitHubSyncView() {
           </p>
         </div>
 
+        {/* Kebijakan 1 Akun = 1 GitHub Status */}
+        <div className="mt-4">
+          {profile?.github_username ? (
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-purple-50 text-purple-900 border border-purple-200/80 text-xs font-semibold">
+              <ShieldCheck className="w-4 h-4 text-primary-container" />
+              <span>Akun GitHub Terikat: <strong className="font-mono text-primary font-bold">@{profile.github_username}</strong></span>
+              <span className="text-[10px] bg-white px-2 py-0.5 rounded-full border border-purple-200 text-purple-700 font-bold uppercase tracking-wider ml-1">
+                1 Akun = 1 GitHub
+              </span>
+            </div>
+          ) : (
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold">
+              <Lock className="w-4 h-4 text-amber-600" />
+              <span>Belum Ditautkan: Masukkan akun GitHub Anda untuk pengikatan permanen.</span>
+            </div>
+          )}
+        </div>
+
         {/* Form Sinkronisasi */}
-        <form onSubmit={handleSync} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl">
+        <form onSubmit={handleSync} className="mt-4 flex flex-col sm:flex-row gap-3 max-w-xl">
           <div className="relative flex-1">
             <span className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 font-mono text-sm">
               github.com/
@@ -121,21 +141,47 @@ export default function GitHubSyncView() {
             <input
               type="text"
               value={usernameInput}
-              onChange={(e) => setUsernameInput(e.target.value)}
+              onChange={(e) => {
+                if (!profile?.github_username) {
+                  setUsernameInput(e.target.value);
+                }
+              }}
+              readOnly={Boolean(profile?.github_username)}
               placeholder="username_github_anda"
-              className="w-full pl-28 pr-4 py-3 rounded-full border border-slate-200 bg-slate-50/60 text-slate-900 font-medium text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-container transition-all"
+              className={`w-full pl-28 pr-10 py-3 rounded-full border text-sm font-medium transition-all ${
+                profile?.github_username
+                  ? 'bg-slate-100/80 border-slate-300/80 text-slate-700 cursor-not-allowed select-none font-mono font-bold'
+                  : 'border-slate-200 bg-slate-50/60 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-container'
+              }`}
               required
             />
+            {profile?.github_username && (
+              <span className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400" title="Akun GitHub telah terkunci permanen pada user ini">
+                <Lock className="w-4 h-4 text-slate-400" />
+              </span>
+            )}
           </div>
           <button
             type="submit"
             disabled={isSyncing}
-            className="px-6 py-3 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-purple-500/25 cursor-pointer disabled:opacity-50"
+            className="px-6 py-3 rounded-full bg-primary-container hover:bg-primary-hover text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-purple-500/25 cursor-pointer disabled:opacity-50 shrink-0"
           >
             <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'Menyinkronkan...' : 'Simpan & Sinkronkan'}</span>
+            <span>
+              {isSyncing
+                ? 'Menyinkronkan...'
+                : profile?.github_username
+                ? 'Sinkronkan Ulang Portofolio'
+                : 'Tautkan & Sinkronkan'}
+            </span>
           </button>
         </form>
+
+        <p className="text-[11px] text-slate-400 mt-2">
+          {profile?.github_username
+            ? 'ℹ️ Demi integritas data portofolio, 1 akun pengguna terikat pada 1 akun GitHub permanen dan tidak dapat diganti ke akun lain.'
+            : '⚠️ Perhatian: Setelah akun GitHub ditautkan dan disinkronkan, akun GitHub tersebut akan terkunci permanen pada profil Anda.'}
+        </p>
 
         {/* Alert Feedback */}
         {message && (

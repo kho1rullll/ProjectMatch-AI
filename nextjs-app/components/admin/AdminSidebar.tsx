@@ -29,8 +29,8 @@ export default function AdminSidebar({
   const isDark = theme === 'dark';
   const isDim = theme === 'dim';
 
-  const adminName = user?.name || user?.full_name || 'Biro Kemahasiswaan UNS';
-  const adminEmail = user?.email || 'admin@projectmatch.ac.id';
+  const adminName = user?.name || user?.full_name || 'Administrator ProjectMatch AI';
+  const adminEmail = user?.email || '';
 
   const navItems: Array<{
     id: AdminTab;
